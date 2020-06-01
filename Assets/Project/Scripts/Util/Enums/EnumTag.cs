@@ -1,0 +1,1 @@
+﻿enum EnumTag { Player, Enemy };
