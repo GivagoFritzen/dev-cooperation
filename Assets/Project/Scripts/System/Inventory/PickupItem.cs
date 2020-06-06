@@ -3,16 +3,23 @@
 [RequireComponent(typeof(BoxCollider2D))]
 public class PickupItem : MonoBehaviour
 {
-    private InventoryManager inventoryManager = null;
+    [SerializeField]
+    private Item item = null;
 
     private void Start()
     {
-        inventoryManager = InventoryManager.Instance;
+        if (item == null)
+            Destroy(gameObject);
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerStay2D(Collider2D collision)
     {
-        if (collision.CompareTag("Player"))
-            inventoryManager.PickUpItem();
+        if (InputManager.Instance.GetAction() && collision.CompareTag("Player"))
+        {
+            bool taked = InventoryManager.Instance.PickUpItem(item);
+
+            if (taked)
+                Destroy(gameObject);
+        }
     }
 }

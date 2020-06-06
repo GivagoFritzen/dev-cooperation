@@ -34,7 +34,7 @@ public class PlayerAnimator : MonoBehaviour
 
     public bool CantAction()
     {
-        return animator.GetBool("CanMove") == true;
+        return animator.GetBool("CanMove") == true && !MenuManager.Instance.isPaused;
     }
 
     public void DistanceAttack()

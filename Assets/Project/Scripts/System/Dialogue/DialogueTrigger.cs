@@ -7,7 +7,7 @@ public class DialogueTrigger : MonoBehaviour
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if (collision.tag == "Player" && InputManager.Instance.GetStartDialogue())
+        if (collision.tag == "Player" && InputManager.Instance.GetAction())
         {
             DialogueManager.Instance.enabled = true;
             DialogueManager.Instance.StartDialogue(dialogue);

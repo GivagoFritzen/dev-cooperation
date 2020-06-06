@@ -4,8 +4,12 @@ public class InventoryManager : MonoBehaviour
 {
     public static InventoryManager Instance;
 
-    public bool[] isFull { get; set; } = null;
-    public GameObject[] slots { get; set; } = null;
+    [SerializeField]
+    private GameObject visual = null;
+    [SerializeField]
+    private GameObject inventorySlotPrefab = null;
+    [SerializeField]
+    private InventorySlot[] slots = null;
 
     private void Awake()
     {
@@ -15,15 +19,34 @@ public class InventoryManager : MonoBehaviour
         Instance = this;
     }
 
-    public void PickUpItem()
+    private void Start()
     {
         for (int i = 0; i < slots.Length; i++)
         {
-            if (isFull[i] == false)
+            slots[i] = Instantiate(inventorySlotPrefab, visual.transform).GetComponent<InventorySlot>();
+            slots[i].ShowIcon(false);
+        }
+    }
+
+    public void ActiveMenu(bool enabled)
+    {
+        visual.SetActive(enabled);
+    }
+
+    public bool PickUpItem(Item item)
+    {
+        bool canTake = false;
+
+        foreach (InventorySlot slot in slots)
+        {
+            if (slot != null && slot.item == null)
             {
-                isFull[i] = true;
+                slot.AddItem(item);
+                canTake = true;
                 break;
             }
         }
+
+        return canTake;
     }
 }

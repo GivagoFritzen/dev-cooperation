@@ -34,7 +34,7 @@ public class DialogueManager : MonoBehaviour
 
     private void Update()
     {
-        if (InputManager.Instance.GetNextDialogue())
+        if (InputManager.Instance.GetAction())
             DisplayNextSentence();
     }
 
