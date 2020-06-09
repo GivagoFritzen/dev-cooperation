@@ -19,6 +19,10 @@ public class DialogueManager : MonoBehaviour
 
     private Queue<string> sentences = new Queue<string>();
 
+    [SerializeField]
+    private float delayNextSentence = 1;
+    private float delayNextSentenceController = 0;
+
     private void Awake()
     {
         if (Instance != null)
@@ -34,8 +38,19 @@ public class DialogueManager : MonoBehaviour
 
     private void Update()
     {
-        if (InputManager.Instance.GetAction())
+        DelayController();
+
+        if (InputManager.Instance.GetAction() && delayNextSentenceController >= delayNextSentence)
+        {
+            delayNextSentenceController = 0;
             DisplayNextSentence();
+        }
+    }
+
+    private void DelayController()
+    {
+        if (delayNextSentenceController < delayNextSentence)
+            delayNextSentenceController += Time.deltaTime;
     }
 
     public void StartDialogue(Dialogue dialogue)
@@ -48,7 +63,7 @@ public class DialogueManager : MonoBehaviour
 
         sentences.Clear();
 
-        foreach (string sentence in dialogue.sentences)
+        foreach (string sentence in dialogue.GetCurrentDialogueText().sentences)
             sentences.Enqueue(sentence);
 
         canvas.SetActive(true);

@@ -3,11 +3,17 @@
 public class DialogueTrigger : MonoBehaviour
 {
     [SerializeField]
-    private Dialogue dialogue = new Dialogue();
+    private Dialogue dialogue = null;
+
+    private void Start()
+    {
+        if (dialogue == null)
+            Destroy(gameObject);
+    }
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if (collision.tag == "Player" && InputManager.Instance.GetAction())
+        if (collision.tag == "Player" && !DialogueManager.Instance.enabled && InputManager.Instance.GetAction())
         {
             DialogueManager.Instance.enabled = true;
             DialogueManager.Instance.StartDialogue(dialogue);

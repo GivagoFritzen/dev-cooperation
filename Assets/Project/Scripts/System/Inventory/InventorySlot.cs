@@ -36,6 +36,15 @@ public class InventorySlot : MonoBehaviour
         icon.color = tempColor;
     }
 
+    public void UseItem()
+    {
+        if (item == null)
+            return;
+
+        item.Use();
+        RemoveItem();
+    }
+
     public void RemoveItem()
     {
         ShowIcon(false);

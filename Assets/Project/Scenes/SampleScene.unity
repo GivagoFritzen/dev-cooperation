@@ -10078,8 +10078,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_MethodName: Pause
+      - m_Target: {fileID: 1771502984}
+        m_MethodName: ClosePauseMenuButton
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -10177,6 +10177,7 @@ MonoBehaviour:
   canvas: {fileID: 886422734}
   nameText: {fileID: 453585806}
   dialogueText: {fileID: 1193806941}
+  delayNextSentence: 0.5
 --- !u!1 &335617314
 GameObject:
   m_ObjectHideFlags: 0
@@ -10360,7 +10361,7 @@ MonoBehaviour:
   m_outlineColor:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontSize: 44.7
+  m_fontSize: 32.9
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -10700,6 +10701,7 @@ Transform:
   - {fileID: 1885685712}
   - {fileID: 1315514594}
   - {fileID: 933968650}
+  - {fileID: 708691698}
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -10739,6 +10741,54 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &708691697
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 708691698}
+  - component: {fileID: 708691699}
+  m_Layer: 5
+  m_Name: LanguageManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &708691698
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 708691697}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 648588919}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 512, y: 384}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &708691699
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 708691697}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1fb90ad1f48a414693b81f9b05ad16c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &720317404
 GameObject:
   m_ObjectHideFlags: 0
@@ -11559,10 +11609,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 251896edefecfc4408868a1694188c9c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  delay: 0.15
+  currentMenuVertical: 1
+  currentMenuHorizontal: 1
+  menuInGame: []
   visual: {fileID: 1717964400}
   inventorySlotPrefab: {fileID: 9137764226767596107, guid: 268f64fd2f922074f8f0cf0a76498bd1,
     type: 3}
   slots:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
@@ -11960,11 +12019,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f488fad6580b469479954f62223e400f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dialogue:
-    name: Eu
-    sentences:
-    - Oi
-    - teste
+  dialogue: {fileID: 11400000, guid: 24038ec971c50fc4a9b4996dcc2e634c, type: 2}
 --- !u!61 &1665903957
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -12225,7 +12280,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 1771502984}
         m_MethodName: ExitGame
         m_Mode: 1
         m_Arguments:
@@ -12361,7 +12416,7 @@ MonoBehaviour:
     m_Right: 0
     m_Top: 0
     m_Bottom: 0
-  m_ChildAlignment: 0
+  m_ChildAlignment: 4
   m_StartCorner: 0
   m_StartAxis: 0
   m_CellSize: {x: 100, y: 100}
@@ -12983,6 +13038,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0d4636a1c8a93a469ab4e45274c1833, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  delay: 0.15
+  currentMenuVertical: 1
+  currentMenuHorizontal: 1
+  menuInGame:
+  - {fileID: 264049902}
+  - {fileID: 1703622217}
   menu: {fileID: 335617314}
   inventory: {fileID: 1403996859}
 --- !u!1 &1869436840
@@ -18184,7 +18245,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: accaef7cbbb09064e811cabb2bed6fa3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  life: 1
+  maxLife: 1
   moveSpeed: 5
 --- !u!61 &2097510914
 BoxCollider2D:

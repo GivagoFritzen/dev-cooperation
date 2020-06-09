@@ -9,6 +9,7 @@ public class CreatureManager : MonoBehaviour
 
     [Header("Parameters")]
     [SerializeField]
+    protected int maxLife = 1;
     protected int life = 1;
     [SerializeField]
     protected float moveSpeed = 5f;
@@ -17,6 +18,7 @@ public class CreatureManager : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
+        life = maxLife;
     }
 
     public virtual void TakeDamage(int damage)

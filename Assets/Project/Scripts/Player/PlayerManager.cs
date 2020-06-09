@@ -4,6 +4,8 @@ using TMPro;
 [RequireComponent(typeof(Rigidbody2D), typeof(Animator), typeof(BoxCollider2D))]
 public class PlayerManager : CreatureManager
 {
+    public static PlayerManager Instance;
+
     [Header("Components")]
     [SerializeField]
     private TextMeshProUGUI lifeText = null;
@@ -16,6 +18,14 @@ public class PlayerManager : CreatureManager
     [Header("References")]
     [SerializeField]
     private GameObject projectile = null;
+
+    private void Awake()
+    {
+        if (Instance != null)
+            Destroy(gameObject);
+
+        Instance = this;
+    }
 
     public override void Start()
     {
@@ -48,6 +58,18 @@ public class PlayerManager : CreatureManager
     {
         rb.MovePosition(rb.position + movement * moveSpeed * Time.fixedDeltaTime);
     }
+
+    #region Get/Set
+    public void RestoreLife(int restore)
+    {
+        if (life >= maxLife)
+            return;
+
+        life += restore;
+        if (life > maxLife)
+            life = maxLife;
+    }
+    #endregion
 
     #region Actions
     private void Actions()

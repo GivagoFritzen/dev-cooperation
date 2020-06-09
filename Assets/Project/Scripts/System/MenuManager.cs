@@ -1,18 +1,18 @@
 ﻿using UnityEditor;
 using UnityEngine;
 
-public class MenuManager : MonoBehaviour
+public class MenuManager : MenuController
 {
     public static MenuManager Instance;
 
-    public bool isPaused { get; set; } = false;
-    private MenuTag menuTag = MenuTag.Disabled;
+    [Header("Menu Manager")]
     [SerializeField]
     private GameObject menu = null;
     [SerializeField]
     private InventoryManager inventory = null;
+    private MenuTag menuTag = MenuTag.Disabled;
+    public bool isPaused { get; set; } = false;
 
-    [Header("Inputs Controller")]
     private bool pressedButtonMenu = false;
     private bool pressedButtonInventory = false;
 
@@ -34,6 +34,9 @@ public class MenuManager : MonoBehaviour
         pressedButtonMenu = InputManager.Instance.GetMenu();
         pressedButtonInventory = InputManager.Instance.GetInventory();
 
+        if (menu.activeSelf)
+            base.SelectControllerVertical();
+
         MenuController();
         MenuTagController();
     }
@@ -52,8 +55,7 @@ public class MenuManager : MonoBehaviour
     {
         if (menuTag != MenuTag.Disabled && (pressedButtonMenu || pressedButtonInventory))
         {
-            Pause();
-            CloseAllMenus();
+            ClosePauseMenu();
         }
         else if (pressedButtonMenu)
         {
@@ -65,6 +67,19 @@ public class MenuManager : MonoBehaviour
             Pause();
             inventory.ActiveMenu(isPaused);
         }
+    }
+
+    #region Actions
+    public void ClosePauseMenuButton()
+    {
+        ClosePauseMenu();
+        menuTag = MenuTag.Disabled;
+    }
+
+    private void ClosePauseMenu()
+    {
+        Pause();
+        CloseAllMenus();
     }
 
     private void CloseAllMenus()
@@ -96,4 +111,5 @@ public class MenuManager : MonoBehaviour
 #endif
         Application.Quit();
     }
+    #endregion
 }

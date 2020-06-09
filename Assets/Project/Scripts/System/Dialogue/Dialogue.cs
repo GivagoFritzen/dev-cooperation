@@ -1,10 +1,26 @@
 ﻿using UnityEngine;
 
-[System.Serializable]
-public class Dialogue
+[CreateAssetMenu(fileName = "Dialogue", menuName = "Dialogue")]
+public class Dialogue : ScriptableObject
 {
-    public string name = "";
+    new public string name = "";
 
-    [TextArea(3, 10)]
-    public string[] sentences = null;
+    public DialogueText[] dialogueTexts = null;
+    private DialogueText currentDialogueText;
+
+    public DialogueText GetCurrentDialogueText()
+    {
+        LanguageTag currentLanguage = LanguageManager.Instance.currentLanguage;
+
+        foreach (DialogueText dialogueText in dialogueTexts)
+        {
+            if (dialogueText.language == currentLanguage)
+            {
+                currentDialogueText = dialogueText;
+                break;
+            }
+        }
+
+        return currentDialogueText;
+    }
 }

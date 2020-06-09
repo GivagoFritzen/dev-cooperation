@@ -5,4 +5,6 @@ public class Item : ScriptableObject
 {
     new public string name = "Item Name";
     public Sprite icon = null;
+
+    public virtual void Use() { }
 }
