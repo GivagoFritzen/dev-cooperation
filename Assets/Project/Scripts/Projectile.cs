@@ -32,9 +32,23 @@ public class Projectile : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag(targetTag.ToString()))
-            collision.GetComponent<CreatureManager>().TakeDamage(damage);
+        TakeDamage(collision);
+        DestroyProjectile(collision);
+    }
 
+    private void TakeDamage(Collider2D collision)
+    {
+        if (collision.CompareTag(targetTag.ToString()))
+        {
+            if (collision.GetComponent<CreatureManager>())
+                collision.GetComponent<CreatureManager>().TakeDamage(damage);
+            else if (collision.GetComponentInParent<CreatureManager>())
+                collision.GetComponentInParent<CreatureManager>().TakeDamage(damage);
+        }
+    }
+
+    private void DestroyProjectile(Collider2D collision)
+    {
         if (shooter != collision.gameObject && !collision.CompareTag("Projectile"))
             Destroy(gameObject);
     }

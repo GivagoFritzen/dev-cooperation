@@ -1,12 +1,16 @@
 ﻿using UnityEngine;
 using TMPro;
 
-[RequireComponent(typeof(Rigidbody2D), typeof(Animator), typeof(BoxCollider2D))]
+[RequireComponent(typeof(BoxCollider2D), typeof(Rigidbody2D), typeof(Animator))]
 public class PlayerManager : CreatureManager
 {
     public static PlayerManager Instance;
 
     [Header("Components")]
+    [SerializeField]
+    private Rigidbody2D rb = null;
+    [SerializeField]
+    private Animator animator = null;
     [SerializeField]
     private TextMeshProUGUI lifeText = null;
     [SerializeField]
@@ -36,6 +40,9 @@ public class PlayerManager : CreatureManager
 
     private void SetComponents()
     {
+        rb = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
+
         if (gameObject.GetComponent<PlayerAnimator>() == null)
             gameObject.AddComponent<PlayerAnimator>();
         else
