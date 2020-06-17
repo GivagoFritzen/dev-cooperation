@@ -2,10 +2,8 @@
 using TMPro;
 
 [RequireComponent(typeof(BoxCollider2D), typeof(Rigidbody2D), typeof(Animator))]
-public class PlayerManager : CreatureManager
+public class WalkerManager : CreatureManager
 {
-    public static PlayerManager Instance;
-
     [Header("Components")]
     [SerializeField]
     private Rigidbody2D rb = null;
@@ -18,20 +16,10 @@ public class PlayerManager : CreatureManager
 
     [Header("Parameters")]
     private Vector2 movement = Vector2.zero;
-    [SerializeField]
-    public int gold  = 0;
 
     [Header("References")]
     [SerializeField]
     private GameObject projectile = null;
-
-    private void Awake()
-    {
-        if (Instance != null)
-            Destroy(gameObject);
-
-        Instance = this;
-    }
 
     public override void Start()
     {

@@ -1,1 +1,1 @@
-﻿enum MenuTag { Disabled, InGame, Inventory };
+﻿enum MenuTag { Disabled, InGame, Inventory, Merchant };

@@ -10,6 +10,7 @@ public class MenuManager : MenuController
     private GameObject menu = null;
     [SerializeField]
     private InventoryManager inventory = null;
+    [SerializeField]
     private MenuTag menuTag = MenuTag.Disabled;
     public bool isPaused { get; set; } = false;
 
@@ -26,6 +27,7 @@ public class MenuManager : MenuController
 
     private void Start()
     {
+        Init();
         CloseAllMenus();
     }
 
@@ -43,7 +45,9 @@ public class MenuManager : MenuController
 
     private void MenuTagController()
     {
-        if (menuTag != MenuTag.Disabled && (pressedButtonMenu || pressedButtonInventory))
+        if (menuTag == MenuTag.Merchant && (pressedButtonMenu || pressedButtonInventory))
+            menuTag = MenuTag.Disabled;
+        else if (menuTag != MenuTag.Disabled && (pressedButtonMenu || pressedButtonInventory))
             menuTag = MenuTag.Disabled;
         else if (pressedButtonMenu)
             menuTag = MenuTag.InGame;
@@ -53,7 +57,13 @@ public class MenuManager : MenuController
 
     private void MenuController()
     {
-        if (menuTag != MenuTag.Disabled && (pressedButtonMenu || pressedButtonInventory))
+        if (MerchantManager.Instance.isOpened && (pressedButtonMenu || pressedButtonInventory))
+        {
+            MerchantManager.Instance.Close();
+            menuTag = MenuTag.Merchant;
+            Pause();
+        }
+        else if (menuTag != MenuTag.Disabled && (pressedButtonMenu || pressedButtonInventory))
         {
             ClosePauseMenu();
         }

@@ -24,15 +24,15 @@ public class GridLayoutGroupUtil : MonoBehaviour
             RectTransform currentChildObj = GetNextChild(glg, i);
             Vector2 currentChildPos = currentChildObj.anchoredPosition;
 
-            if (IsColumn(firstChildPos, currentChildPos))
+            if (IsRow(firstChildPos, currentChildPos))
             {
-                column++;
+                row++;
                 stopCountingRow = true;
             }
             else
             {
                 if (!stopCountingRow)
-                    row++;
+                    column++;
             }
         }
     }
@@ -47,7 +47,7 @@ public class GridLayoutGroupUtil : MonoBehaviour
         return glg.transform.GetChild(index).GetComponent<RectTransform>();
     }
 
-    private static bool IsColumn(Vector2 firstChildPos, Vector2 currentChildPos)
+    private static bool IsRow(Vector2 firstChildPos, Vector2 currentChildPos)
     {
         return firstChildPos.x == currentChildPos.x;
     }

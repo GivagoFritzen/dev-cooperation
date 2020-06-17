@@ -5,6 +5,8 @@ public class InventorySlot : MonoBehaviour
 {
     public Item item { get; set; } = null;
     [SerializeField]
+    public bool sellerMerchandise = false;
+    [SerializeField]
     private Image icon = null;
     [SerializeField]
     private GameObject removeButton = null;
@@ -24,12 +26,16 @@ public class InventorySlot : MonoBehaviour
         if (enabled)
         {
             currentAlpha = 1;
-            removeButton.SetActive(true);
+
+            if (removeButton != null)
+                removeButton.SetActive(true);
         }
         else
         {
             currentAlpha = 0;
-            removeButton.SetActive(false);
+
+            if (removeButton != null)
+                removeButton.SetActive(false);
         }
 
         tempColor.a = currentAlpha;
@@ -43,6 +49,15 @@ public class InventorySlot : MonoBehaviour
 
         item.Use();
         RemoveItem();
+    }
+
+    public void SellItem()
+    {
+        if (sellerMerchandise)
+            if (PlayerManager.Instance.gold >= item.purchasePrice)
+                PlayerManager.Instance.gold -= item.purchasePrice;
+            else
+                PlayerManager.Instance.gold += item.salePrice;
     }
 
     public void RemoveItem()
