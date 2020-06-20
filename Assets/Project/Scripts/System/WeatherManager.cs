@@ -45,8 +45,6 @@ public class WeatherManager : MonoBehaviour
         {
             currentWeather = WeatherTag.Sunny;
         }
-
-        Debug.Log(currentWeather);
     }
 
     private void StopParticles()

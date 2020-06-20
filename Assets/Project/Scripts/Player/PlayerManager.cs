@@ -6,6 +6,11 @@ public class PlayerManager : CreatureManager
 {
     public static PlayerManager Instance;
 
+    [Header("Parameters")]
+    private Vector2 movement = Vector2.zero;
+    [SerializeField]
+    public int gold = 0;
+
     [Header("Components")]
     [SerializeField]
     private Rigidbody2D rb = null;
@@ -15,11 +20,7 @@ public class PlayerManager : CreatureManager
     private TextMeshProUGUI lifeText = null;
     [SerializeField]
     private PlayerAnimator playerAnimator = null;
-
-    [Header("Parameters")]
-    private Vector2 movement = Vector2.zero;
-    [SerializeField]
-    public int gold  = 0;
+    public InventoryObject inventory = null;
 
     [Header("References")]
     [SerializeField]

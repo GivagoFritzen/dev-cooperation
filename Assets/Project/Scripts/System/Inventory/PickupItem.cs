@@ -16,7 +16,7 @@ public class PickupItem : MonoBehaviour
     {
         if (InputManager.Instance.GetAction() && collision.CompareTag("Player"))
         {
-            bool taked = InventoryManager.Instance.PickUpItem(item);
+            bool taked = PlayerManager.Instance.inventory.PickUpItem(item);
 
             if (taked)
                 Destroy(gameObject);

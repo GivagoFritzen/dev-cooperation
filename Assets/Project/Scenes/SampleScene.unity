@@ -16783,7 +16783,7 @@ MonoBehaviour:
   m_outlineColor:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontSize: 31.55
+  m_fontSize: 31.5
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -19882,31 +19882,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 1403996857}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 251896edefecfc4408868a1694188c9c, type: 3}
+  m_Script: {fileID: 11500000, guid: bf13552487b857241bbb2cf87db380da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   delay: 0.15
-  currentMenuVertical: 1
-  currentMenuHorizontal: 1
   menuInGame: []
-  column: -1
-  row: -1
-  multiplesMenus: []
   visual: {fileID: 1717964400}
   inventorySlotPrefab: {fileID: 9137764226767596107, guid: 268f64fd2f922074f8f0cf0a76498bd1,
     type: 3}
   anchorToVisualMerchant: {fileID: 1285857474}
-  slots:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  inventoryObject: {fileID: 11400000, guid: 953cd096889a1b64682a6b3bc1ce54e7, type: 2}
 --- !u!95 &1422501551 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 2308158960367092202, guid: a130031875c87324cbdf8c04653dbc0b,
@@ -20599,14 +20584,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   delay: 0.15
-  currentMenuVertical: 1
-  currentMenuHorizontal: 1
   menuInGame: []
-  column: -1
-  row: -1
-  multiplesMenus:
-  - {fileID: 1403996859}
-  - {fileID: 1665913145}
   playerUI: {fileID: 1285857474}
   merchantUI: {fileID: 505623045}
   inventorySlotPrefab: {fileID: 9137764226767596107, guid: 25d0fa94f83ac4242ab25c10ba6d3aa4,
@@ -21087,16 +21065,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   delay: 0.15
-  currentMenuVertical: 1
-  currentMenuHorizontal: 1
   menuInGame:
   - {fileID: 264049902}
   - {fileID: 1703622217}
-  column: -1
-  row: -1
-  multiplesMenus: []
   menu: {fileID: 335617314}
-  inventory: {fileID: 1403996859}
   menuTag: 0
 --- !u!1 &1821551912
 GameObject:
@@ -28056,6 +28028,17 @@ PrefabInstance:
         type: 3}
       propertyPath: maxLife
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2308158960367092214, guid: a130031875c87324cbdf8c04653dbc0b,
+        type: 3}
+      propertyPath: inventory
+      value: 
+      objectReference: {fileID: 11400000, guid: 953cd096889a1b64682a6b3bc1ce54e7,
+        type: 2}
+    - target: {fileID: 2308158960367092214, guid: a130031875c87324cbdf8c04653dbc0b,
+        type: 3}
+      propertyPath: gold
+      value: 10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a130031875c87324cbdf8c04653dbc0b, type: 3}

@@ -1,12 +1,11 @@
-﻿using System.Collections;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class InventoryManager : MenuController
+public class InventoryController : MenuController
 {
-    public static InventoryManager Instance;
+    public static InventoryController Instance;
 
-    [Header("Inventory Manager")]
     [SerializeField]
     private GameObject visual = null;
     private RectTransform rectTransform = null;
@@ -15,7 +14,7 @@ public class InventoryManager : MenuController
     [SerializeField]
     private GameObject anchorToVisualMerchant = null;
     [SerializeField]
-    private InventorySlot[] slots = null;
+    private InventoryObject inventoryObject = null;
 
     private void Awake()
     {
@@ -29,33 +28,27 @@ public class InventoryManager : MenuController
     {
         rectTransform = visual.GetComponent<RectTransform>();
 
-        for (int i = 0; i < slots.Length; i++)
+        for (int i = 0; i < inventoryObject.slots.Length; i++)
         {
-            slots[i] = Instantiate(inventorySlotPrefab, visual.transform).GetComponent<InventorySlot>();
-            slots[i].ShowIcon(false);
-            menuInGame.Add(slots[i].GetComponentInChildren<Button>());
+            inventoryObject.slots[i] = Instantiate(inventorySlotPrefab, visual.transform).GetComponent<InventorySlot>();
+            inventoryObject.slots[i].ShowIcon(false);
+            menuInGame.Add(inventoryObject.slots[i].GetComponentInChildren<Button>());
         }
 
         Init();
     }
 
-    private IEnumerator GetColumnAndRowInTheEndOfFrame()
-    {
-        yield return new WaitForEndOfFrame();
-        GridLayoutGroupUtil.GetColumnAndRow(visual.GetComponent<GridLayoutGroup>(), out column, out row);
-    }
-
     private void Update()
     {
-        if (visual.activeSelf)
-            base.SelectControllerVerticalAndHorizontal(column, row);
+        if (isActived && visual.activeSelf)
+            SelectControllerVerticalAndHorizontal();
     }
 
     public void ActiveMenu(bool enabled)
     {
         ResetRectTransform();
         visual.SetActive(enabled);
-        StartCoroutine(GetColumnAndRowInTheEndOfFrame());
+        GetColumnAndRowInTheEndOfFrame(visual.GetComponent<GridLayoutGroup>());
     }
 
     private void ResetRectTransform()
@@ -69,35 +62,19 @@ public class InventoryManager : MenuController
         }
     }
 
-    public bool PickUpItem(Item item)
-    {
-        bool canTake = false;
-
-        foreach (InventorySlot slot in slots)
-        {
-            if (slot != null && slot.item == null)
-            {
-                slot.AddItem(item);
-                canTake = true;
-                break;
-            }
-        }
-
-        return canTake;
-    }
-
-    public void OpenMerchant(MenuController[] multiplesMenus)
+    public void OpenMerchant(List<MenuController> multiplesMenus)
     {
         isActived = false;
         this.multiplesMenus = multiplesMenus;
         visual.transform.SetParent(anchorToVisualMerchant.transform);
+        DisableSpriteController();
         ActiveMenu(true);
     }
 
     public void CloseMerchant()
     {
         isActived = true;
-        multiplesMenus = null;
+        multiplesMenus = new List<MenuController>();
         visual.transform.SetParent(transform);
         ActiveMenu(false);
     }

@@ -1,14 +1,12 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class MerchantManager : MenuController
+public class MerchantController : MenuController
 {
-    public static MerchantManager Instance;
+    public static MerchantController Instance;
     public bool isOpened { get; private set; } = false;
 
-    [Header("Merchant Manager")]
     private Item[] listItems = null;
     [SerializeField]
     private GameObject playerUI = null;
@@ -29,19 +27,21 @@ public class MerchantManager : MenuController
 
     private void Start()
     {
+        multiplesMenus.Add(this);
+        multiplesMenus.Add(InventoryController.Instance);
+
         Close();
     }
 
     private void Update()
     {
         if (isActived && merchantUI.activeSelf)
-            base.SelectControllerVerticalAndHorizontal(column, row);
+            SelectControllerVerticalAndHorizontal();
     }
 
-    private IEnumerator GetColumnAndRowInTheEndOfFrame()
+    public bool IsActived()
     {
-        yield return new WaitForEndOfFrame();
-        GridLayoutGroupUtil.GetColumnAndRow(merchantUI.GetComponent<GridLayoutGroup>(), out column, out row);
+        return merchantUI.activeSelf;
     }
 
     public void Open(Item[] listItems)
@@ -52,18 +52,22 @@ public class MerchantManager : MenuController
         isActived = true;
         this.listItems = listItems;
         PopulateStoreList();
-        InventoryManager.Instance.OpenMerchant(multiplesMenus);
+        InventoryController.Instance.OpenMerchant(multiplesMenus);
         ActivateVisual(true);
-        StartCoroutine(GetColumnAndRowInTheEndOfFrame());
+        GetColumnAndRowInTheEndOfFrame(merchantUI.GetComponent<GridLayoutGroup>());
         MenuManager.Instance.Pause();
     }
 
     public Item[] Close()
     {
-        InventoryManager.Instance.CloseMerchant();
+        if (!merchantUI.gameObject.activeSelf)
+            return null;
+
         RemoveStoreList();
         ActivateVisual(false);
         DisableAllMultiplesMenus();
+        InventoryController.Instance.CloseMerchant();
+        ResetInputController();
         return listItems;
     }
 

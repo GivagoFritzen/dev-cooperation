@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -6,30 +7,24 @@ public class MenuController : MonoBehaviour
 {
     [Header("Inputs Controller")]
     [SerializeField]
-    private float delay = 0.5f;
-    private float inputController = Mathf.Infinity;
-    [SerializeField]
+    private float delay = 0.15f;
+    private float inputController = 0;
     private int currentMenuVertical = 1;
-    [SerializeField]
     private int currentMenuHorizontal = 1;
-    [SerializeField]
-    protected List<Button> menuInGame = null;
+    public List<Button> menuInGame = null;
     private float vertical = 0;
     private float horizontal = 0;
-    [SerializeField]
-    protected int column = -1;
-    [SerializeField]
-    protected int row = -1;
+    private int column = -1;
+    private int row = -1;
 
     [Header("Multiple Screen Controller")]
-    [SerializeField]
-    protected MenuController[] multiplesMenus = null;
     private int currentIndex = 0;
+    public List<MenuController> multiplesMenus { get; set; } = new List<MenuController>();
     private bool spriteController = false;
 
-    public bool isActived { get; set; } = true;
+    protected bool isActived { get; set; } = true;
 
-    public void SelectControllerVertical()
+    protected void SelectControllerVertical()
     {
         if (InputManager.Instance.GetAction())
             menuInGame[currentMenuVertical - 1].onClick.Invoke();
@@ -39,8 +34,9 @@ public class MenuController : MonoBehaviour
             InputControllerVertical();
     }
 
-    public void Init()
+    protected void Init()
     {
+        ResetInputController();
         menuInGame[GetPositionMatrixWithVerticalAndHorizontal()].GetComponent<MenuSpriteController>().SelectFirstOption();
     }
 
@@ -53,7 +49,7 @@ public class MenuController : MonoBehaviour
 
         menuInGame[currentMenuVertical - 1].GetComponent<MenuSpriteController>().Disable();
 
-        inputController = 0;
+        ResetInputController();
         if (vertical > 0)
         {
             currentMenuVertical -= 1;
@@ -70,27 +66,33 @@ public class MenuController : MonoBehaviour
         menuInGame[currentMenuVertical - 1].GetComponent<MenuSpriteController>().Enable();
     }
 
-    public void SelectControllerVerticalAndHorizontal(int column = 0, int row = 0)
+    protected void ResetInputController()
     {
-        if (InputManager.Instance.GetAction())
-            menuInGame[(currentMenuHorizontal * currentMenuVertical) - 1].onClick.Invoke();
-        else if (inputController < delay)
+        inputController = 0;
+    }
+
+    protected void SelectControllerVerticalAndHorizontal()
+    {
+        if (inputController < delay)
             inputController += Time.unscaledDeltaTime;
+        else if (InputManager.Instance.GetAction())
+            menuInGame[(currentMenuHorizontal * currentMenuVertical) - 1].onClick.Invoke();
         else
             InputControllerVerticalAndHorizontal();
     }
 
     private void InputControllerVerticalAndHorizontal()
     {
-        inputController = 0;
-
         if (HasMultiplesMenu() && isActived || !HasMultiplesMenu())
         {
-            menuInGame[GetPositionMatrixWithVerticalAndHorizontal()].GetComponent<MenuSpriteController>().Disable();
+            DisableSpriteController();
             InputControllerVerticalRow();
             InputControllerHorizontal();
             ControllerLimitHorizontal();
             menuInGame[GetPositionMatrixWithVerticalAndHorizontal()].GetComponent<MenuSpriteController>().Enable();
+
+            if (vertical != 0 || horizontal != 0)
+                ResetInputController();
 
             if (spriteController)
             {
@@ -169,20 +171,20 @@ public class MenuController : MonoBehaviour
             currentMenuHorizontal = (column - mod);
     }
 
-    private bool HasMultiplesMenu()
+    protected bool HasMultiplesMenu()
     {
-        return multiplesMenus != null && multiplesMenus.Length > 0;
+        return multiplesMenus != null && multiplesMenus.Count > 0;
     }
 
     private void MultiplesMenusController()
     {
-        for (int i = 0; i < multiplesMenus.Length; i++)
+        for (int i = 0; i < multiplesMenus.Count; i++)
         {
             if (multiplesMenus[i].isActived)
             {
                 multiplesMenus[i].isActived = false;
 
-                if ((i + 1) >= multiplesMenus.Length)
+                if ((i + 1) >= multiplesMenus.Count)
                     currentIndex = 0;
                 else
                     currentIndex = i + 1;
@@ -204,5 +206,16 @@ public class MenuController : MonoBehaviour
     protected void DisableSpriteController()
     {
         menuInGame[GetPositionMatrixWithVerticalAndHorizontal()].GetComponent<MenuSpriteController>().Disable();
+    }
+
+    protected void GetColumnAndRowInTheEndOfFrame(GridLayoutGroup gridLayoutGroup)
+    {
+        StartCoroutine(GetColumnAndRow(gridLayoutGroup));
+    }
+
+    private IEnumerator GetColumnAndRow(GridLayoutGroup gridLayoutGroup)
+    {
+        yield return new WaitForEndOfFrame();
+        GridLayoutGroupUtil.GetColumnAndRow(gridLayoutGroup, out column, out row);
     }
 }

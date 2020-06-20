@@ -9,12 +9,16 @@ public class Merchant : MonoBehaviour
     private void OnTriggerStay2D(Collider2D collision)
     {
         if (collision.tag == "Player" && InputManager.Instance.GetAction())
-            MerchantManager.Instance.Open(listItems);
+            MerchantController.Instance.Open(listItems);
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
         if (collision.tag == "Player")
-            listItems = MerchantManager.Instance.Close();
+        {
+            Item[] newList = MerchantController.Instance.Close();
+            if (newList != null)
+                listItems = newList;
+        }
     }
 }

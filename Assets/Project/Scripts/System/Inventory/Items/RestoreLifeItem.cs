@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-[CreateAssetMenu(fileName = "RestoreLifeItem", menuName = "RestoreLifeItem")]
+[CreateAssetMenu(fileName = "RestoreLifeItem", menuName = "Item/Restore Life Item")]
 public class RestoreLifeItem : Item
 {
     public int restoreLife;
