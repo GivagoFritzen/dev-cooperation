@@ -55,7 +55,7 @@ public class MerchantController : MenuController
         InventoryController.Instance.OpenMerchant(multiplesMenus);
         ActivateVisual(true);
         GetColumnAndRowInTheEndOfFrame(merchantUI.GetComponent<GridLayoutGroup>());
-        MenuManager.Instance.Pause();
+        GameManager.Instance.Pause();
     }
 
     public Item[] Close()

@@ -10,8 +10,8 @@ public class MenuManager : MenuController
     private GameObject menu = null;
     [SerializeField]
     private MenuTag menuTag = MenuTag.Disabled;
-    public bool isPaused { get; set; } = false;
 
+    private bool pressedButtonMap = false;
     private bool pressedButtonMenu = false;
     private bool pressedButtonInventory = false;
 
@@ -31,8 +31,7 @@ public class MenuManager : MenuController
 
     private void Update()
     {
-        pressedButtonMenu = InputManager.Instance.GetMenu();
-        pressedButtonInventory = InputManager.Instance.GetInventory();
+        ButtonController();
 
         if (menu.activeSelf)
             SelectControllerVertical();
@@ -41,12 +40,25 @@ public class MenuManager : MenuController
         MenuTagController();
     }
 
+    private void ButtonController()
+    {
+        pressedButtonMap = InputManager.Instance.GetMap();
+        pressedButtonMenu = InputManager.Instance.GetMenu();
+        pressedButtonInventory = InputManager.Instance.GetInventory();
+    }
+
+    private bool PressedAnyButton()
+    {
+        return pressedButtonMenu || pressedButtonInventory || pressedButtonMap;
+    }
+
     private void MenuTagController()
     {
-        if (menuTag == MenuTag.Merchant && (pressedButtonMenu || pressedButtonInventory))
+        if (menuTag == MenuTag.Merchant && PressedAnyButton() ||
+            menuTag != MenuTag.Disabled && PressedAnyButton())
             menuTag = MenuTag.Disabled;
-        else if (menuTag != MenuTag.Disabled && (pressedButtonMenu || pressedButtonInventory))
-            menuTag = MenuTag.Disabled;
+        else if (pressedButtonMap)
+            menuTag = MenuTag.Map;
         else if (pressedButtonMenu)
             menuTag = MenuTag.InGame;
         else if (pressedButtonInventory)
@@ -55,25 +67,29 @@ public class MenuManager : MenuController
 
     private void MenuController()
     {
-        if (MerchantController.Instance.isOpened && (pressedButtonMenu || pressedButtonInventory))
+        if (MerchantController.Instance.isOpened && PressedAnyButton())
         {
             MerchantController.Instance.Close();
             menuTag = MenuTag.Merchant;
-            Pause();
+            GameManager.Instance.Pause();
         }
-        else if (menuTag != MenuTag.Disabled && (pressedButtonMenu || pressedButtonInventory))
+        else if (menuTag != MenuTag.Disabled && PressedAnyButton())
         {
             ClosePauseMenu();
         }
+        else if (pressedButtonMap)
+        {
+            MapManager.Instance.Controller();
+        }
         else if (pressedButtonMenu)
         {
-            Pause();
-            menu.SetActive(isPaused);
+            GameManager.Instance.Pause();
+            menu.SetActive(GameManager.Instance.isPaused);
         }
         else if (pressedButtonInventory)
         {
-            Pause();
-            InventoryController.Instance.ActiveMenu(isPaused);
+            GameManager.Instance.Pause();
+            InventoryController.Instance.ActiveMenu(GameManager.Instance.isPaused);
         }
     }
 
@@ -86,30 +102,15 @@ public class MenuManager : MenuController
 
     private void ClosePauseMenu()
     {
-        Pause();
+        GameManager.Instance.Pause();
         CloseAllMenus();
     }
 
     private void CloseAllMenus()
     {
         menu.SetActive(false);
+        MapManager.Instance.CloseMap();
         InventoryController.Instance.ActiveMenu(false);
-    }
-
-    public void Pause()
-    {
-        isPaused = !isPaused;
-
-        if (isPaused)
-        {
-            Time.timeScale = 0f;
-            AudioListener.pause = true;
-        }
-        else
-        {
-            Time.timeScale = 1;
-            AudioListener.pause = false;
-        }
     }
 
     public void ExitGame()

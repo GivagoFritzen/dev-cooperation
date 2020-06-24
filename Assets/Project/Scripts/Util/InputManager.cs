@@ -32,9 +32,24 @@ public class InputManager : MonoBehaviour
         return Input.GetAxisRaw("Vertical");
     }
 
+    public bool GetSecondUp()
+    {
+        return Input.GetKey(KeyCode.O);
+    }
+
+    public bool GetSecondDown()
+    {
+        return Input.GetKey(KeyCode.L);
+    }
+
     public bool GetDistanceAttack()
     {
         return Input.GetKeyDown(KeyCode.Alpha1);
+    }
+
+    public bool GetMap()
+    {
+        return Input.GetKeyDown(KeyCode.M);
     }
 
     public bool GetAction()
