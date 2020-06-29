@@ -1,5 +1,4 @@
-﻿using UnityEditor;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class MenuManager : MenuController
 {
@@ -79,7 +78,7 @@ public class MenuManager : MenuController
         }
         else if (pressedButtonMap)
         {
-            MapManager.Instance.Controller();
+            MiniMapManager.Instance.Controller();
         }
         else if (pressedButtonMenu)
         {
@@ -109,16 +108,13 @@ public class MenuManager : MenuController
     private void CloseAllMenus()
     {
         menu.SetActive(false);
-        MapManager.Instance.CloseMap();
+        MiniMapManager.Instance.CloseMap();
         InventoryController.Instance.ActiveMenu(false);
     }
 
     public void ExitGame()
     {
-#if UNITY_EDITOR
-        EditorApplication.isPlaying = false;
-#endif
-        Application.Quit();
+        GameManager.Instance.ExitGame();
     }
     #endregion
 }

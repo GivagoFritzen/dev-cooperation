@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using UnityEditor;
+using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
@@ -11,6 +12,11 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
 
         Instance = this;
+    }
+
+    public bool PlayerIsAlive()
+    {
+        return PlayerManager.Instance;
     }
 
     public void Pause()
@@ -27,5 +33,13 @@ public class GameManager : MonoBehaviour
             Time.timeScale = 1;
             AudioListener.pause = false;
         }
+    }
+
+    public void ExitGame()
+    {
+#if UNITY_EDITOR
+        EditorApplication.isPlaying = false;
+#endif
+        Application.Quit();
     }
 }

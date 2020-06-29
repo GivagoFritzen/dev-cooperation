@@ -28,9 +28,14 @@ public class InventorySlot : MonoBehaviour
     {
         item = newItem;
         amount += 1;
-        icon.sprite = newItem.icon;
+        SetIcon();
         ShowIcon(true);
         ShowAmount();
+    }
+
+    public void SetIcon()
+    {
+        icon.sprite = item.icon;
     }
 
     public void ShowIcon(bool enabled)

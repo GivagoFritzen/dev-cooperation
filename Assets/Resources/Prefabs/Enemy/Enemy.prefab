@@ -26,7 +26,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5795981531763446284}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -4.84, y: -0.26, z: 0}
+  m_LocalPosition: {x: 5.14, y: 1.5600457, z: -0.5133329}
   m_LocalScale: {x: 3, y: 3, z: 3}
   m_Children:
   - {fileID: 5795981531936501103}
@@ -67,12 +67,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e063a06709d67d9409f29ec5cd8fcd7e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxLife: 1
+  maxLife: 2
   moveSpeed: 2
-  viewDistance: 4
+  name: Enemy
+  viewDistance: 1
   layerMask:
     serializedVersion: 2
-    m_Bits: 311
+    m_Bits: 1
+  fixedRotation: {x: -90, y: 90, z: 90}
+  distanceToAttack: 1
+  damage: 1
+  delayToAttack: 1
+  timerAttackController: 0
 --- !u!1 &5795981531936501102
 GameObject:
   m_ObjectHideFlags: 0

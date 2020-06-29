@@ -71,8 +71,6 @@ public class DayNightManager : MonoBehaviour
 
     private void GlobalLightController()
     {
-        Color tempColor = globalLight.color;
-
         if (IsNight())
             currentAlpha += Time.deltaTime / GetNightfall() * daySpeed;
         else
@@ -83,6 +81,7 @@ public class DayNightManager : MonoBehaviour
         else if (currentAlpha < 0)
             currentAlpha = 0;
 
+        Color tempColor = globalLight.color;
         tempColor.a = currentAlpha;
         globalLight.color = tempColor;
     }

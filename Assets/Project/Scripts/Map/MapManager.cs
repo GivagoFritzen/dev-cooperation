@@ -1,32 +1,14 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class MapManager : MonoBehaviour
 {
     public static MapManager Instance;
 
-    [SerializeField]
-    private Vector2 limitMap = Vector2.zero;
-
-    [SerializeField]
-    private Camera mapCamera = null;
-    [SerializeField]
-    private float zDistance = 10;
-    [SerializeField]
-    private float speed = 1;
-    private float horizontal = 0;
-    private float vertical = 0;
-    private Vector3 target = Vector3.zero;
-    [SerializeField]
-    private GameObject cameraRepresentation = null;
-    [SerializeField]
-    private float interactionRadius = 1;
-
-    [SerializeField]
-    private float maxZoom = 0;
-    [SerializeField]
-    private float minZoom = 0;
-    private float up = 0;
-    private float down = 0;
+    public List<PickupItem> items = new List<PickupItem>();
+    public List<Merchant> merchants = new List<Merchant>();
+    public List<SimpleEnemy> enemies = new List<SimpleEnemy>();
 
     private void Awake()
     {
@@ -36,113 +18,162 @@ public class MapManager : MonoBehaviour
         Instance = this;
     }
 
-    private void Update()
+    #region Get Map Info
+    public void GetMapInfo()
     {
-        if (!mapCamera.gameObject.activeSelf)
-            return;
+        items.Clear();
+        foreach (PickupItem item in FindObjectsOfType(typeof(PickupItem)))
+            items.Add(item);
 
-        Movement();
-        Zoom();
+        merchants.Clear();
+        foreach (Merchant merchant in FindObjectsOfType(typeof(Merchant)))
+            merchants.Add(merchant);
 
-        if (InputManager.Instance.GetAction())
-            Travel();
+        enemies.Clear();
+        foreach (SimpleEnemy enemy in FindObjectsOfType(typeof(SimpleEnemy)))
+            enemies.Add(enemy);
     }
 
-    private void Movement()
+    public MapData GetMapData()
     {
-        horizontal = InputManager.Instance.GetHorizontal();
-        vertical = InputManager.Instance.GetVertical();
+        return new MapData(SceneManager.GetActiveScene().name, GetItems(), GetMerchants(), GetEnemies());
+    }
 
-        if (horizontal != 0 || vertical != 0)
+    private ItemData[] GetItems()
+    {
+        ItemData[] itemsData = new ItemData[items.Count];
+
+        for (int index = 0; index < items.Count; index++)
         {
-            target = mapCamera.transform.localPosition + new Vector3(horizontal, vertical, 0) * speed * Time.unscaledDeltaTime;
-
-            target.x = GetLimitX();
-            target.y = GetLimitY();
-            target.z = -zDistance;
-
-            mapCamera.transform.localPosition = target;
-        }
-    }
-
-    private float GetLimitX()
-    {
-        if (target.x > limitMap.x)
-            return limitMap.x;
-        else if (target.x < -limitMap.x)
-            return -limitMap.x;
-        else
-            return target.x;
-    }
-
-    private float GetLimitY()
-    {
-        if (target.y > limitMap.y)
-            return limitMap.y;
-        else if (target.y < -limitMap.y)
-            return -limitMap.y;
-        else
-            return target.y;
-    }
-
-    private void Zoom()
-    {
-        if (InputManager.Instance.GetSecondUp())
-            up = speed;
-        else
-            up = 0;
-
-        if (InputManager.Instance.GetSecondDown())
-            down = speed;
-        else
-            down = 0;
-
-        if (up != 0)
-        {
-            mapCamera.orthographicSize += up * Time.unscaledDeltaTime;
-            if (mapCamera.orthographicSize > maxZoom)
-                mapCamera.orthographicSize = maxZoom;
-        }
-        else if (down != 0)
-        {
-            mapCamera.orthographicSize -= down * Time.unscaledDeltaTime;
-            if (mapCamera.orthographicSize < minZoom)
-                mapCamera.orthographicSize = minZoom;
-        }
-    }
-
-    private void Travel()
-    {
-        Collider2D[] objectsAroundMe = Physics2D.OverlapCircleAll(cameraRepresentation.transform.position, interactionRadius);
-
-        foreach (var obj in objectsAroundMe)
-        {
-            if (obj.CompareTag("Map-FastTravel"))
+            if (items[index] != null)
             {
-                PlayerManager.Instance.transform.position = obj.transform.position;
-                MenuManager.Instance.ClosePauseMenuButton();
+                Vector3 position = items[index].transform.position;
+                float[] transform = new float[3] { position.x, position.y, position.z };
+                itemsData[index] = new ItemData(items[index].GetItem(), transform);
+            }
+        }
+
+        return itemsData;
+    }
+
+    private MerchantData[] GetMerchants()
+    {
+        MerchantData[] merchantsData = new MerchantData[merchants.Count];
+
+        for (int index = 0; index < merchants.Count; index++)
+        {
+            if (merchants[index] != null)
+            {
+                Vector3 position = merchants[index].transform.position;
+                float[] transform = new float[3] { position.x, position.y, position.z };
+                merchantsData[index] = new MerchantData(merchants[index].GetName(), merchants[index].GetItemsData(), transform);
+            }
+        }
+
+        return merchantsData;
+    }
+
+    private EnemyData[] GetEnemies()
+    {
+        EnemyData[] enemiesData = new EnemyData[enemies.Count];
+
+        for (int index = 0; index < enemies.Count; index++)
+        {
+            if (enemies[index] != null)
+            {
+                Vector3 position = enemies[index].transform.position;
+                float[] transform = new float[3] { position.x, position.y, position.z };
+                enemiesData[index] = new EnemyData(enemies[index].name, enemies[index].life, transform);
+            }
+        }
+
+        return enemiesData;
+    }
+    #endregion
+
+    #region Load
+    public void Load(MapData data)
+    {
+        if (SceneManager.GetActiveScene().name != data.sceneName)
+            SceneManager.LoadScene(data.sceneName);
+
+        ResetScene();
+        CreateItems(data.items);
+        CreateMerchant(data.merchants);
+        CreateEnemies(data.enemies);
+
+        GetMapInfo();
+    }
+
+    private void CreateItems(ItemData[] items)
+    {
+        foreach (var item in items)
+        {
+            if (item != null)
+            {
+                GameObject itemObject = (GameObject)Resources.Load("Prefabs/Items/ItemPrefab", typeof(GameObject));
+                itemObject.transform.position = new Vector3(item.position[0], item.position[1], item.position[2]);
+
+                Item newItem = (Item)Resources.Load("Prefabs/Items/" + StringUtil.RemoveWhitespace(item.name), typeof(Item));
+                itemObject.GetComponent<PickupItem>().SetItem(newItem);
+                itemObject.GetComponent<SpriteRenderer>().sprite = newItem.icon;
+
+                Instantiate(itemObject);
             }
         }
     }
 
-    public void Controller()
+    private void CreateMerchant(MerchantData[] merchants)
     {
-        if (GameManager.Instance.isPaused)
-            CloseMap();
-        else
-            OpenMap();
+        foreach (var merchant in merchants)
+        {
+            if (merchant != null)
+            {
+                GameObject merchantObject = (GameObject)Resources.Load("Prefabs/NPC/Merchant", typeof(GameObject));
+                merchantObject.transform.position = new Vector3(merchant.position[0], merchant.position[1], merchant.position[2]);
 
-        GameManager.Instance.Pause();
+                merchantObject.GetComponent<Merchant>().SetName(merchant.name);
+                merchantObject.GetComponent<Merchant>().SetItemsDataToListItems(merchant.items);
+                merchantObject.GetComponent<Animator>().runtimeAnimatorController = (RuntimeAnimatorController)Resources.Load($"Animators/NPC/Animator-{merchant.name}", typeof(RuntimeAnimatorController));
+                merchantObject.GetComponent<SpriteRenderer>().sprite = (Sprite)Resources.Load($"Prefabs/NPC/Merchant/{merchant.name}", typeof(Sprite));
+
+                Instantiate(merchantObject);
+            }
+        }
     }
 
-    private void OpenMap()
+    private void CreateEnemies(EnemyData[] enemies)
     {
-        mapCamera.gameObject.SetActive(true);
+        foreach (var enemy in enemies)
+        {
+            if (enemy != null)
+            {
+                GameObject enemyObject = (GameObject)Resources.Load($"Prefabs/Enemy/{enemy.name}", typeof(GameObject));
+                enemyObject.transform.position = new Vector3(enemy.position[0], enemy.position[1], enemy.position[2]);
+
+                enemyObject.GetComponent<SimpleEnemy>().life = enemy.life;
+
+                Instantiate(enemyObject);
+            }
+        }
     }
 
-    public void CloseMap()
+    private void ResetScene()
     {
-        mapCamera.gameObject.SetActive(false);
-        mapCamera.transform.position = new Vector3(PlayerManager.Instance.transform.position.x, PlayerManager.Instance.transform.position.y, -zDistance);
+        foreach (PickupItem item in items)
+            if (item != null)
+                DestroyImmediate(item.gameObject);
+        items.Clear();
+
+        foreach (Merchant merchant in merchants)
+            if (merchant != null)
+                DestroyImmediate(merchant.gameObject);
+        merchants.Clear();
+
+        foreach (SimpleEnemy enemy in enemies)
+            if (enemy != null)
+                DestroyImmediate(enemy.gameObject);
+        enemies.Clear();
     }
+    #endregion
 }

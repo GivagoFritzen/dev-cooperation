@@ -9,6 +9,8 @@ public class SimpleEnemy : CreatureManager
 
     [Header("Parameters")]
     [SerializeField]
+    public new string name = "";
+    [SerializeField]
     private float viewDistance = 1;
     [SerializeField]
     private LayerMask layerMask = 0;
@@ -37,8 +39,21 @@ public class SimpleEnemy : CreatureManager
 
     private void Update()
     {
-        FollowPlayer();
-        Attack();
+        if (!GameManager.Instance.PlayerIsAlive())
+        {
+            FixedRotation();
+            Destroy(this);
+        }
+        else
+        {
+            FollowPlayer();
+            Attack();
+            FixedRotation();
+        }
+    }
+
+    private void FixedRotation()
+    {
         transform.eulerAngles = fixedRotation;
     }
 
@@ -60,6 +75,7 @@ public class SimpleEnemy : CreatureManager
     {
         Vector3 dirToPlayer = (PlayerManager.Instance.transform.position - transform.position).normalized;
         RaycastHit2D raycastHit2D = Physics2D.Raycast(transform.position, dirToPlayer, viewDistance, layerMask);
+
         if (raycastHit2D.collider != null && raycastHit2D.collider.tag == "Player")
             return true;
 

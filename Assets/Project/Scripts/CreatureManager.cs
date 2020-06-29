@@ -5,8 +5,7 @@ public class CreatureManager : MonoBehaviour
     [Header("Parameters")]
     [SerializeField]
     protected int maxLife = 1;
-    [SerializeField]
-    protected int life = 1;
+    public int life { get; set; } = 1;
     [SerializeField]
     protected float moveSpeed = 5f;
 

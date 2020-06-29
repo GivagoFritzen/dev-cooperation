@@ -45,4 +45,25 @@ public class InventoryObject : ScriptableObject
 
         return false;
     }
+
+    public void Load(InventoryData data)
+    {
+        for (int index = 0; index < data.items.Length; index++)
+        {
+            slots[index].amount = data.amounts[index];
+
+            if (slots[index].amount <= 0)
+            {
+                slots[index].item = null;
+            }
+            else
+            {
+                string itemName = StringUtil.RemoveWhitespace(data.items[index]);
+                slots[index].item = (Item)Resources.Load("Prefabs/Items/" + itemName, typeof(Item));
+                slots[index].SetIcon();
+                slots[index].ShowAmount();
+                slots[index].ShowIcon(true);
+            }
+        }
+    }
 }

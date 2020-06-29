@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f484a46b6424fd41baf489bb2261201, type: 3}
   m_Name: ItemTest
   m_EditorClassIdentifier: 
-  name: Teste
-  icon: {fileID: 21300000, guid: 37eaf6e537ca749adaaea0a3e900d411, type: 3}
+  name: ItemTest
+  icon: {fileID: 21300000, guid: d1c1523651c71449cb32c2c7933acf8c, type: 3}
   slotLimit: 2
   salePrice: 1
   purchasePrice: 2

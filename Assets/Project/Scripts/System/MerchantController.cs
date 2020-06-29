@@ -7,7 +7,7 @@ public class MerchantController : MenuController
     public static MerchantController Instance;
     public bool isOpened { get; private set; } = false;
 
-    private Item[] listItems = null;
+    public Merchant merchant { private get; set; } = null;
     [SerializeField]
     private GameObject playerUI = null;
     [SerializeField]
@@ -44,42 +44,69 @@ public class MerchantController : MenuController
         return merchantUI.activeSelf;
     }
 
-    public void Open(Item[] listItems)
+    public void Open(Merchant merchant)
     {
-        if (listItems == null || listItems.Length == 0)
+        if (merchant == null || merchant.listItems == null || merchant.listItems.Length == 0)
             return;
 
         isActived = true;
-        this.listItems = listItems;
+        this.merchant = merchant;
         PopulateStoreList();
+
         InventoryController.Instance.OpenMerchant(multiplesMenus);
         ActivateVisual(true);
+
         GetColumnAndRowInTheEndOfFrame(merchantUI.GetComponent<GridLayoutGroup>());
         GameManager.Instance.Pause();
     }
 
-    public Item[] Close()
+    public void Close()
     {
-        if (!merchantUI.gameObject.activeSelf)
-            return null;
+        if (merchantUI.gameObject.activeSelf)
+        {
+            UpdateMerchantList();
+            RemoveStoreList();
+            ActivateVisual(false);
 
-        RemoveStoreList();
-        ActivateVisual(false);
-        DisableAllMultiplesMenus();
-        InventoryController.Instance.CloseMerchant();
-        ResetInputController();
-        return listItems;
+            DisableAllMultiplesMenus();
+            ResetInputController();
+
+            InventoryController.Instance.CloseMerchant();
+        }
     }
 
+    private void ActivateVisual(bool enabled)
+    {
+        isOpened = enabled;
+        merchantUI.SetActive(enabled);
+        playerUI.SetActive(enabled);
+    }
+
+    #region List Controller
     private void PopulateStoreList()
     {
-        for (int i = 0; i < listItems.Length; i++)
+        for (int i = 0; i < merchant.listItems.Length; i++)
         {
             InventorySlot inventorySlot = Instantiate(inventorySlotPrefab, merchantUI.transform).GetComponent<InventorySlot>();
-            inventorySlot.AddItem(listItems[i]);
+            inventorySlot.AddItem(merchant.listItems[i]);
             inventorySlot.ShowIcon(true);
             menuInGame.Add(inventorySlot.GetComponentInChildren<Button>());
             slots.Add(inventorySlot);
+        }
+    }
+
+    private void UpdateMerchantList()
+    {
+        if (merchant != null)
+        {
+            List<Item> newList = new List<Item>();
+
+            foreach (InventorySlot inventorySlot in merchantUI.GetComponentsInChildren<InventorySlot>())
+                if (inventorySlot.item != null)
+                    newList.Add(inventorySlot.item);
+
+            merchant.listItems = newList.ToArray();
+            merchant = null;
         }
     }
 
@@ -91,11 +118,5 @@ public class MerchantController : MenuController
         slots.Clear();
         menuInGame.Clear();
     }
-
-    private void ActivateVisual(bool enabled)
-    {
-        isOpened = enabled;
-        merchantUI.SetActive(enabled);
-        playerUI.SetActive(enabled);
-    }
+    #endregion
 }

@@ -54,6 +54,13 @@ public class PlayerManager : CreatureManager
         playerAnimator.Init(animator);
     }
 
+    public void Load(PlayerData data)
+    {
+        gold = data.gold;
+        transform.position = new Vector3(data.position[0], data.position[1], data.position[2]);
+        inventory.Load(data.inventory);
+    }
+
     private void Update()
     {
         Actions();

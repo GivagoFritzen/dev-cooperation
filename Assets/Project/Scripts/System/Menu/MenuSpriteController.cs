@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-public class MenuSpriteController : MonoBehaviour
+public class MenuSpriteController : MonoBehaviour, IMenuSelectController
 {
     private Image image = null;
     [SerializeField]

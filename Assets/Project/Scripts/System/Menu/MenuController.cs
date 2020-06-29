@@ -37,7 +37,7 @@ public class MenuController : MonoBehaviour
     protected void Init()
     {
         ResetInputController();
-        menuInGame[GetPositionMatrixWithVerticalAndHorizontal()].GetComponent<MenuSpriteController>().SelectFirstOption();
+        menuInGame[GetPositionMatrixWithVerticalAndHorizontal()].GetComponent<IMenuSelectController>().SelectFirstOption();
     }
 
     private void InputControllerVertical()
@@ -47,7 +47,7 @@ public class MenuController : MonoBehaviour
         if (vertical == 0)
             return;
 
-        menuInGame[currentMenuVertical - 1].GetComponent<MenuSpriteController>().Disable();
+        menuInGame[currentMenuVertical - 1].GetComponent<IMenuSelectController>().Disable();
 
         ResetInputController();
         if (vertical > 0)
@@ -63,7 +63,7 @@ public class MenuController : MonoBehaviour
                 currentMenuVertical = 1;
         }
 
-        menuInGame[currentMenuVertical - 1].GetComponent<MenuSpriteController>().Enable();
+        menuInGame[currentMenuVertical - 1].GetComponent<IMenuSelectController>().Enable();
     }
 
     protected void ResetInputController()
@@ -89,7 +89,7 @@ public class MenuController : MonoBehaviour
             InputControllerVerticalRow();
             InputControllerHorizontal();
             ControllerLimitHorizontal();
-            menuInGame[GetPositionMatrixWithVerticalAndHorizontal()].GetComponent<MenuSpriteController>().Enable();
+            menuInGame[GetPositionMatrixWithVerticalAndHorizontal()].GetComponent<IMenuSelectController>().Enable();
 
             if (vertical != 0 || horizontal != 0)
                 ResetInputController();
@@ -205,7 +205,7 @@ public class MenuController : MonoBehaviour
 
     protected void DisableSpriteController()
     {
-        menuInGame[GetPositionMatrixWithVerticalAndHorizontal()].GetComponent<MenuSpriteController>().Disable();
+        menuInGame[GetPositionMatrixWithVerticalAndHorizontal()].GetComponent<IMenuSelectController>().Disable();
     }
 
     protected void GetColumnAndRowInTheEndOfFrame(GridLayoutGroup gridLayoutGroup)

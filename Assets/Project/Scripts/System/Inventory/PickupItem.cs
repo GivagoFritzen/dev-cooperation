@@ -12,6 +12,16 @@ public class PickupItem : MonoBehaviour
             Destroy(gameObject);
     }
 
+    public Item GetItem()
+    {
+        return item;
+    }
+
+    public void SetItem(Item newItem)
+    {
+        item = newItem;
+    }
+
     private void OnTriggerStay2D(Collider2D collision)
     {
         if (InputManager.Instance.GetAction() && collision.CompareTag("Player"))
