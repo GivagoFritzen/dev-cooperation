@@ -1,58 +1,48 @@
 ﻿using UnityEngine;
 
-public class InputManager : MonoBehaviour
+public static class InputUtil
 {
-    public static InputManager Instance;
-
-    private void Awake()
-    {
-        if (Instance != null)
-            Destroy(gameObject);
-
-        Instance = this;
-    }
-
-    public bool GetMenu()
+    public static bool GetMenu()
     {
         return Input.GetKeyDown(KeyCode.Escape);
     }
 
-    public bool GetInventory()
+    public static bool GetInventory()
     {
         return Input.GetKeyDown(KeyCode.I);
     }
 
-    public float GetHorizontal()
+    public static float GetHorizontal()
     {
         return Input.GetAxisRaw("Horizontal");
     }
 
-    public float GetVertical()
+    public static float GetVertical()
     {
         return Input.GetAxisRaw("Vertical");
     }
 
-    public bool GetSecondUp()
+    public static bool GetSecondUp()
     {
         return Input.GetKey(KeyCode.O);
     }
 
-    public bool GetSecondDown()
+    public static bool GetSecondDown()
     {
         return Input.GetKey(KeyCode.L);
     }
 
-    public bool GetDistanceAttack()
+    public static bool GetDistanceAttack()
     {
         return Input.GetKeyDown(KeyCode.Alpha1);
     }
 
-    public bool GetMap()
+    public static bool GetMap()
     {
         return Input.GetKeyDown(KeyCode.M);
     }
 
-    public bool GetAction()
+    public static bool GetAction()
     {
         return Input.GetKeyDown(KeyCode.F);
     }

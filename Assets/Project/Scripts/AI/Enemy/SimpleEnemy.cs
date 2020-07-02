@@ -39,17 +39,13 @@ public class SimpleEnemy : CreatureManager
 
     private void Update()
     {
-        if (!GameManager.Instance.PlayerIsAlive())
-        {
-            FixedRotation();
-            Destroy(this);
-        }
-        else
+        if (GameManager.Instance.PlayerIsAlive())
         {
             FollowPlayer();
             Attack();
-            FixedRotation();
         }
+
+        FixedRotation();
     }
 
     private void FixedRotation()

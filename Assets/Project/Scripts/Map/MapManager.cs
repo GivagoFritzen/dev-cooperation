@@ -1,10 +1,13 @@
 ﻿using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class MapManager : MonoBehaviour
 {
     public static MapManager Instance;
+
+    private CancellationTokenSource cts;
 
     public List<PickupItem> items = new List<PickupItem>();
     public List<Merchant> merchants = new List<Merchant>();
@@ -94,9 +97,6 @@ public class MapManager : MonoBehaviour
     #region Load
     public void Load(MapData data)
     {
-        if (SceneManager.GetActiveScene().name != data.sceneName)
-            SceneManager.LoadScene(data.sceneName);
-
         ResetScene();
         CreateItems(data.items);
         CreateMerchant(data.merchants);

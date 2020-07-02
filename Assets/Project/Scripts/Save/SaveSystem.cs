@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
+using UnityEngine.SceneManagement;
 
 public static class SaveSystem
 {
@@ -37,10 +38,14 @@ public static class SaveSystem
     #endregion
 
     #region Load
-    public static void Load()
+    public static async void Load()
     {
+        MapData mapData = LoadMap();
+        if (SceneManager.GetActiveScene().name != mapData.sceneName)
+            await SceneManager.LoadSceneAsync(mapData.sceneName);
+
+        MapManager.Instance.Load(mapData);
         PlayerManager.Instance.Load(LoadPlayer());
-        MapManager.Instance.Load(LoadMap());
     }
 
     private static PlayerData LoadPlayer()

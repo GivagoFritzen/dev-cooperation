@@ -15,6 +15,7 @@ public class GameOverManager : MenuController
     private GameObject gameOverMenu = null;
     [SerializeField]
     private GameObject[] canvasToDisable = null;
+    private Camera camera = null;
 
     private void Awake()
     {
@@ -41,7 +42,8 @@ public class GameOverManager : MenuController
     public void Actived()
     {
         enabled = true;
-        Camera.main.gameObject.transform.SetParent(this.gameObject.transform);
+        camera = Camera.main;
+        camera.gameObject.transform.SetParent(this.gameObject.transform);
         CloseAllCanvas();
         background.SetActive(true);
     }
@@ -55,12 +57,6 @@ public class GameOverManager : MenuController
 
         gameOverMenu.SetActive(false);
         enabled = false;
-    }
-
-    private void CloseAllCanvas()
-    {
-        foreach (var currentCanvas in canvasToDisable)
-            currentCanvas.SetActive(false);
     }
 
     private void FadeOut()
@@ -79,11 +75,28 @@ public class GameOverManager : MenuController
         }
     }
 
+    #region Canvas Controller
+    private void OpenAllCanvas()
+    {
+        foreach (var currentCanvas in canvasToDisable)
+            currentCanvas.SetActive(true);
+    }
+
+    private void CloseAllCanvas()
+    {
+        foreach (var currentCanvas in canvasToDisable)
+            currentCanvas.SetActive(false);
+    }
+    #endregion
+
     #region Buttons
     public void Load()
     {
         Disabled();
+        Destroy(camera.gameObject);
+        OpenAllCanvas();
         SaveManager.Instance.LoadGame();
+        MiniMapManager.Instance.Init();
     }
 
     public void ExitGame()

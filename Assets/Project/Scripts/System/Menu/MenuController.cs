@@ -26,7 +26,7 @@ public class MenuController : MonoBehaviour
 
     protected void SelectControllerVertical()
     {
-        if (InputManager.Instance.GetAction())
+        if (InputUtil.GetAction())
             menuInGame[currentMenuVertical - 1].onClick.Invoke();
         else if (inputController < delay)
             inputController += Time.unscaledDeltaTime;
@@ -42,7 +42,7 @@ public class MenuController : MonoBehaviour
 
     private void InputControllerVertical()
     {
-        vertical = InputManager.Instance.GetVertical();
+        vertical = InputUtil.GetVertical();
 
         if (vertical == 0)
             return;
@@ -75,7 +75,7 @@ public class MenuController : MonoBehaviour
     {
         if (inputController < delay)
             inputController += Time.unscaledDeltaTime;
-        else if (InputManager.Instance.GetAction())
+        else if (InputUtil.GetAction())
             menuInGame[(currentMenuHorizontal * currentMenuVertical) - 1].onClick.Invoke();
         else
             InputControllerVerticalAndHorizontal();
@@ -110,7 +110,7 @@ public class MenuController : MonoBehaviour
 
     private void InputControllerVerticalRow()
     {
-        vertical = InputManager.Instance.GetVertical();
+        vertical = InputUtil.GetVertical();
 
         if (vertical == 0)
             return;
@@ -131,7 +131,7 @@ public class MenuController : MonoBehaviour
 
     private void InputControllerHorizontal()
     {
-        horizontal = InputManager.Instance.GetHorizontal();
+        horizontal = InputUtil.GetHorizontal();
 
         if (horizontal == 0)
             return;

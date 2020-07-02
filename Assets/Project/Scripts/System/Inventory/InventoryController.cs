@@ -26,16 +26,23 @@ public class InventoryController : MenuController
 
     private void Start()
     {
-        rectTransform = visual.GetComponent<RectTransform>();
-
-        for (int i = 0; i < inventoryObject.slots.Length; i++)
-        {
-            inventoryObject.slots[i] = Instantiate(inventorySlotPrefab, visual.transform).GetComponent<InventorySlot>();
-            inventoryObject.slots[i].ShowIcon(false);
-            menuInGame.Add(inventoryObject.slots[i].GetComponentInChildren<Button>());
-        }
-
+        PopulateInventorySlots();
         Init();
+    }
+
+    public void PopulateInventorySlots()
+    {
+        if (rectTransform == null)
+        {
+            rectTransform = visual.GetComponent<RectTransform>();
+
+            for (int i = 0; i < inventoryObject.slots.Length; i++)
+            {
+                inventoryObject.slots[i] = Instantiate(inventorySlotPrefab, visual.transform).GetComponent<InventorySlot>();
+                inventoryObject.slots[i].ShowIcon(false);
+                menuInGame.Add(inventoryObject.slots[i].GetComponentInChildren<Button>());
+            }
+        }
     }
 
     private void Update()

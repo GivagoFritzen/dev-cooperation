@@ -74,8 +74,8 @@ public class WalkerManager : CreatureManager
         if (!playerAnimator.CantAction())
             return;
 
-        movement.x = InputManager.Instance.GetHorizontal();
-        movement.y = InputManager.Instance.GetVertical();
+        movement.x = InputUtil.GetHorizontal();
+        movement.y = InputUtil.GetVertical();
         playerAnimator.Movement(movement);
 
         DistanceAttack();
@@ -83,10 +83,10 @@ public class WalkerManager : CreatureManager
 
     private void DistanceAttack()
     {
-        Vector3 aim = new Vector3(InputManager.Instance.GetHorizontal(), InputManager.Instance.GetVertical(), 0f);
+        Vector3 aim = new Vector3(InputUtil.GetHorizontal(), InputUtil.GetVertical(), 0f);
 
-        if (aim.magnitude > 0f && InputManager.Instance.GetDistanceAttack() ||
-            aim.magnitude == 0 && InputManager.Instance.GetDistanceAttack())
+        if (aim.magnitude > 0f && InputUtil.GetDistanceAttack() ||
+            aim.magnitude == 0 && InputUtil.GetDistanceAttack())
         {
             Stop();
             playerAnimator.DistanceAttack();
@@ -97,7 +97,7 @@ public class WalkerManager : CreatureManager
             if (aim == Vector3.zero)
                 shootingDirection = new Vector2(0, -1);
             else
-                shootingDirection = new Vector2(InputManager.Instance.GetHorizontal(), InputManager.Instance.GetVertical());
+                shootingDirection = new Vector2(InputUtil.GetHorizontal(), InputUtil.GetVertical());
 
             shootingDirection.Normalize();
             arrow.GetComponent<Projectile>().Init(shootingDirection, gameObject);

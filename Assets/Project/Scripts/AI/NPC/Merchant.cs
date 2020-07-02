@@ -48,7 +48,7 @@ public class Merchant : MonoBehaviour
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if (collision.tag == "Player" && InputManager.Instance.GetAction())
+        if (collision.tag == "Player" && InputUtil.GetAction())
             MerchantController.Instance.Open(this);
     }
 }

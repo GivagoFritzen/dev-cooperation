@@ -37,12 +37,14 @@ public class PlayerManager : CreatureManager
     public override void Start()
     {
         base.Start();
-        UpdateUI();
         SetComponents();
+        UpdateUI();
     }
 
     private void SetComponents()
     {
+        FindComponents();
+
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
 
@@ -54,10 +56,17 @@ public class PlayerManager : CreatureManager
         playerAnimator.Init(animator);
     }
 
+    private void FindComponents()
+    {
+        lifeText = GameObject.Find("Life_Text").GetComponent<TextMeshProUGUI>();
+    }
+
     public void Load(PlayerData data)
     {
         gold = data.gold;
         transform.position = new Vector3(data.position[0], data.position[1], data.position[2]);
+
+        InventoryController.Instance.PopulateInventorySlots();
         inventory.Load(data.inventory);
     }
 
@@ -94,8 +103,8 @@ public class PlayerManager : CreatureManager
         if (!playerAnimator.CantAction())
             return;
 
-        movement.x = InputManager.Instance.GetHorizontal();
-        movement.y = InputManager.Instance.GetVertical();
+        movement.x = InputUtil.GetHorizontal();
+        movement.y = InputUtil.GetVertical();
         playerAnimator.Movement(movement);
 
         DistanceAttack();
@@ -103,10 +112,10 @@ public class PlayerManager : CreatureManager
 
     private void DistanceAttack()
     {
-        Vector3 aim = new Vector3(InputManager.Instance.GetHorizontal(), InputManager.Instance.GetVertical(), 0f);
+        Vector3 aim = new Vector3(InputUtil.GetHorizontal(), InputUtil.GetVertical(), 0f);
 
-        if (aim.magnitude > 0f && InputManager.Instance.GetDistanceAttack() ||
-            aim.magnitude == 0 && InputManager.Instance.GetDistanceAttack())
+        if (aim.magnitude > 0f && InputUtil.GetDistanceAttack() ||
+            aim.magnitude == 0 && InputUtil.GetDistanceAttack())
         {
             Stop();
             playerAnimator.DistanceAttack();
@@ -117,7 +126,7 @@ public class PlayerManager : CreatureManager
             if (aim == Vector3.zero)
                 shootingDirection = new Vector2(0, -1);
             else
-                shootingDirection = new Vector2(InputManager.Instance.GetHorizontal(), InputManager.Instance.GetVertical());
+                shootingDirection = new Vector2(InputUtil.GetHorizontal(), InputUtil.GetVertical());
 
             shootingDirection.Normalize();
             arrow.GetComponent<Projectile>().Init(shootingDirection, gameObject);
@@ -133,7 +142,16 @@ public class PlayerManager : CreatureManager
 
     public override void TakeDamage(int damage)
     {
-        base.TakeDamage(damage);
-        UpdateUI();
+        life -= damage;
+
+        if (life <= 0)
+        {
+            GameOverManager.Instance.Actived();
+            Destroy(gameObject);
+        }
+        else
+        {
+            UpdateUI();
+        }
     }
 }

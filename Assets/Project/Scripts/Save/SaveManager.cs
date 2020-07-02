@@ -4,6 +4,9 @@ public class SaveManager : MonoBehaviour
 {
     public static SaveManager Instance;
 
+    [SerializeField]
+    private GameObject playerPrefab = null;
+
     private void Awake()
     {
         if (Instance != null)
@@ -19,6 +22,9 @@ public class SaveManager : MonoBehaviour
 
     public void LoadGame()
     {
+        if (PlayerManager.Instance == null)
+            Instantiate(playerPrefab);
+
         SaveSystem.Load();
     }
 }

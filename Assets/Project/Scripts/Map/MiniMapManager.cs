@@ -6,8 +6,6 @@ public class MiniMapManager : MonoBehaviour
 
     [SerializeField]
     private Vector2 limitMap = Vector2.zero;
-
-    [SerializeField]
     private Camera mapCamera = null;
     [SerializeField]
     private float zDistance = 10;
@@ -16,7 +14,6 @@ public class MiniMapManager : MonoBehaviour
     private float horizontal = 0;
     private float vertical = 0;
     private Vector3 target = Vector3.zero;
-    [SerializeField]
     private GameObject cameraRepresentation = null;
     [SerializeField]
     private float interactionRadius = 1;
@@ -36,6 +33,17 @@ public class MiniMapManager : MonoBehaviour
         Instance = this;
     }
 
+    private void Start()
+    {
+        Init();
+    }
+
+    public void Init()
+    {
+        mapCamera = GameObject.Find("Map Camera").GetComponent<Camera>();
+        cameraRepresentation = mapCamera.transform.GetChild(0).gameObject;
+    }
+
     private void Update()
     {
         if (!GameManager.Instance.PlayerIsAlive() || !mapCamera.gameObject.activeSelf)
@@ -44,14 +52,14 @@ public class MiniMapManager : MonoBehaviour
         Movement();
         Zoom();
 
-        if (InputManager.Instance.GetAction())
+        if (InputUtil.GetAction())
             Travel();
     }
 
     private void Movement()
     {
-        horizontal = InputManager.Instance.GetHorizontal();
-        vertical = InputManager.Instance.GetVertical();
+        horizontal = InputUtil.GetHorizontal();
+        vertical = InputUtil.GetVertical();
 
         if (horizontal != 0 || vertical != 0)
         {
@@ -87,12 +95,12 @@ public class MiniMapManager : MonoBehaviour
 
     private void Zoom()
     {
-        if (InputManager.Instance.GetSecondUp())
+        if (InputUtil.GetSecondUp())
             up = speed;
         else
             up = 0;
 
-        if (InputManager.Instance.GetSecondDown())
+        if (InputUtil.GetSecondDown())
             down = speed;
         else
             down = 0;
@@ -120,7 +128,7 @@ public class MiniMapManager : MonoBehaviour
             if (obj.CompareTag("Map-FastTravel"))
             {
                 PlayerManager.Instance.transform.position = obj.transform.position;
-                MenuManager.Instance.ClosePauseMenuButton();
+                MenuManagerInGame.Instance.ClosePauseMenuButton();
             }
         }
     }
