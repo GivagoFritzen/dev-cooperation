@@ -15,7 +15,7 @@ public class GameOverManager : MenuController
     private GameObject gameOverMenu = null;
     [SerializeField]
     private GameObject[] canvasToDisable = null;
-    private Camera camera = null;
+    private new Camera camera = null;
 
     private void Awake()
     {
