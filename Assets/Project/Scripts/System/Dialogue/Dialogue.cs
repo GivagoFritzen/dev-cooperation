@@ -1,18 +1,18 @@
 ﻿using UnityEngine;
 
-[CreateAssetMenu(fileName = "Dialogue", menuName = "Dialogue")]
+[CreateAssetMenu(fileName = "Dialogue", menuName = "Text/Dialogue")]
 public class Dialogue : ScriptableObject
 {
     new public string name = "";
 
-    public DialogueText[] dialogueTexts = null;
-    private DialogueText currentDialogueText;
+    public TextLanguage[] dialogueTexts = null;
+    private TextLanguage currentDialogueText;
 
-    public DialogueText GetCurrentDialogueText()
+    public TextLanguage GetCurrentDialogueText()
     {
         LanguageTag currentLanguage = LanguageManager.Instance.currentLanguage;
 
-        foreach (DialogueText dialogueText in dialogueTexts)
+        foreach (TextLanguage dialogueText in dialogueTexts)
         {
             if (dialogueText.language == currentLanguage)
             {

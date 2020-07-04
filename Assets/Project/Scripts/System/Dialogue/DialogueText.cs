@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 [System.Serializable]
-public class DialogueText
+public class TextLanguage
 {
     public LanguageTag language = LanguageTag.English;
     [TextArea(3, 10)]

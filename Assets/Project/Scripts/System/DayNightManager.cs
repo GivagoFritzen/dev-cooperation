@@ -1,7 +1,7 @@
 ﻿using System.Text;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
+using UnityEngine.Experimental.Rendering.Universal;
 
 public class DayNightManager : MonoBehaviour
 {
@@ -9,21 +9,25 @@ public class DayNightManager : MonoBehaviour
     [SerializeField]
     private TextMeshProUGUI dayNightText = null;
     [SerializeField]
-    private Image globalLight = null;
+    private Light2D globalLight2D = null;
 
     [Header("Light")]
     [SerializeField]
     private float daySpeed = 1;
-    [SerializeField]
-    [Range(0, 1)]
-    private float maxDarkness = 1;
     [SerializeField]
     [Range(0, 6)]
     private int dawnTime = 6;
     [SerializeField]
     [Range(18, 24)]
     private int nightfallTime = 18;
-    private float currentAlpha = 0;
+
+    [SerializeField]
+    [Range(0, 1)]
+    private float maxIntensity = 1;
+    [SerializeField]
+    [Range(0, 1)]
+    private float minIntensity = 0;
+    private float intensity = 0;
 
     public float minutes { get; set; } = 0;
     private int minutesDuration = 60;
@@ -71,19 +75,19 @@ public class DayNightManager : MonoBehaviour
 
     private void GlobalLightController()
     {
+        intensity = globalLight2D.intensity;
+
         if (IsNight())
-            currentAlpha += Time.deltaTime / GetNightfall() * daySpeed;
+            intensity += Time.deltaTime / GetNightfall() * daySpeed;
         else
-            currentAlpha -= Time.deltaTime / GetDawn() * daySpeed;
+            intensity -= Time.deltaTime / GetDawn() * daySpeed;
 
-        if (currentAlpha > maxDarkness)
-            currentAlpha = maxDarkness;
-        else if (currentAlpha < 0)
-            currentAlpha = 0;
+        if (intensity > maxIntensity)
+            intensity = maxIntensity;
+        else if (intensity < minIntensity)
+            intensity = minIntensity;
 
-        Color tempColor = globalLight.color;
-        tempColor.a = currentAlpha;
-        globalLight.color = tempColor;
+        globalLight2D.intensity = intensity;
     }
 
     private bool IsNight()
