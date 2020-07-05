@@ -41,8 +41,11 @@ public static class SaveSystem
     public static async void Load()
     {
         MapData mapData = LoadMap();
+
         if (SceneManager.GetActiveScene().name != mapData.sceneName)
             await SceneManager.LoadSceneAsync(mapData.sceneName);
+        else
+            ScreenAspectRadio.Instance.isOpened = true;
 
         MapManager.Instance.Load(mapData);
         PlayerManager.Instance.Load(LoadPlayer());

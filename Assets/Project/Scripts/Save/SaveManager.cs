@@ -6,6 +6,8 @@ public class SaveManager : MonoBehaviour
 
     [SerializeField]
     private GameObject playerPrefab = null;
+    [SerializeField]
+    private GameObject transition = null;
 
     private void Awake()
     {
@@ -25,6 +27,10 @@ public class SaveManager : MonoBehaviour
         if (PlayerManager.Instance == null)
             Instantiate(playerPrefab);
 
-        SaveSystem.Load();
+        if (MenuManagerInGame.Instance != null && MenuManagerInGame.Instance.menu.activeSelf)
+            MenuManagerInGame.Instance.ClosePauseMenu();
+
+        ScreenAspectRadio screenAspectRadio = Instantiate(transition).GetComponent<ScreenAspectRadio>();
+        screenAspectRadio.Init("", true);
     }
 }

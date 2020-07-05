@@ -5,8 +5,7 @@ public class MenuManagerInGame : MenuController
     public static MenuManagerInGame Instance;
 
     [Header("Menu Manager")]
-    [SerializeField]
-    private GameObject menu = null;
+    public GameObject menu = null;
     [SerializeField]
     private MenuTag menuTag = MenuTag.Disabled;
 
@@ -99,7 +98,7 @@ public class MenuManagerInGame : MenuController
         menuTag = MenuTag.Disabled;
     }
 
-    private void ClosePauseMenu()
+    public void ClosePauseMenu()
     {
         GameManager.Instance.Pause();
         CloseAllMenus();

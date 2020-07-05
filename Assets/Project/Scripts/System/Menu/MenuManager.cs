@@ -4,15 +4,21 @@ using UnityEngine.SceneManagement;
 
 public class MenuManager : MenuController
 {
-    private float creditsDelay = 0;
-    [SerializeField]
-    private float creditsDelayTimer = .5f;
-
     [SerializeField]
     private GameObject menu = null;
     [SerializeField]
     private GameObject credits = null;
+
+    private bool canMove = false;
+
+    private float creditsDelay = 0;
+    [SerializeField]
+    private float creditsDelayTimer = .5f;
     private IEnumerator creditsCoroutine = null;
+
+    [SerializeField]
+    private GameObject transition = null;
+    private ScreenAspectRadio screenAspectRadio = null;
 
     private void Start()
     {
@@ -26,14 +32,15 @@ public class MenuManager : MenuController
 
     private void Update()
     {
-        if (creditsDelay == 0)
+        if (!canMove)
             SelectControllerVertical();
     }
 
     #region Actions
     public void StartGame(string sceneName)
     {
-        SceneManager.LoadScene(sceneName);
+        canMove = true;
+        InitTransition(sceneName);
     }
 
     public void OpenCredits()
@@ -57,8 +64,11 @@ public class MenuManager : MenuController
             {
                 creditsDelay = 0;
                 StopCoroutine(creditsCoroutine);
+
                 menu.SetActive(true);
                 credits.SetActive(false);
+
+                canMove = false;
             }
 
             yield return null;
@@ -67,7 +77,13 @@ public class MenuManager : MenuController
 
     public void Load()
     {
-        SaveSystem.Load();
+        InitTransition("", true);
+    }
+
+    private void InitTransition(string sceneName = "", bool isLoaded = false)
+    {
+        screenAspectRadio = Instantiate(transition).GetComponent<ScreenAspectRadio>();
+        screenAspectRadio.Init(sceneName, isLoaded);
     }
 
     public void ExitGame()
