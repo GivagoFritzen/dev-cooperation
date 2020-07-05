@@ -10,6 +10,7 @@ public static class SaveSystem
     {
         SavePlayer(PlayerManager.Instance);
         SaveMap(MapManager.Instance.GetMapData());
+        SaveDay(DayNightManager.Instance.GetDayData());
     }
 
     private static void SavePlayer(PlayerManager player)
@@ -35,6 +36,17 @@ public static class SaveSystem
         formatter.Serialize(stream, data);
         stream.Close();
     }
+
+    private static void SaveDay(DayData data)
+    {
+        BinaryFormatter formatter = new BinaryFormatter();
+
+        string path = Application.persistentDataPath + "/day.dat";
+        FileStream stream = new FileStream(path, FileMode.Create);
+
+        formatter.Serialize(stream, data);
+        stream.Close();
+    }
     #endregion
 
     #region Load
@@ -49,6 +61,7 @@ public static class SaveSystem
 
         MapManager.Instance.Load(mapData);
         PlayerManager.Instance.Load(LoadPlayer());
+        DayNightManager.Instance.Load(LoadDay());
     }
 
     private static PlayerData LoadPlayer()
@@ -84,5 +97,23 @@ public static class SaveSystem
 
         return null;
     }
+
+    private static DayData LoadDay()
+    {
+        string path = Application.persistentDataPath + "/day.dat";
+        if (File.Exists(path))
+        {
+            BinaryFormatter formatter = new BinaryFormatter();
+            FileStream stream = new FileStream(path, FileMode.Open);
+
+            DayData data = formatter.Deserialize(stream) as DayData;
+            stream.Close();
+
+            return data;
+        }
+
+        return null;
+    }
+
     #endregion
 }

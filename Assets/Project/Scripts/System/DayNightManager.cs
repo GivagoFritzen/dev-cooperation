@@ -5,6 +5,8 @@ using UnityEngine.Experimental.Rendering.Universal;
 
 public class DayNightManager : MonoBehaviour
 {
+    public static DayNightManager Instance;
+
     [Header("Components")]
     [SerializeField]
     private TextMeshProUGUI dayNightText = null;
@@ -31,6 +33,7 @@ public class DayNightManager : MonoBehaviour
 
     public float minutes { get; set; } = 0;
     private int minutesDuration = 60;
+
     public int hours { get; set; } = 0;
     private int hoursDuration = 24;
 
@@ -42,35 +45,19 @@ public class DayNightManager : MonoBehaviour
 
     public int year { get; set; } = 1;
 
+    private void Awake()
+    {
+        if (Instance != null)
+            Destroy(gameObject);
+
+        Instance = this;
+    }
+
     private void Update()
     {
         TimerController();
         dayNightText.text = GetText();
         GlobalLightController();
-    }
-
-    private string GetText()
-    {
-        StringBuilder textFormated = new StringBuilder();
-        string delimiter = "/";
-
-        int minute = (int)minutes;
-        textFormated.Append(minute.ToString());
-        textFormated.Append(delimiter);
-
-        textFormated.Append(hours.ToString());
-        textFormated.Append(delimiter);
-
-        textFormated.Append(day.ToString());
-        textFormated.Append(delimiter);
-
-        textFormated.Append(month.ToString());
-        textFormated.Append(delimiter);
-
-        textFormated.Append(year.ToString());
-        textFormated.Append(delimiter);
-
-        return textFormated.ToString();
     }
 
     private void GlobalLightController()
@@ -98,6 +85,47 @@ public class DayNightManager : MonoBehaviour
             return false;
     }
 
+    #region Save&Load
+    public DayData GetDayData()
+    {
+        return new DayData(minutes, hours, day, month, year);
+    }
+
+    public void Load(DayData data)
+    {
+        minutes = data.minutes;
+        hours = data.hours;
+        day = data.day;
+        month = data.month;
+        year = data.year;
+    }
+    #endregion
+
+    #region Get
+    private string GetText()
+    {
+        StringBuilder textFormated = new StringBuilder();
+        string delimiter = "/";
+
+        int minute = (int)minutes;
+        textFormated.Append(minute.ToString());
+        textFormated.Append(delimiter);
+
+        textFormated.Append(hours.ToString());
+        textFormated.Append(delimiter);
+
+        textFormated.Append(day.ToString());
+        textFormated.Append(delimiter);
+
+        textFormated.Append(month.ToString());
+        textFormated.Append(delimiter);
+
+        textFormated.Append(year.ToString());
+        textFormated.Append(delimiter);
+
+        return textFormated.ToString();
+    }
+
     private float GetDawn()
     {
         return dawnTime * minutesDuration;
@@ -107,7 +135,9 @@ public class DayNightManager : MonoBehaviour
     {
         return (dayDuration - nightfallTime) * minutesDuration;
     }
+    #endregion
 
+    #region Timer Controller
     private void TimerController()
     {
         MinutesController();
@@ -153,4 +183,5 @@ public class DayNightManager : MonoBehaviour
             year += 1;
         }
     }
+    #endregion
 }
