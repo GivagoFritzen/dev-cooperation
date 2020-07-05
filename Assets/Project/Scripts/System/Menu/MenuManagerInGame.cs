@@ -98,7 +98,7 @@ public class MenuManagerInGame : MenuController
         menuTag = MenuTag.Disabled;
     }
 
-    public void ClosePauseMenu()
+    private void ClosePauseMenu()
     {
         GameManager.Instance.Pause();
         CloseAllMenus();

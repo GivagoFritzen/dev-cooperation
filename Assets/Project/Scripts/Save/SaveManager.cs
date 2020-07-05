@@ -28,7 +28,7 @@ public class SaveManager : MonoBehaviour
             Instantiate(playerPrefab);
 
         if (MenuManagerInGame.Instance != null && MenuManagerInGame.Instance.menu.activeSelf)
-            MenuManagerInGame.Instance.ClosePauseMenu();
+            MenuManagerInGame.Instance.ClosePauseMenuButton();
 
         ScreenAspectRadio screenAspectRadio = Instantiate(transition).GetComponent<ScreenAspectRadio>();
         screenAspectRadio.Init("", true);
