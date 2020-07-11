@@ -111,10 +111,10 @@ public class MapManager : MonoBehaviour
         {
             if (item != null)
             {
-                GameObject itemObject = (GameObject)Resources.Load("Prefabs/Items/ItemPrefab", typeof(GameObject));
+                GameObject itemObject = (GameObject)Resources.Load($"{RouteUtil.GetPrefabsItems()}ItemPrefab", typeof(GameObject));
                 itemObject.transform.position = new Vector3(item.position[0], item.position[1], item.position[2]);
 
-                Item newItem = (Item)Resources.Load("Prefabs/Items/" + StringUtil.RemoveWhitespace(item.name), typeof(Item));
+                Item newItem = (Item)Resources.Load(RouteUtil.GetPrefabsItems() + StringUtil.RemoveWhitespace(item.name), typeof(Item));
                 itemObject.GetComponent<PickupItem>().SetItem(newItem);
                 itemObject.GetComponent<SpriteRenderer>().sprite = newItem.icon;
 
@@ -129,13 +129,13 @@ public class MapManager : MonoBehaviour
         {
             if (merchant != null)
             {
-                GameObject merchantObject = (GameObject)Resources.Load("Prefabs/NPC/Merchant", typeof(GameObject));
+                GameObject merchantObject = (GameObject)Resources.Load($"{RouteUtil.GetPrefabsNPC()}Merchant", typeof(GameObject));
                 merchantObject.transform.position = new Vector3(merchant.position[0], merchant.position[1], merchant.position[2]);
 
                 merchantObject.GetComponent<Merchant>().SetName(merchant.name);
                 merchantObject.GetComponent<Merchant>().SetItemsDataToListItems(merchant.items);
-                merchantObject.GetComponent<Animator>().runtimeAnimatorController = (RuntimeAnimatorController)Resources.Load($"Animators/NPC/Animator-{merchant.name}", typeof(RuntimeAnimatorController));
-                merchantObject.GetComponent<SpriteRenderer>().sprite = (Sprite)Resources.Load($"Prefabs/NPC/Merchant/{merchant.name}", typeof(Sprite));
+                merchantObject.GetComponent<Animator>().runtimeAnimatorController = (RuntimeAnimatorController)Resources.Load($"{RouteUtil.GetAnimatorsNPC()}/Animator-{merchant.name}", typeof(RuntimeAnimatorController));
+                merchantObject.GetComponent<SpriteRenderer>().sprite = (Sprite)Resources.Load($"{RouteUtil.GetPrefabsNPC()}Merchant/{merchant.name}", typeof(Sprite));
 
                 Instantiate(merchantObject);
             }
@@ -148,7 +148,7 @@ public class MapManager : MonoBehaviour
         {
             if (enemy != null)
             {
-                GameObject enemyObject = (GameObject)Resources.Load($"Prefabs/Enemy/{enemy.name}", typeof(GameObject));
+                GameObject enemyObject = (GameObject)Resources.Load($"{RouteUtil.GetPrefabsEnemy()}{enemy.name}", typeof(GameObject));
                 enemyObject.transform.position = new Vector3(enemy.position[0], enemy.position[1], enemy.position[2]);
 
                 enemyObject.GetComponent<SimpleEnemy>().life = enemy.life;

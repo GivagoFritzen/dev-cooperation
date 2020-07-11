@@ -59,7 +59,7 @@ public class InventoryObject : ScriptableObject
             else
             {
                 string itemName = StringUtil.RemoveWhitespace(data.items[index]);
-                slots[index].item = (Item)Resources.Load("Prefabs/Items/" + itemName, typeof(Item));
+                slots[index].item = (Item)Resources.Load(RouteUtil.GetPrefabsItems() + itemName, typeof(Item));
                 slots[index].SetIcon();
                 slots[index].ShowAmount();
                 slots[index].ShowIcon(true);

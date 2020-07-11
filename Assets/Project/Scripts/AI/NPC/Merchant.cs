@@ -39,7 +39,7 @@ public class Merchant : MonoBehaviour
         {
             if (newListItems[index] != null)
             {
-                Item newItem = (Item)Resources.Load("Prefabs/Items/" + StringUtil.RemoveWhitespace(newListItems[index].name), typeof(Item));
+                Item newItem = (Item)Resources.Load(RouteUtil.GetPrefabsItems() + StringUtil.RemoveWhitespace(newListItems[index].name), typeof(Item)); ;
                 listItems[index] = newItem;
             }
         }
