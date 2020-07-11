@@ -9,7 +9,6 @@ public class TextUIController : MonoBehaviour
 
     private void Start()
     {
-        Resources.Load<TextUI>("ScriptObjects/Rooms/RoomCache/CachedRooms");
         textPro = GetComponent<TextMeshProUGUI>();
         UpdateText();
     }

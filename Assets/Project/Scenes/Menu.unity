@@ -1684,7 +1684,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6b82bcc009e4c749bdc1c25d2eb561f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  text: {fileID: 11400000, guid: 6814afa22ab264549b1d4cb5f32f9755, type: 2}
+  text: {fileID: 11400000, guid: b0304ad81def17f4a885cb1f3ebceafd, type: 2}
 --- !u!1 &1446794980
 GameObject:
   m_ObjectHideFlags: 0
@@ -2152,9 +2152,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   textPro: {fileID: 85590571}
   jsonFile: {fileID: 4900000, guid: 3011a8743d4a2bb478fef6757ba3e1ba, type: 3}
-  creditsArtist: {fileID: 11400000, guid: 1e5e9ca6690c8a144b06c37d6ecab4b8, type: 2}
-  creditsProgrammers: {fileID: 11400000, guid: f07e3ab62a12a0745bd82a9c5094c063, type: 2}
-  creditsAssets: {fileID: 11400000, guid: 1f25e44910da2f040b0ac685c7f738c1, type: 2}
+  creditsArtist: {fileID: 11400000, guid: 307c8d7a3cc0408429adc11cc2d51f4b, type: 2}
+  creditsProgrammers: {fileID: 11400000, guid: 5d0b5a9bb891a7044a85afc85934ba11, type: 2}
+  creditsAssets: {fileID: 11400000, guid: 7e734246523ac1c4e9114dc5c6642285, type: 2}
 --- !u!1 &1713873763
 GameObject:
   m_ObjectHideFlags: 0
