@@ -9,11 +9,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6f484a46b6424fd41baf489bb2261201, type: 3}
-  m_Name: ItemTest
+  m_Script: {fileID: 11500000, guid: 0a964e0d0a19bff49af7f589386ac604, type: 3}
+  m_Name: Sword
   m_EditorClassIdentifier: 
-  name: ItemTest
-  icon: {fileID: 21300000, guid: d1c1523651c71449cb32c2c7933acf8c, type: 3}
-  slotLimit: 2
+  name: Espada
+  icon: {fileID: 21300000, guid: 95406b6737b66479a80d172766f8bac5, type: 3}
+  slotLimit: 1
   salePrice: 1
-  purchasePrice: 2
+  purchasePrice: 1
+  attackForce: 1
+  restoreLife: 0

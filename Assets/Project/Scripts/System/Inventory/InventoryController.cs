@@ -6,8 +6,9 @@ public class InventoryController : MenuController
 {
     public static InventoryController Instance;
 
+    [Header("Inventory")]
     [SerializeField]
-    private GameObject visual = null;
+    private GameObject inventoryGameobject = null;
     private RectTransform rectTransform = null;
     [SerializeField]
     private GameObject inventorySlotPrefab = null;
@@ -15,6 +16,14 @@ public class InventoryController : MenuController
     private GameObject anchorToVisualMerchant = null;
     [SerializeField]
     private InventoryObject inventoryObject = null;
+
+    [Header("Equipments")]
+    [SerializeField]
+    private GameObject equipmentsGameobject = null;
+    public InventorySlot sword = null;
+    public InventorySlot armor = null;
+    public InventorySlot shield = null;
+    public InventorySlot helmet = null;
 
     private void Awake()
     {
@@ -27,6 +36,7 @@ public class InventoryController : MenuController
     private void Start()
     {
         PopulateInventorySlots();
+        ClearEquipmentsSlots();
         Init();
     }
 
@@ -34,11 +44,11 @@ public class InventoryController : MenuController
     {
         if (rectTransform == null)
         {
-            rectTransform = visual.GetComponent<RectTransform>();
+            rectTransform = inventoryGameobject.GetComponent<RectTransform>();
 
             for (int i = 0; i < inventoryObject.slots.Length; i++)
             {
-                inventoryObject.slots[i] = Instantiate(inventorySlotPrefab, visual.transform).GetComponent<InventorySlot>();
+                inventoryObject.slots[i] = Instantiate(inventorySlotPrefab, inventoryGameobject.transform).GetComponent<InventorySlot>();
                 inventoryObject.slots[i].ShowIcon(false);
                 menuInGame.Add(inventoryObject.slots[i].GetComponentInChildren<Button>());
             }
@@ -47,42 +57,53 @@ public class InventoryController : MenuController
 
     private void Update()
     {
-        if (isActived && visual.activeSelf)
+        if (isActived && inventoryGameobject.activeSelf)
             SelectControllerVerticalAndHorizontal();
     }
 
-    public void ActiveMenu(bool enabled)
+    public void ActiveMenu(bool enabled, bool activedMerchant = false)
     {
-        ResetRectTransform();
-        visual.SetActive(enabled);
-        GetColumnAndRowInTheEndOfFrame(visual.GetComponent<GridLayoutGroup>());
+        inventoryGameobject.SetActive(enabled);
+        if (!activedMerchant)
+            equipmentsGameobject.SetActive(enabled);
+
+        GetColumnAndRowInTheEndOfFrame(inventoryGameobject.GetComponent<GridLayoutGroup>());
     }
 
-    private void ResetRectTransform()
-    {
-        if (rectTransform != null)
-        {
-            rectTransform.offsetMin = new Vector2(0, rectTransform.offsetMin.y);
-            rectTransform.offsetMax = new Vector2(0, rectTransform.offsetMax.y);
-            rectTransform.offsetMax = new Vector2(rectTransform.offsetMax.x, 0);
-            rectTransform.offsetMin = new Vector2(rectTransform.offsetMin.x, 0);
-        }
-    }
-
+    #region Merchant
     public void OpenMerchant(List<MenuController> multiplesMenus)
     {
         isActived = false;
         this.multiplesMenus = multiplesMenus;
-        visual.transform.SetParent(anchorToVisualMerchant.transform);
+        inventoryGameobject.transform.SetParent(anchorToVisualMerchant.transform);
         DisableSpriteController();
-        ActiveMenu(true);
+        ActiveMenu(true, true);
     }
 
     public void CloseMerchant()
     {
         isActived = true;
         multiplesMenus = new List<MenuController>();
-        visual.transform.SetParent(transform);
+        inventoryGameobject.transform.SetParent(transform);
         ActiveMenu(false);
     }
+    #endregion
+
+    #region Equipments
+    private void ClearEquipmentsSlots()
+    {
+        sword.RemoveItem();
+        armor.RemoveItem();
+        shield.RemoveItem();
+        helmet.RemoveItem();
+    }
+
+    public void EquipSword(SwordItem newSword)
+    {
+        inventoryObject.EquipSword(newSword);
+        sword.AddItem(newSword);
+        sword.ShowIcon(true);
+    }
+
+    #endregion
 }

@@ -9,18 +9,20 @@ public class Projectile : MonoBehaviour
     private GameObject shooter = null;
     [SerializeField]
     private int damage = 1;
+    private int extraDamage;
     [SerializeField]
     private float speed = 20f;
     [SerializeField]
     private float lifetime = 1f;
     private float currentTime = 0;
 
-    public void Init(Vector2 shootingDirection, GameObject _shooter)
+    public void Init(Vector2 shootingDirection, GameObject _shooter, int extraDamage = 0)
     {
         rb = GetComponent<Rigidbody2D>();
         rb.velocity = shootingDirection * speed;
 
         shooter = _shooter;
+        this.extraDamage = extraDamage;
     }
 
     private void FixedUpdate()
@@ -41,9 +43,9 @@ public class Projectile : MonoBehaviour
         if (collision.CompareTag(targetTag.ToString()))
         {
             if (collision.GetComponent<CreatureManager>())
-                collision.GetComponent<CreatureManager>().TakeDamage(damage);
+                collision.GetComponent<CreatureManager>().TakeDamage(damage + extraDamage);
             else if (collision.GetComponentInParent<CreatureManager>())
-                collision.GetComponentInParent<CreatureManager>().TakeDamage(damage);
+                collision.GetComponentInParent<CreatureManager>().TakeDamage(damage + extraDamage);
         }
     }
 

@@ -38,6 +38,7 @@ public class PlayerManager : CreatureManager
     {
         base.Start();
         SetComponents();
+
         UpdateUI();
     }
 
@@ -118,25 +119,29 @@ public class PlayerManager : CreatureManager
             aim.magnitude == 0 && InputUtil.GetDistanceAttack())
         {
             Stop();
-            playerAnimator.DistanceAttack();
 
             GameObject arrow = Instantiate(projectile, transform.position, Quaternion.identity);
 
-            Vector2 shootingDirection;
-            if (aim == Vector3.zero)
-                shootingDirection = new Vector2(0, -1);
-            else
-                shootingDirection = new Vector2(InputUtil.GetHorizontal(), InputUtil.GetVertical());
-
+            Vector2 shootingDirection = GetShootingDirection(aim);
             shootingDirection.Normalize();
-            arrow.GetComponent<Projectile>().Init(shootingDirection, gameObject);
+
+            arrow.GetComponent<Projectile>().Init(shootingDirection, gameObject, inventory.GetSwordBonus());
             arrow.transform.Rotate(0f, 0f, Mathf.Atan2(shootingDirection.y, shootingDirection.x) * Mathf.Rad2Deg + 90f);
         }
+    }
+
+    private Vector2 GetShootingDirection(Vector3 aim)
+    {
+        if (aim == Vector3.zero)
+            return new Vector2(0, -1);
+        else
+            return new Vector2(InputUtil.GetHorizontal(), InputUtil.GetVertical());
     }
 
     private void Stop()
     {
         movement = Vector2.zero;
+        playerAnimator.DistanceAttack();
     }
     #endregion
 

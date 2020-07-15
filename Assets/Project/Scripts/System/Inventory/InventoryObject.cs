@@ -6,6 +6,9 @@ public class InventoryObject : ScriptableObject
     [Header("Inventory Manager")]
     public InventorySlot[] slots = null;
 
+    [Header("Equipments")]
+    private SwordItem sword = null;
+
     public bool PickUpItem(Item item)
     {
         bool canTake = FindItemInListAndAdd(item);
@@ -14,6 +17,33 @@ public class InventoryObject : ScriptableObject
             canTake = FindAndAddEmptySlotItem(item);
 
         return canTake;
+    }
+
+    #region Equipments
+    public void EquipSword(SwordItem newSword)
+    {
+        sword = newSword;
+    }
+
+    public int GetSwordBonus()
+    {
+        if (sword == null)
+            return 0;
+        else
+            return sword.attackForce;
+    }
+    #endregion
+
+    #region Find
+    private void FindItemInListAndRemove(Item item)
+    {
+        foreach (var slot in slots)
+        {
+            if (slot.item == item)
+            {
+                slot.item = null;
+            }
+        }
     }
 
     private bool FindItemInListAndAdd(Item item)
@@ -45,6 +75,7 @@ public class InventoryObject : ScriptableObject
 
         return false;
     }
+    #endregion
 
     public void Load(InventoryData data)
     {

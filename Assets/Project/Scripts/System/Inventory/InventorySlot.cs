@@ -64,6 +64,9 @@ public class InventorySlot : MonoBehaviour
 
     public void ShowAmount()
     {
+        if (amountText == null)
+            return;
+
         if (amount > 1)
         {
             visualAmount.SetActive(true);
@@ -84,12 +87,44 @@ public class InventorySlot : MonoBehaviour
         {
             SellItem();
         }
+        else if (IsEquipment())
+        {
+            SwordController();
+        }
         else
         {
             item.Use();
             ReduceAmount();
         }
     }
+
+    #region Equipments
+    private bool IsEquipment()
+    {
+        return item.itemTag == ItemTag.Sword || item.itemTag == ItemTag.Armor || item.itemTag == ItemTag.Shield || item.itemTag == ItemTag.Helmet;
+    }
+
+    private void SwordController()
+    {
+        if (item.itemTag != ItemTag.Sword)
+            return;
+
+        Item currentSword = InventoryController.Instance.sword.item;
+        item.Use();
+
+        if (currentSword == null)
+        {
+            item = null;
+            ShowIcon(false);
+        }
+        else
+        {
+            item = currentSword;
+            SetIcon();
+            ShowIcon(true);
+        }
+    }
+    #endregion
 
     public void SellItem()
     {
