@@ -137,12 +137,16 @@ public class InventorySlot : MonoBehaviour
             if (hasSpaceInTheInventory)
             {
                 player.gold -= item.purchasePrice;
+                PlayerManager.Instance.UpdateMoneyUI();
+
                 ReduceAmount();
             }
         }
         else if (!sellerMerchandise)
         {
             player.gold += item.salePrice;
+            PlayerManager.Instance.UpdateMoneyUI();
+
             ReduceAmount();
             ShowAmount();
         }

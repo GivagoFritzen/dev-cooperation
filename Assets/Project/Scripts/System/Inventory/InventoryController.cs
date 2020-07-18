@@ -9,6 +9,7 @@ public class InventoryController : MenuController
     [Header("Inventory")]
     [SerializeField]
     private GameObject inventoryGameobject = null;
+    private GridLayoutGroup gridLayoutGroup = null;
     private RectTransform rectTransform = null;
     [SerializeField]
     private GameObject inventorySlotPrefab = null;
@@ -35,6 +36,8 @@ public class InventoryController : MenuController
 
     private void Start()
     {
+        gridLayoutGroup = inventoryGameobject.GetComponentInChildren<GridLayoutGroup>();
+
         PopulateInventorySlots();
         ClearEquipmentsSlots();
         Init();
@@ -48,7 +51,7 @@ public class InventoryController : MenuController
 
             for (int i = 0; i < inventoryObject.slots.Length; i++)
             {
-                inventoryObject.slots[i] = Instantiate(inventorySlotPrefab, inventoryGameobject.transform).GetComponent<InventorySlot>();
+                inventoryObject.slots[i] = Instantiate(inventorySlotPrefab, gridLayoutGroup.transform).GetComponent<InventorySlot>();
                 inventoryObject.slots[i].ShowIcon(false);
                 menuInGame.Add(inventoryObject.slots[i].GetComponentInChildren<Button>());
             }
@@ -67,7 +70,7 @@ public class InventoryController : MenuController
         if (!activedMerchant)
             equipmentsGameobject.SetActive(enabled);
 
-        GetColumnAndRowInTheEndOfFrame(inventoryGameobject.GetComponent<GridLayoutGroup>());
+        GetColumnAndRowInTheEndOfFrame(gridLayoutGroup);
     }
 
     #region Merchant

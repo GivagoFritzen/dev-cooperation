@@ -96,7 +96,7 @@ public class GameOverManager : MenuController
         Destroy(camera.gameObject);
         OpenAllCanvas();
         SaveManager.Instance.LoadGame();
-        MiniMapManager.Instance.Init();
+        MiniMapManager.Instance.CheckAndGetCamera();
     }
 
     public void ExitGame()

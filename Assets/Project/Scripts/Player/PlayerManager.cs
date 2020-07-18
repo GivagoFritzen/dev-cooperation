@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(BoxCollider2D), typeof(Rigidbody2D), typeof(Animator))]
 public class PlayerManager : CreatureManager
@@ -10,6 +11,7 @@ public class PlayerManager : CreatureManager
     private Vector2 movement = Vector2.zero;
     [SerializeField]
     public int gold = 0;
+    public string transitionPoint { private get; set; } = null;
 
     [Header("Components")]
     [SerializeField]
@@ -17,21 +19,31 @@ public class PlayerManager : CreatureManager
     [SerializeField]
     private Animator animator = null;
     [SerializeField]
-    private TextMeshProUGUI lifeText = null;
-    [SerializeField]
     private PlayerAnimator playerAnimator = null;
+    [SerializeField]
+    private Camera miniMapCamera = null;
     public InventoryObject inventory = null;
+
+    private TextMeshProUGUI lifeText = null;
+    private TextMeshProUGUI moneyText = null;
 
     [Header("References")]
     [SerializeField]
     private GameObject projectile = null;
 
+    #region Default 
     private void Awake()
     {
         if (Instance != null)
+        {
             Destroy(gameObject);
-
-        Instance = this;
+        }
+        else
+        {
+            DontDestroyOnLoad(gameObject);
+            Instance = this;
+            SceneManager.sceneLoaded += OnLevelFinishedLoading;
+        }
     }
 
     public override void Start()
@@ -40,6 +52,7 @@ public class PlayerManager : CreatureManager
         SetComponents();
 
         UpdateUI();
+        UpdateMoneyUI();
     }
 
     private void SetComponents()
@@ -60,6 +73,32 @@ public class PlayerManager : CreatureManager
     private void FindComponents()
     {
         lifeText = GameObject.Find("Life_Text").GetComponent<TextMeshProUGUI>();
+        moneyText = GameObject.Find("Money_Text").GetComponent<TextMeshProUGUI>();
+    }
+    #endregion
+
+    #region Load
+    private void OnLevelFinishedLoading(Scene scene, LoadSceneMode mode)
+    {
+        if (scene.name == "Menu")
+        {
+            SceneManager.sceneLoaded -= OnLevelFinishedLoading;
+            Destroy(gameObject);
+        }
+        else
+        {
+            FindTransitionPoint();
+
+            MiniMapManager.Instance.CheckAndGetCamera(miniMapCamera);
+        }
+    }
+
+    private void FindTransitionPoint()
+    {
+        if (!string.IsNullOrEmpty(transitionPoint))
+            transform.position = GameObject.Find(transitionPoint).transform.position;
+
+        transitionPoint = null;
     }
 
     public void Load(PlayerData data)
@@ -70,15 +109,11 @@ public class PlayerManager : CreatureManager
         InventoryController.Instance.PopulateInventorySlots();
         inventory.Load(data.inventory);
     }
+    #endregion
 
     private void Update()
     {
         Actions();
-    }
-
-    private void UpdateUI()
-    {
-        lifeText.text = life.ToString();
     }
 
     private void FixedUpdate()
@@ -142,6 +177,18 @@ public class PlayerManager : CreatureManager
     {
         movement = Vector2.zero;
         playerAnimator.DistanceAttack();
+    }
+    #endregion
+
+    #region UI
+    private void UpdateUI()
+    {
+        lifeText.text = life.ToString();
+    }
+
+    public void UpdateMoneyUI()
+    {
+        moneyText.text = gold.ToString();
     }
     #endregion
 

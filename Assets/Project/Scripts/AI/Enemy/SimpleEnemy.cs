@@ -6,6 +6,7 @@ public class SimpleEnemy : CreatureManager
 {
     [Header("Components")]
     protected NavMeshAgent navMeshAgent = null;
+    private NavmeshUtil navmeshUtil = null;
 
     [Header("Parameters")]
     [SerializeField]
@@ -17,10 +18,21 @@ public class SimpleEnemy : CreatureManager
     [SerializeField]
     private Vector3 fixedRotation = Vector3.zero;
 
+    [Header("Find Random Point in Navmesh")]
+    [SerializeField]
+    private float radiusToFindAnotherPointInNavmesh = 1;
+    [SerializeField]
+    private float timeToFindAnotherPoint = 1;
+    [SerializeField]
+    private float timeToFindAnotherPointController = 0;
+    private float distanceToStopPoint = 2;
+    [SerializeField]
+    private Vector3 nextPoint = Vector3.one;
+
     [Header("Attack Controller")]
-    private bool canAttack = false;
     [SerializeField]
     private float distanceToAttack = 1;
+    private bool canAttack = false;
     [SerializeField]
     private int damage = 1;
     [SerializeField]
@@ -31,18 +43,25 @@ public class SimpleEnemy : CreatureManager
     public override void Start()
     {
         base.Start();
+
+        navmeshUtil = gameObject.AddComponent<NavmeshUtil>();
+
         navMeshAgent = GetComponent<NavMeshAgent>();
         navMeshAgent.speed = moveSpeed;
 
-        Stop();
+        FindNewPoint();
     }
 
     private void Update()
     {
-        if (GameManager.Instance.PlayerIsAlive())
+        if (GameManager.Instance.PlayerIsAlive() && GetPlayerDistance() < viewDistance && CanSeePlayer())
         {
             FollowPlayer();
             Attack();
+        }
+        else
+        {
+            TimerControllerFindAnotherPointInNavmesh();
         }
 
         FixedRotation();
@@ -53,18 +72,35 @@ public class SimpleEnemy : CreatureManager
         transform.eulerAngles = fixedRotation;
     }
 
-    private void FollowPlayer()
+    #region Find Random Point
+    private void TimerControllerFindAnotherPointInNavmesh()
     {
-        if (GetPlayerDistance() < viewDistance && CanSeePlayer())
-        {
-            canAttack = true;
-            navMeshAgent.isStopped = false;
-            navMeshAgent.destination = PlayerManager.Instance.gameObject.transform.position;
-        }
-        else
+        if (Vector3.Distance(nextPoint, gameObject.transform.position) < distanceToStopPoint)
         {
             Stop();
+            timeToFindAnotherPointController += Time.deltaTime;
+
+            if (timeToFindAnotherPointController >= timeToFindAnotherPoint)
+                FindNewPoint();
         }
+    }
+
+    private void FindNewPoint()
+    {
+        timeToFindAnotherPointController = 0;
+
+        navMeshAgent.isStopped = false;
+        nextPoint = navmeshUtil.RandomNavmeshLocationInsideSphere(radiusToFindAnotherPointInNavmesh);
+        navMeshAgent.destination = nextPoint;
+    }
+    #endregion
+
+    #region Player
+    private void FollowPlayer()
+    {
+        canAttack = true;
+        navMeshAgent.isStopped = false;
+        navMeshAgent.destination = PlayerManager.Instance.gameObject.transform.position;
     }
 
     private bool CanSeePlayer()
@@ -80,7 +116,7 @@ public class SimpleEnemy : CreatureManager
 
     private void Attack()
     {
-        if (!canAttack || GetPlayerDistance() < distanceToAttack && !CanSeePlayer())
+        if (!canAttack || GetPlayerDistance() > distanceToAttack || !CanSeePlayer())
             return;
 
         if (timerAttackController >= delayToAttack)
@@ -98,6 +134,7 @@ public class SimpleEnemy : CreatureManager
     {
         return Vector3.Distance(PlayerManager.Instance.transform.position, gameObject.transform.position);
     }
+    #endregion
 
     private void Stop()
     {

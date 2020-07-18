@@ -7,12 +7,19 @@ public class TransitionTrigger : MonoBehaviour
     [SerializeField]
     private GameObject transition = null;
 
-    private void OnTriggerStay2D(Collider2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.tag == "Player")
         {
             ScreenAspectRadio screenAspectRadio = Instantiate(transition).GetComponent<ScreenAspectRadio>();
             screenAspectRadio.Init(sceneName);
+
+            SetTransitionPointObject();
         }
+    }
+
+    private void SetTransitionPointObject()
+    {
+        PlayerManager.Instance.transitionPoint = gameObject.name;
     }
 }

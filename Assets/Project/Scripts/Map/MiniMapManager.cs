@@ -33,15 +33,20 @@ public class MiniMapManager : MonoBehaviour
         Instance = this;
     }
 
-    private void Start()
+    public void CheckAndGetCamera(Camera camera = null)
     {
-        Init();
-    }
+        if (camera != null)
+        {
+            mapCamera = camera;
+            mapCamera.gameObject.SetActive(true);
 
-    public void Init()
-    {
-        mapCamera = GameObject.Find("Map Camera").GetComponent<Camera>();
-        cameraRepresentation = mapCamera.transform.GetChild(0).gameObject;
+            cameraRepresentation = mapCamera.transform.GetChild(0).gameObject;
+        }
+        else if (mapCamera == null)
+        {
+            mapCamera = GameObject.Find("Map Camera").GetComponent<Camera>();
+            cameraRepresentation = mapCamera.transform.GetChild(0).gameObject;
+        }
     }
 
     private void Update()
@@ -56,6 +61,7 @@ public class MiniMapManager : MonoBehaviour
             Travel();
     }
 
+    #region Movement
     private void Movement()
     {
         horizontal = InputUtil.GetHorizontal();
@@ -92,6 +98,7 @@ public class MiniMapManager : MonoBehaviour
         else
             return target.y;
     }
+    #endregion
 
     private void Zoom()
     {
@@ -133,6 +140,7 @@ public class MiniMapManager : MonoBehaviour
         }
     }
 
+    #region Controller Menu
     public void Controller()
     {
         if (GameManager.Instance.isPaused)
@@ -146,6 +154,7 @@ public class MiniMapManager : MonoBehaviour
     private void OpenMap()
     {
         mapCamera.gameObject.SetActive(true);
+        mapCamera.gameObject.transform.localPosition = new Vector3(0, 0, -zDistance);
     }
 
     public void CloseMap()
@@ -153,4 +162,5 @@ public class MiniMapManager : MonoBehaviour
         mapCamera.gameObject.SetActive(false);
         mapCamera.transform.position = new Vector3(PlayerManager.Instance.transform.position.x, PlayerManager.Instance.transform.position.y, -zDistance);
     }
+    #endregion
 }
