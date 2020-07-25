@@ -1,1 +1,5 @@
-﻿enum EnumTag { Player, Enemy };
+﻿enum EnumTag
+{
+    Player,
+    Enemy
+};

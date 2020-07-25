@@ -3,27 +3,36 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class MenuController : MonoBehaviour
+public class MenuController : MonoBehaviour, IMenuController
 {
     [Header("Inputs Controller")]
     [SerializeField]
-    private float delay = 0.15f;
-    private float inputController = 0;
-    private int currentMenuVertical = 1;
-    private int currentMenuHorizontal = 1;
+    protected float delay = 0.15f;
+    protected float inputController = 0;
+    [SerializeField]
+    protected int currentMenuVertical = 1;
+    [SerializeField]
+    protected int currentMenuHorizontal = 1;
     public List<Button> menuInGame = null;
-    private float vertical = 0;
-    private float horizontal = 0;
-    private int column = -1;
-    private int row = -1;
+    protected float vertical = 0;
+    protected float horizontal = 0;
+    protected int column = 1;
+    protected int row = 1;
 
     [Header("Multiple Screen Controller")]
-    private int currentIndex = 0;
-    public List<MenuController> multiplesMenus { get; set; } = new List<MenuController>();
-    private bool spriteController = false;
+    protected int currentIndex = 0;
+    public List<MenuController> multiplesMenus = new List<MenuController>();
+    protected bool spriteController = false;
 
-    protected bool isActived { get; set; } = true;
+    public bool isActived { get; set; } = true;
 
+    protected virtual void Init()
+    {
+        ResetInputController();
+        menuInGame[GetPositionMatrixWithVerticalAndHorizontal()].GetComponent<IMenuSelectController>().SelectFirstOption();
+    }
+
+    #region Menu Vertical
     protected void SelectControllerVertical()
     {
         if (InputUtil.GetAction())
@@ -32,12 +41,6 @@ public class MenuController : MonoBehaviour
             inputController += Time.unscaledDeltaTime;
         else
             InputControllerVertical();
-    }
-
-    protected void Init()
-    {
-        ResetInputController();
-        menuInGame[GetPositionMatrixWithVerticalAndHorizontal()].GetComponent<IMenuSelectController>().SelectFirstOption();
     }
 
     private void InputControllerVertical()
@@ -70,7 +73,9 @@ public class MenuController : MonoBehaviour
     {
         inputController = 0;
     }
+    #endregion
 
+    #region Menu Vertical and Horizontal
     protected void SelectControllerVerticalAndHorizontal()
     {
         if (inputController < delay)
@@ -168,15 +173,17 @@ public class MenuController : MonoBehaviour
         int limitLimit = currentMenuVertical * column;
         int mod = limitLimit - menuInGame.Count;
         if (limitLimit > menuInGame.Count && currentMenuHorizontal > (column - mod))
-            currentMenuHorizontal = (column - mod);
+            currentMenuHorizontal = column - mod;
     }
+    #endregion
 
+    #region Multiples Menus
     protected bool HasMultiplesMenu()
     {
         return multiplesMenus != null && multiplesMenus.Count > 0;
     }
 
-    private void MultiplesMenusController()
+    protected void MultiplesMenusController()
     {
         for (int i = 0; i < multiplesMenus.Count; i++)
         {
@@ -196,18 +203,23 @@ public class MenuController : MonoBehaviour
             }
         }
     }
+    #endregion
 
+    #region Disables Options
     protected void DisableAllMultiplesMenus()
     {
         foreach (var currentMenu in multiplesMenus)
             currentMenu.isActived = false;
     }
 
-    protected void DisableSpriteController()
+    public virtual void DisableSpriteController()
     {
-        menuInGame[GetPositionMatrixWithVerticalAndHorizontal()].GetComponent<IMenuSelectController>().Disable();
+        if (menuInGame != null && menuInGame.Count > 0)
+            menuInGame[GetPositionMatrixWithVerticalAndHorizontal()].GetComponent<IMenuSelectController>().Disable();
     }
+    #endregion
 
+    #region Get Column and Row Dynamic
     protected void GetColumnAndRowInTheEndOfFrame(GridLayoutGroup gridLayoutGroup)
     {
         StartCoroutine(GetColumnAndRow(gridLayoutGroup));
@@ -218,4 +230,5 @@ public class MenuController : MonoBehaviour
         yield return new WaitForEndOfFrame();
         GridLayoutGroupUtil.GetColumnAndRow(gridLayoutGroup, out column, out row);
     }
+    #endregion
 }

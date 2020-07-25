@@ -1,1 +1,8 @@
-﻿public enum ItemTag { Usable, Sword, Armor, Shield, Helmet };
+﻿public enum ItemTag
+{
+    Usable,
+    Sword,
+    Armor,
+    Shield,
+    Helmet
+};

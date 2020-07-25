@@ -8,6 +8,9 @@ public class InventoryObject : ScriptableObject
 
     [Header("Equipments")]
     private SwordItem sword = null;
+    private ArmorItem armor = null;
+    private ShieldItem shield = null;
+    private HelmetItem helmet = null;
 
     public bool PickUpItem(Item item)
     {
@@ -25,6 +28,11 @@ public class InventoryObject : ScriptableObject
         sword = newSword;
     }
 
+    public void RemoveSword()
+    {
+        sword = null;
+    }
+
     public int GetSwordBonus()
     {
         if (sword == null)
@@ -32,20 +40,39 @@ public class InventoryObject : ScriptableObject
         else
             return sword.attackForce;
     }
+
+    public void EquipArmor(ArmorItem newArmor)
+    {
+        armor = newArmor;
+    }
+
+    public void RemoveArmor()
+    {
+        armor = null;
+    }
+
+    public void EquipShield(ShieldItem newShield)
+    {
+        shield = newShield;
+    }
+
+    public void RemoveShield()
+    {
+        shield = null;
+    }
+
+    public void EquipHelmet(HelmetItem newHelmet)
+    {
+        helmet = newHelmet;
+    }
+
+    public void RemoveHelmet()
+    {
+        helmet = null;
+    }
     #endregion
 
     #region Find
-    private void FindItemInListAndRemove(Item item)
-    {
-        foreach (var slot in slots)
-        {
-            if (slot.item == item)
-            {
-                slot.item = null;
-            }
-        }
-    }
-
     private bool FindItemInListAndAdd(Item item)
     {
         foreach (var slot in slots)

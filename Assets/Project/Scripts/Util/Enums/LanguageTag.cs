@@ -1,1 +1,5 @@
-﻿public enum LanguageTag { Portuguese, English };
+﻿public enum LanguageTag
+{
+    Portuguese,
+    English
+};

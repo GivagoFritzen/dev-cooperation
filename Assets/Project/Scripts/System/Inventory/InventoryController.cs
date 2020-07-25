@@ -41,6 +41,7 @@ public class InventoryController : MenuController
         PopulateInventorySlots();
         ClearEquipmentsSlots();
         Init();
+        SetMultiplesMenus();
     }
 
     public void PopulateInventorySlots()
@@ -73,6 +74,15 @@ public class InventoryController : MenuController
         GetColumnAndRowInTheEndOfFrame(gridLayoutGroup);
     }
 
+    private void SetMultiplesMenus()
+    {
+        multiplesMenus.Add(this);
+
+        MenuController menuControllerEquipments = equipmentsGameobject.GetComponent<MenuController>();
+        multiplesMenus.Add(menuControllerEquipments);
+        menuControllerEquipments.isActived = false;
+    }
+
     #region Merchant
     public void OpenMerchant(List<MenuController> multiplesMenus)
     {
@@ -89,6 +99,7 @@ public class InventoryController : MenuController
         multiplesMenus = new List<MenuController>();
         inventoryGameobject.transform.SetParent(transform);
         ActiveMenu(false);
+        SetMultiplesMenus();
     }
     #endregion
 
@@ -108,5 +119,25 @@ public class InventoryController : MenuController
         sword.ShowIcon(true);
     }
 
+    public void EquipArmor(ArmorItem newArmor)
+    {
+        inventoryObject.EquipArmor(newArmor);
+        armor.AddItem(newArmor);
+        armor.ShowIcon(true);
+    }
+
+    public void EquipShield(ShieldItem newShield)
+    {
+        inventoryObject.EquipShield(newShield);
+        shield.AddItem(newShield);
+        shield.ShowIcon(true);
+    }
+
+    public void EquipHelmet(HelmetItem newHelmet)
+    {
+        inventoryObject.EquipHelmet(newHelmet);
+        helmet.AddItem(newHelmet);
+        helmet.ShowIcon(true);
+    }
     #endregion
 }

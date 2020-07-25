@@ -6,17 +6,19 @@ public class InventorySlot : MonoBehaviour
 {
     public Item item { get; set; } = null;
     public int amount = 0;
-    [SerializeField]
-    public bool sellerMerchandise = false;
+
     [SerializeField]
     private Image icon = null;
     [SerializeField]
     private GameObject removeButton = null;
-    private PlayerManager player = null;
+
     [SerializeField]
     private GameObject visualAmount = null;
     [SerializeField]
     private TextMeshProUGUI amountText = null;
+
+    public bool sellerMerchandise = false;
+    private PlayerManager player = null;
 
     private void Start()
     {
@@ -33,6 +35,73 @@ public class InventorySlot : MonoBehaviour
         ShowAmount();
     }
 
+    public void UseItem()
+    {
+        if (item == null || amount <= 0)
+            return;
+
+        if (MerchantController.Instance.IsActived())
+        {
+            SellItem();
+        }
+        else if (IsEquipment())
+        {
+            SwordController();
+            ArmorController();
+            ShieldController();
+            HelmetController();
+        }
+        else
+        {
+            item.Use();
+            ReduceAmount();
+        }
+    }
+
+    #region Sell/Remove Item
+    public void SellItem()
+    {
+        if (item == null || amount <= 0)
+            return;
+
+        if (sellerMerchandise && player.gold >= item.purchasePrice)
+        {
+            bool hasSpaceInTheInventory = player.inventory.PickUpItem(item);
+            if (hasSpaceInTheInventory)
+            {
+                player.gold -= item.purchasePrice;
+                PlayerManager.Instance.UpdateMoneyUI();
+
+                ReduceAmount();
+            }
+        }
+        else if (!sellerMerchandise)
+        {
+            player.gold += item.salePrice;
+            PlayerManager.Instance.UpdateMoneyUI();
+
+            ReduceAmount();
+            ShowAmount();
+        }
+    }
+
+    private void ReduceAmount()
+    {
+        amount -= 1;
+        if (amount < 1)
+            RemoveItem();
+    }
+
+    public void RemoveItem()
+    {
+        ShowIcon(false);
+        ShowAmount();
+        item = null;
+        icon.sprite = null;
+    }
+    #endregion
+
+    #region Show Controller
     public void SetIcon()
     {
         icon.sprite = item.icon;
@@ -77,26 +146,7 @@ public class InventorySlot : MonoBehaviour
             visualAmount.SetActive(false);
         }
     }
-
-    public void UseItem()
-    {
-        if (item == null || amount <= 0)
-            return;
-
-        if (MerchantController.Instance.IsActived())
-        {
-            SellItem();
-        }
-        else if (IsEquipment())
-        {
-            SwordController();
-        }
-        else
-        {
-            item.Use();
-            ReduceAmount();
-        }
-    }
+    #endregion
 
     #region Equipments
     private bool IsEquipment()
@@ -106,64 +156,108 @@ public class InventorySlot : MonoBehaviour
 
     private void SwordController()
     {
-        if (item.itemTag != ItemTag.Sword)
+        if (item == null || item.itemTag != ItemTag.Sword)
             return;
 
         Item currentSword = InventoryController.Instance.sword.item;
-        item.Use();
+        Equip(currentSword);
+    }
 
-        if (currentSword == null)
+    public void UnequipSword()
+    {
+        if (InventoryController.Instance.sword.item == null)
+            return;
+
+        bool keep = PlayerManager.Instance.inventory.PickUpItem(item);
+        if (keep)
+        {
+            InventoryController.Instance.sword.item = null;
+            ReduceAmount();
+        }
+    }
+
+    private void ArmorController()
+    {
+        if (item == null || item.itemTag != ItemTag.Armor)
+            return;
+
+        Item currentArmor = InventoryController.Instance.armor.item;
+        Equip(currentArmor);
+    }
+
+    public void UnequipArmor()
+    {
+        if (InventoryController.Instance.armor.item == null)
+            return;
+
+        bool keep = PlayerManager.Instance.inventory.PickUpItem(item);
+        if (keep)
+        {
+            InventoryController.Instance.armor.item = null;
+            ReduceAmount();
+        }
+    }
+
+    private void ShieldController()
+    {
+        if (item == null || item.itemTag != ItemTag.Shield)
+            return;
+
+        Item currentShield = InventoryController.Instance.shield.item;
+        Equip(currentShield);
+    }
+
+    public void UnequipShield()
+    {
+        if (InventoryController.Instance.shield.item == null)
+            return;
+
+        bool keep = PlayerManager.Instance.inventory.PickUpItem(item);
+        if (keep)
+        {
+            InventoryController.Instance.shield.item = null;
+            ReduceAmount();
+        }
+    }
+
+    private void HelmetController()
+    {
+        if (item == null || item.itemTag != ItemTag.Helmet)
+            return;
+
+        Item currentHelmet = InventoryController.Instance.helmet.item;
+        Equip(currentHelmet);
+    }
+
+    public void UnequipHelmet()
+    {
+        if (InventoryController.Instance.helmet.item == null)
+            return;
+
+        bool keep = PlayerManager.Instance.inventory.PickUpItem(item);
+        if (keep)
+        {
+            InventoryController.Instance.helmet.item = null;
+            ReduceAmount();
+        }
+    }
+
+    private void Equip(Item equip)
+    {
+        item.Use();
+        ReduceAmount();
+
+        if (equip == null)
         {
             item = null;
             ShowIcon(false);
         }
         else
         {
-            item = currentSword;
+            item = equip;
             SetIcon();
             ShowIcon(true);
         }
     }
     #endregion
-
-    public void SellItem()
-    {
-        if (item == null || amount <= 0)
-            return;
-
-        if (sellerMerchandise && player.gold >= item.purchasePrice)
-        {
-            bool hasSpaceInTheInventory = player.inventory.PickUpItem(item);
-            if (hasSpaceInTheInventory)
-            {
-                player.gold -= item.purchasePrice;
-                PlayerManager.Instance.UpdateMoneyUI();
-
-                ReduceAmount();
-            }
-        }
-        else if (!sellerMerchandise)
-        {
-            player.gold += item.salePrice;
-            PlayerManager.Instance.UpdateMoneyUI();
-
-            ReduceAmount();
-            ShowAmount();
-        }
-    }
-
-    private void ReduceAmount()
-    {
-        amount -= 1;
-        if (amount < 1)
-            RemoveItem();
-    }
-
-    public void RemoveItem()
-    {
-        ShowIcon(false);
-        ShowAmount();
-        item = null;
-        icon.sprite = null;
-    }
 }

@@ -1,1 +1,6 @@
-﻿public enum WeatherTag { Sunny, Rainy, Snownny };
+﻿public enum WeatherTag
+{
+    Sunny,
+    Rainy,
+    Snownny
+};
