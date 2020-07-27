@@ -22,7 +22,7 @@ public class GridMenuController : MenuController
     {
         if (inputController < delay)
             inputController += Time.unscaledDeltaTime;
-        else if (InputUtil.GetAction())
+        else if (InputManager.Instance.GetAction())
             columns[currentMenuVertical - 1].transform.GetChild(currentMenuHorizontal - 1).GetComponentInChildren<Button>().onClick.Invoke();
         else
             InputControllerVerticalAndHorizontal();
@@ -52,7 +52,7 @@ public class GridMenuController : MenuController
 
     private void InputControllerVertical()
     {
-        vertical = InputUtil.GetVertical();
+        vertical = InputManager.Instance.GetVertical();
 
         if (vertical == 0)
             return;
@@ -77,7 +77,7 @@ public class GridMenuController : MenuController
 
     private void InputControllerHorizontal()
     {
-        horizontal = InputUtil.GetHorizontal();
+        horizontal = InputManager.Instance.GetHorizontal();
 
         if (horizontal == 0)
             return;

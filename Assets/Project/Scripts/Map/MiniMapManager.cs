@@ -57,15 +57,15 @@ public class MiniMapManager : MonoBehaviour
         Movement();
         Zoom();
 
-        if (InputUtil.GetAction())
+        if (InputManager.Instance.GetAction())
             Travel();
     }
 
     #region Movement
     private void Movement()
     {
-        horizontal = InputUtil.GetHorizontal();
-        vertical = InputUtil.GetVertical();
+        horizontal = InputManager.Instance.GetHorizontal();
+        vertical = InputManager.Instance.GetVertical();
 
         if (horizontal != 0 || vertical != 0)
         {
@@ -102,12 +102,12 @@ public class MiniMapManager : MonoBehaviour
 
     private void Zoom()
     {
-        if (InputUtil.GetSecondUp())
+        if (InputManager.Instance.GetSecondUp())
             up = speed;
         else
             up = 0;
 
-        if (InputUtil.GetSecondDown())
+        if (InputManager.Instance.GetSecondDown())
             down = speed;
         else
             down = 0;

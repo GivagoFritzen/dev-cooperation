@@ -40,7 +40,7 @@ public class DialogueManager : MonoBehaviour
     {
         DelayController();
 
-        if (InputUtil.GetAction() && delayNextSentenceController >= delayNextSentence)
+        if (InputManager.Instance.GetAction() && delayNextSentenceController >= delayNextSentence)
         {
             delayNextSentenceController = 0;
             DisplayNextSentence();

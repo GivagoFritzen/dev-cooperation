@@ -24,7 +24,7 @@ public class PickupItem : MonoBehaviour
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if (InputUtil.GetAction() && collision.CompareTag("Player"))
+        if (InputManager.Instance.GetAction() && collision.CompareTag("Player"))
         {
             bool taked = PlayerManager.Instance.inventory.PickUpItem(item);
 

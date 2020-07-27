@@ -40,9 +40,9 @@ public class MenuManagerInGame : MenuController
 
     private void ButtonController()
     {
-        pressedButtonMap = InputUtil.GetMap();
-        pressedButtonMenu = InputUtil.GetMenu();
-        pressedButtonInventory = InputUtil.GetInventory();
+        pressedButtonMap = InputManager.Instance.GetMap();
+        pressedButtonMenu = InputManager.Instance.GetMenu();
+        pressedButtonInventory = InputManager.Instance.GetInventory();
     }
 
     private bool PressedAnyButton()
