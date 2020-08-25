@@ -1,0 +1,79 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &8697245369259855704
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8697245369259855706}
+  - component: {fileID: 8697245369259855707}
+  m_Layer: 0
+  m_Name: Room
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8697245369259855706
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8697245369259855704}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 76.070404, y: 93.057106, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8697245369259855707
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8697245369259855704}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba6f2167cece1ec4f9ac9583a6c38246, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objectsCenterRoom:
+  - prefab: {fileID: 1788881309438206660, guid: 08cccfedfe708c54188ed01ee6b2c7e3,
+      type: 3}
+    chanceToDrop: 7
+  - prefab: {fileID: 7217123345089412276, guid: 54b2987411ade964a97bcac3fb989267,
+      type: 3}
+    chanceToDrop: 14
+  - prefab: {fileID: 6255551847179449355, guid: 2372a6b679823cf4996f506dfc3a7570,
+      type: 3}
+    chanceToDrop: 21
+  - prefab: {fileID: 5190603686697994517, guid: c9430334c6a7e634caad7fea60203579,
+      type: 3}
+    chanceToDrop: 28
+  - prefab: {fileID: 6181624050771900031, guid: 195238f2838326b4db3b852e3421fb41,
+      type: 3}
+    chanceToDrop: 35
+  - prefab: {fileID: 8091723780260100587, guid: 85fb3def4ba35174096e4c3cf158eaa6,
+      type: 3}
+    chanceToDrop: 42
+  - prefab: {fileID: 5410174477585731631, guid: 75820e5b503f081488616857412a2b2e,
+      type: 3}
+    chanceToDrop: 49
+  - prefab: {fileID: 760028328702295045, guid: c5a4c9d0abdf40f408710206fa37b733, type: 3}
+    chanceToDrop: 56
+  - prefab: {fileID: 827233396270528696, guid: ae50bc6f92b045842a30fba17648dfb6, type: 3}
+    chanceToDrop: 60
+  objectsAsideDoor:
+  - prefab: {fileID: 0}
+    chanceToDrop: 0
+  - prefab: {fileID: 0}
+    chanceToDrop: 0
+  objectsAsideWall: []
+  objectsInRoom: []
+  enemiesInRoom: []

@@ -133,8 +133,7 @@ GameObject:
   - component: {fileID: 2144031}
   - component: {fileID: 2144034}
   - component: {fileID: 2144033}
-  - component: {fileID: 2144036}
-  - component: {fileID: 2144032}
+  - component: {fileID: 2144037}
   m_Layer: 0
   m_Name: PitMap
   m_TagString: Untagged
@@ -180,28 +179,6 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
---- !u!66 &2144032
-CompositeCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2144030}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_GeometryType: 0
-  m_GenerationType: 0
-  m_EdgeRadius: 0
-  m_ColliderPaths: []
-  m_CompositePaths:
-    m_Paths: []
-  m_VertexDistance: 0.0005
-  m_OffsetDistance: 0.00005
 --- !u!19719996 &2144033
 TilemapCollider2D:
   m_ObjectHideFlags: 0
@@ -256,7 +233,7 @@ TilemapRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: -100
   m_ChunkSize: {x: 32, y: 32, z: 32}
   m_ChunkCullingBounds: {x: 0, y: 0, z: 0}
   m_MaxChunkCount: 16
@@ -279,27 +256,22 @@ Transform:
   m_Father: {fileID: 776916682}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!50 &2144036
-Rigidbody2D:
-  serializedVersion: 4
+--- !u!114 &2144037
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2144030}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e3fdca004f2d45fe8abbed571a8abd5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_OverrideArea: 1
+  m_Area: 1
+  m_IgnoreFromBuild: 0
+  m_AffectedAgents: ffffffff
 --- !u!1 &41264582
 GameObject:
   m_ObjectHideFlags: 0
@@ -1842,6 +1814,7 @@ GameObject:
   - component: {fileID: 640271829}
   - component: {fileID: 640271831}
   - component: {fileID: 640271830}
+  - component: {fileID: 640271832}
   m_Layer: 0
   m_Name: WallMap
   m_TagString: Untagged
@@ -1925,7 +1898,7 @@ TilemapRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: -98
   m_ChunkSize: {x: 32, y: 32, z: 32}
   m_ChunkCullingBounds: {x: 0, y: 0, z: 0}
   m_MaxChunkCount: 16
@@ -1946,7 +1919,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 776916682}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!19719996 &640271829
 TilemapCollider2D:
@@ -2007,6 +1980,22 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &640271832
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 640271825}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e3fdca004f2d45fe8abbed571a8abd5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_OverrideArea: 1
+  m_Area: 1
+  m_IgnoreFromBuild: 0
+  m_AffectedAgents: ffffffff
 --- !u!1 &646011242
 GameObject:
   m_ObjectHideFlags: 0
@@ -2525,15 +2514,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 421f29070456db243884feeb66172a05, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxRoutes: 6
+  maxRoutes: 2
+  navMeshSurface2d: {fileID: 1327053227}
+  roomPrefab: {fileID: 8697245369259855704, guid: f461235ff57faab4ca32ddef36432979,
+    type: 3}
   roomSize:
-    min: 16
+    min: 18
     max: 22
   amountPossiblesCorridors:
     min: 1
-    max: 3
-  corridorWidth: 15
-  corridorHeight: 4
+    max: 1
+  corridorWidth: 14
+  corridorHeight: 5
   groundTile: {fileID: 11400000, guid: 9e21fc1bc7278ef4c8a107684c65b922, type: 2}
   topWallTile: {fileID: 11400000, guid: bb31bd455a9d06b49b055012274a5849, type: 2}
   botWallTile: {fileID: 11400000, guid: de5f148cde24fd44dbb29d979599b07c, type: 2}
@@ -2564,8 +2556,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 1507093727}
   - {fileID: 640271828}
+  - {fileID: 1507093727}
   - {fileID: 2144035}
   m_Father: {fileID: 0}
   m_RootOrder: 2
@@ -4052,9 +4044,9 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4294967295
   m_UseGeometry: 0
-  m_OverrideByGrid: 1
+  m_OverrideByGrid: 0
   m_UseMeshPrefab: {fileID: 0}
-  m_CompressBounds: 1
+  m_CompressBounds: 0
   m_OverrideVector: {x: 1, y: 1, z: 1}
   m_DefaultArea: 0
   m_IgnoreNavMeshAgent: 1
@@ -4064,7 +4056,7 @@ MonoBehaviour:
   m_OverrideVoxelSize: 0
   m_VoxelSize: 0.06666667
   m_BuildHeightMesh: 0
-  m_NavMeshData: {fileID: 23800000, guid: f146b1c17ba1cbc48bcc9b47b111f57e, type: 2}
+  m_NavMeshData: {fileID: 0}
 --- !u!4 &1327053228
 Transform:
   m_ObjectHideFlags: 0
@@ -5102,7 +5094,7 @@ TilemapRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: -99
   m_ChunkSize: {x: 32, y: 32, z: 32}
   m_ChunkCullingBounds: {x: 0, y: 0, z: 0}
   m_MaxChunkCount: 16
@@ -5123,7 +5115,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 776916682}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1594586321
 GameObject:

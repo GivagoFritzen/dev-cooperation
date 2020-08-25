@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.Tilemaps;
 
 public class DungeonManager : MonoBehaviour
@@ -10,8 +11,15 @@ public class DungeonManager : MonoBehaviour
     private int maxRoutes = 20;
     private const float PI = 3.1415926535f;
     [SerializeField]
+    private NavMeshSurface2d navMeshSurface2d = null;
+
+    [Header("Room")]
+    [SerializeField]
+    private GameObject roomPrefab = null;
+    [SerializeField]
     private IntRange roomSize = new IntRange(1, 100);
-    public Vector2Int centerOfFirstRoom { get; private set; } = Vector2Int.zero;
+    private List<DungeonRoomManager> rooms = new List<DungeonRoomManager>();
+    private Vector2Int centerOfFirstRoom = Vector2Int.zero;
 
     [Header("Corridor")]
     [SerializeField]
@@ -20,6 +28,7 @@ public class DungeonManager : MonoBehaviour
     private int corridorWidth = 0;
     [SerializeField]
     private int corridorHeight = 0;
+    private int corridorMargin = 5;
 
     [Header("Tiles")]
     [SerializeField]
@@ -43,6 +52,9 @@ public class DungeonManager : MonoBehaviour
     {
         NewRoute(0, 0, amountPossiblesCorridors.Random, RandomDirection(), 0);
         FillWalls();
+        SetPlayerPosition();
+        PopulateRooms();
+        BuildNavMeshSurface();
     }
 
     private void NewRoute(int x, int y, int routeLength, Direction lastDirection, int routeCount = 0)
@@ -73,7 +85,9 @@ public class DungeonManager : MonoBehaviour
             if (routeCount == 1)
                 centerOfFirstRoom = new Vector2Int(xOffset, yOffset);
 
-            GenerateRoom(xOffset, yOffset, currentRoomSize);
+            if (groundMap.GetTile(new Vector3Int(xOffset, yOffset, 0)) == null)
+                GenerateRoom(xOffset, yOffset, currentRoomSize);
+
             NewRoute(xOffset, yOffset, amountPossiblesCorridors.Random, direction, routeCount);
 
             if (routeCount > 1)
@@ -81,6 +95,12 @@ public class DungeonManager : MonoBehaviour
 
             routeLength--;
         } while (routeLength > 0);
+    }
+
+    private void SetPlayerPosition()
+    {
+        if (PlayerManager.Instance != null)
+            PlayerManager.Instance.gameObject.transform.position = new Vector3(centerOfFirstRoom.x, centerOfFirstRoom.y, 0);
     }
 
     private int GetXOffSet(int x, Direction direction, int currentRoomSize)
@@ -168,23 +188,36 @@ public class DungeonManager : MonoBehaviour
     #region Generate Rooms
     private void GenerateRoom(int x, int y, int radius)
     {
-        int randomRoom = Random.Range(0, 4);
-        switch (randomRoom)
+        RoomTag typeOfRoom = RandomRoom();
+        switch (typeOfRoom)
         {
-            case 0:
+            case RoomTag.Square:
             default:
                 GenerateSquare(x, y, radius);
                 break;
-            case 1:
+            case RoomTag.Circle:
                 GenerateCircle(x, y, radius);
                 break;
-            case 2:
+            case RoomTag.Cross:
                 GenerateCross(x, y, radius);
                 break;
-            case 3:
+            case RoomTag.SquareWithCorridors:
                 GenerateSquareWithCorridors(x, y, radius);
                 break;
         }
+
+        DungeonRoomManager dungeonRoom = Instantiate(roomPrefab, new Vector3(x, y, 0), Quaternion.identity, transform).GetComponent<DungeonRoomManager>();
+        dungeonRoom.Init(radius, typeOfRoom);
+        rooms.Add(dungeonRoom);
+    }
+
+    private RoomTag RandomRoom()
+    {
+        List<RoomTag> allRooms = System.Enum.GetValues(typeof(RoomTag))
+                                    .Cast<RoomTag>()
+                                    .ToList();
+
+        return allRooms[Random.Range(0, allRooms.Count - 1)];
     }
 
     private void GenerateSquare(int x, int y, int radius)
@@ -256,7 +289,7 @@ public class DungeonManager : MonoBehaviour
         int width = corridorHeight;
 
         for (int tileX = x - width / 2; tileX <= x + width / 2; tileX++)
-            for (int tileY = y; tileY <= yOffset; tileY++)
+            for (int tileY = y + corridorMargin; tileY <= yOffset - corridorMargin; tileY++)
                 SetTileGround(tileX, tileY);
     }
 
@@ -265,7 +298,7 @@ public class DungeonManager : MonoBehaviour
         int width = corridorHeight;
 
         for (int tileX = x - width / 2; tileX <= x + width / 2; tileX++)
-            for (int tileY = y; tileY >= yOffset; tileY--)
+            for (int tileY = y - corridorMargin; tileY >= yOffset - corridorMargin; tileY--)
                 SetTileGround(tileX, tileY);
     }
 
@@ -273,7 +306,7 @@ public class DungeonManager : MonoBehaviour
     {
         int height = corridorHeight;
 
-        for (int tileX = x; tileX <= xOffset; tileX++)
+        for (int tileX = x + corridorMargin; tileX <= xOffset - corridorMargin; tileX++)
             for (int tileY = y - height / 2; tileY <= y + height / 2; tileY++)
                 SetTileGround(tileX, tileY);
     }
@@ -282,12 +315,13 @@ public class DungeonManager : MonoBehaviour
     {
         int height = corridorHeight;
 
-        for (int tileX = x; tileX >= xOffset; tileX--)
+        for (int tileX = x - corridorMargin; tileX >= xOffset - corridorMargin; tileX--)
             for (int tileY = y - height / 2; tileY <= y + height / 2; tileY++)
                 SetTileGround(tileX, tileY);
     }
     #endregion
 
+    #region Tile Maps
     private void SetTileGround(int x, int y)
     {
         Vector3Int tilePos = new Vector3Int(x, y, 0);
@@ -312,13 +346,34 @@ public class DungeonManager : MonoBehaviour
                 if (tile == null)
                 {
                     if (tileBelow != null)
+                    {
                         wallMap.SetTile(pos, topWallTile);
+                        wallMap.SetTile(posBelow, botWallTile);
+                    }
                     else if (tileAbove != null)
+                    {
+                        wallMap.SetTile(posAbove, topWallTile);
                         wallMap.SetTile(pos, botWallTile);
+                    }
                     else
+                    {
                         pitMap.SetTile(pos, pitTile);
+                    }
                 }
             }
         }
+    }
+    #endregion
+
+    private void PopulateRooms()
+    {
+        foreach (var room in rooms)
+            room.Populate();
+    }
+
+    private void BuildNavMeshSurface()
+    {
+        if (navMeshSurface2d != null)
+            navMeshSurface2d.BuildNavMesh();
     }
 }
