@@ -21,9 +21,9 @@ public class WalkerManager : CreatureManager
     [SerializeField]
     private GameObject projectile = null;
 
-    public override void Start()
+    public void Start()
     {
-        base.Start();
+        SetMaxLife();
         UpdateUI();
         SetComponents();
     }

@@ -60,7 +60,7 @@ public class MenuManager : MenuController
         {
             creditsDelay += Time.deltaTime;
 
-            if (InputManager.Instance.GetAction() && creditsDelay > creditsDelayTimer)
+            if (InputManager.Instance.AnyKey() && creditsDelay > creditsDelayTimer)
             {
                 creditsDelay = 0;
                 StopCoroutine(creditsCoroutine);

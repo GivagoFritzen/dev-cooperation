@@ -9,7 +9,7 @@ public class CreatureManager : MonoBehaviour
     [SerializeField]
     protected float moveSpeed = 5f;
 
-    public virtual void Start()
+    public void SetMaxLife()
     {
         life = maxLife;
     }

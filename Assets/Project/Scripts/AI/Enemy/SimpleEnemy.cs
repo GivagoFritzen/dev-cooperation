@@ -40,9 +40,9 @@ public class SimpleEnemy : CreatureManager
     [SerializeField]
     private float timerAttackController = 0;
 
-    public override void Start()
+    protected virtual void Start()
     {
-        base.Start();
+        SetMaxLife();
 
         navmeshUtil = gameObject.AddComponent<NavmeshUtil>();
 
@@ -52,7 +52,7 @@ public class SimpleEnemy : CreatureManager
         FindNewPoint();
     }
 
-    private void Update()
+    protected virtual void Update()
     {
         if (GameManager.Instance.PlayerIsAlive() && GetPlayerDistance() < viewDistance && CanSeePlayer())
         {
@@ -67,7 +67,7 @@ public class SimpleEnemy : CreatureManager
         FixedRotation();
     }
 
-    private void FixedRotation()
+    protected void FixedRotation()
     {
         transform.eulerAngles = fixedRotation;
     }
@@ -114,7 +114,7 @@ public class SimpleEnemy : CreatureManager
         return false;
     }
 
-    private void Attack()
+    protected virtual void Attack()
     {
         if (!canAttack || GetPlayerDistance() > distanceToAttack || !CanSeePlayer())
             return;
@@ -136,7 +136,7 @@ public class SimpleEnemy : CreatureManager
     }
     #endregion
 
-    private void Stop()
+    protected void Stop()
     {
         canAttack = false;
         navMeshAgent.isStopped = true;

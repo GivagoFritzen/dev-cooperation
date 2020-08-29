@@ -1,4 +1,7 @@
 ﻿using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Controls;
+using UnityEngine.InputSystem.LowLevel;
 
 public class InputManager : MonoBehaviour
 {
@@ -147,5 +150,24 @@ public class InputManager : MonoBehaviour
         bool currentAction = action;
         action = false;
         return currentAction;
+    }
+
+    public bool AnyKey()
+    {
+        var horizontal = GetHorizontal();
+        if (horizontal != 0)
+            return true;
+
+        var vertical = GetVertical();
+        if (vertical != 0)
+            return true;
+
+        return GetSecondUp() ||
+            GetSecondDown() ||
+            GetMenu() ||
+            GetInventory() ||
+            GetDistanceAttack() ||
+            GetMap() ||
+            GetAction();
     }
 }

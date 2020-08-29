@@ -46,9 +46,9 @@ public class PlayerManager : CreatureManager
         }
     }
 
-    public override void Start()
+    public void Start()
     {
-        base.Start();
+        SetMaxLife();
         SetComponents();
 
         UpdateUI();
