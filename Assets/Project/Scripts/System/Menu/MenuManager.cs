@@ -4,8 +4,12 @@ using UnityEngine.SceneManagement;
 
 public class MenuManager : MenuController
 {
+    [Space(10)]
+    [Header("Menu Manager")]
     [SerializeField]
     private GameObject menu = null;
+    [SerializeField]
+    private GameObject options = null;
     [SerializeField]
     private GameObject credits = null;
 
@@ -25,6 +29,7 @@ public class MenuManager : MenuController
         Init();
 
         menu.SetActive(true);
+        options.SetActive(false);
         credits.SetActive(false);
 
         creditsCoroutine = CreditsController();
@@ -41,6 +46,12 @@ public class MenuManager : MenuController
     {
         canMove = true;
         InitTransition(sceneName);
+    }
+
+    public void OpenOptions()
+    {
+        menu.SetActive(false);
+        options.SetActive(true);
     }
 
     public void OpenCredits()

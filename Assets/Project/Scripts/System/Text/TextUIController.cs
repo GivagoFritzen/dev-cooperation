@@ -15,6 +15,7 @@ public class TextUIController : MonoBehaviour
 
     public void UpdateText()
     {
-        textPro.text = text.GetCurrentText();
+        if (textPro != null)
+            textPro.text = text.GetCurrentText();
     }
 }

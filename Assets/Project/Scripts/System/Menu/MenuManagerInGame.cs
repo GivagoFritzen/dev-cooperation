@@ -4,8 +4,10 @@ public class MenuManagerInGame : MenuController
 {
     public static MenuManagerInGame Instance;
 
-    [Header("Menu Manager")]
+    [Header("Menu Manager In Game")]
     public GameObject menu = null;
+    [SerializeField]
+    private GameObject options = null;
     [SerializeField]
     private MenuTag menuTag = MenuTag.Disabled;
 
@@ -92,6 +94,12 @@ public class MenuManagerInGame : MenuController
     }
 
     #region Actions
+    public void OpenOptions()
+    {
+        options.SetActive(true);
+        menu.SetActive(false);
+    }
+
     public void ClosePauseMenuButton()
     {
         ClosePauseMenu();
@@ -107,6 +115,7 @@ public class MenuManagerInGame : MenuController
     private void CloseAllMenus()
     {
         menu.SetActive(false);
+        options.SetActive(false);
         MiniMapManager.Instance.CloseMap();
         InventoryController.Instance.ActiveMenu(false);
     }

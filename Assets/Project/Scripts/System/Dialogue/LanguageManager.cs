@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class LanguageManager : MonoBehaviour
 {
@@ -13,8 +14,23 @@ public class LanguageManager : MonoBehaviour
         Instance = this;
     }
 
+    public void ChangeLanguage(string newLanguage)
+    {
+        Enum.TryParse(newLanguage, out LanguageTag language);
+        currentLanguage = language;
+
+        UpdateAllTexts();
+    }
+
     public void ChangeLanguage(LanguageTag newLanguage)
     {
         currentLanguage = newLanguage;
+        UpdateAllTexts();
+    }
+
+    private void UpdateAllTexts()
+    {
+        foreach (TextUIController text in Resources.FindObjectsOfTypeAll(typeof(TextUIController)) as TextUIController[])
+            text.UpdateText();
     }
 }
