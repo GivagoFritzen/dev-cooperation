@@ -81,7 +81,7 @@ public class BookManager : MonoBehaviour
 
     private int GetPagesAmount()
     {
-        return Mathf.CeilToInt((float)textPerPage.texts[0].sentences.Length / 2);
+        return Mathf.CeilToInt((float)textPerPage.GetCurrentTextLanguage().sentences.Length / 2);
     }
 
     private void WritePage()
@@ -94,16 +94,16 @@ public class BookManager : MonoBehaviour
 
         bool isOdd = false;
         if (currentPage == GetPagesAmount())
-            isOdd = textPerPage.texts[0].sentences.Length % 2 != 0;
+            isOdd = textPerPage.GetCurrentTextLanguage().sentences.Length % 2 != 0;
 
         if (isOdd)
         {
-            pageLeft.text = textPerPage.texts[0].sentences[(currentPage - 1) * 2].ToString();
+            pageLeft.text = textPerPage.GetCurrentTextLanguage().sentences[(currentPage - 1) * 2].ToString();
         }
         else
         {
-            pageLeft.text = textPerPage.texts[0].sentences[currentPage / 2].ToString();
-            pageRight.text = textPerPage.texts[0].sentences[currentPage / 2 + 1].ToString();
+            pageLeft.text = textPerPage.GetCurrentTextLanguage().sentences[currentPage / 2].ToString();
+            pageRight.text = textPerPage.GetCurrentTextLanguage().sentences[currentPage / 2 + 1].ToString();
         }
     }
 
