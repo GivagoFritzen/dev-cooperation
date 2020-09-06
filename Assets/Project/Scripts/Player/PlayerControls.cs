@@ -83,7 +83,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""interactions"": """"
                 },
                 {
-                    ""name"": ""New action"",
+                    ""name"": ""Run"",
                     ""type"": ""Button"",
                     ""id"": ""a6a0aa4c-a5d6-49b9-be74-1a829f4ba980"",
                     ""expectedControlType"": ""Button"",
@@ -223,6 +223,17 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""action"": ""SecondDown"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""640672be-b23f-4f84-ad36-02171c0382f2"",
+                    ""path"": ""<Keyboard>/leftShift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Run"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -239,7 +250,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         m_Instance_Action = m_Instance.FindAction("Action", throwIfNotFound: true);
         m_Instance_SecondUp = m_Instance.FindAction("SecondUp", throwIfNotFound: true);
         m_Instance_SecondDown = m_Instance.FindAction("SecondDown", throwIfNotFound: true);
-        m_Instance_Newaction = m_Instance.FindAction("New action", throwIfNotFound: true);
+        m_Instance_Run = m_Instance.FindAction("Run", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -297,7 +308,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
     private readonly InputAction m_Instance_Action;
     private readonly InputAction m_Instance_SecondUp;
     private readonly InputAction m_Instance_SecondDown;
-    private readonly InputAction m_Instance_Newaction;
+    private readonly InputAction m_Instance_Run;
     public struct InstanceActions
     {
         private @PlayerControls m_Wrapper;
@@ -310,7 +321,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         public InputAction @Action => m_Wrapper.m_Instance_Action;
         public InputAction @SecondUp => m_Wrapper.m_Instance_SecondUp;
         public InputAction @SecondDown => m_Wrapper.m_Instance_SecondDown;
-        public InputAction @Newaction => m_Wrapper.m_Instance_Newaction;
+        public InputAction @Run => m_Wrapper.m_Instance_Run;
         public InputActionMap Get() { return m_Wrapper.m_Instance; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -344,9 +355,9 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 @SecondDown.started -= m_Wrapper.m_InstanceActionsCallbackInterface.OnSecondDown;
                 @SecondDown.performed -= m_Wrapper.m_InstanceActionsCallbackInterface.OnSecondDown;
                 @SecondDown.canceled -= m_Wrapper.m_InstanceActionsCallbackInterface.OnSecondDown;
-                @Newaction.started -= m_Wrapper.m_InstanceActionsCallbackInterface.OnNewaction;
-                @Newaction.performed -= m_Wrapper.m_InstanceActionsCallbackInterface.OnNewaction;
-                @Newaction.canceled -= m_Wrapper.m_InstanceActionsCallbackInterface.OnNewaction;
+                @Run.started -= m_Wrapper.m_InstanceActionsCallbackInterface.OnRun;
+                @Run.performed -= m_Wrapper.m_InstanceActionsCallbackInterface.OnRun;
+                @Run.canceled -= m_Wrapper.m_InstanceActionsCallbackInterface.OnRun;
             }
             m_Wrapper.m_InstanceActionsCallbackInterface = instance;
             if (instance != null)
@@ -375,9 +386,9 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 @SecondDown.started += instance.OnSecondDown;
                 @SecondDown.performed += instance.OnSecondDown;
                 @SecondDown.canceled += instance.OnSecondDown;
-                @Newaction.started += instance.OnNewaction;
-                @Newaction.performed += instance.OnNewaction;
-                @Newaction.canceled += instance.OnNewaction;
+                @Run.started += instance.OnRun;
+                @Run.performed += instance.OnRun;
+                @Run.canceled += instance.OnRun;
             }
         }
     }
@@ -392,6 +403,6 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         void OnAction(InputAction.CallbackContext context);
         void OnSecondUp(InputAction.CallbackContext context);
         void OnSecondDown(InputAction.CallbackContext context);
-        void OnNewaction(InputAction.CallbackContext context);
+        void OnRun(InputAction.CallbackContext context);
     }
 }

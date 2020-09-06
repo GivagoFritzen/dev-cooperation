@@ -3570,7 +3570,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 421f29070456db243884feeb66172a05, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxRoutes: 2
+  maxRoutes: 4
   navMeshSurface2d: {fileID: 1327053227}
   roomPrefab: {fileID: 8697245369259855704, guid: f461235ff57faab4ca32ddef36432979,
     type: 3}
@@ -3579,8 +3579,8 @@ MonoBehaviour:
     max: 22
   amountPossiblesCorridors:
     min: 1
-    max: 1
-  corridorWidth: 14
+    max: 3
+  corridorWidth: 10
   corridorHeight: 5
   groundTile: {fileID: 11400000, guid: 9e21fc1bc7278ef4c8a107684c65b922, type: 2}
   topWallTile: {fileID: 11400000, guid: bb31bd455a9d06b49b055012274a5849, type: 2}

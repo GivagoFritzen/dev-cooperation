@@ -70,7 +70,7 @@
                     "interactions": ""
                 },
                 {
-                    "name": "New action",
+                    "name": "Run",
                     "type": "Button",
                     "id": "a6a0aa4c-a5d6-49b9-be74-1a829f4ba980",
                     "expectedControlType": "Button",
@@ -208,6 +208,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "SecondDown",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "640672be-b23f-4f84-ad36-02171c0382f2",
+                    "path": "<Keyboard>/leftShift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Run",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

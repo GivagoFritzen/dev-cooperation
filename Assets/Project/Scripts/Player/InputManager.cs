@@ -10,6 +10,7 @@ public class InputManager : MonoBehaviour
 
     private Vector2 movement = Vector2.zero;
 
+    private bool run = false;
     private bool secondUp = false;
     private bool secondDown = false;
     private bool menu = false;
@@ -49,6 +50,7 @@ public class InputManager : MonoBehaviour
         MovementControl();
         SecondAxisControl();
 
+        RunControl();
         MenuControl();
         InventoryControl();
         DistanceAttackControl();
@@ -74,6 +76,12 @@ public class InputManager : MonoBehaviour
     private void MenuControl()
     {
         controls.Instance.Menu.started += ctx => menu = !menu;
+    }
+
+    private void RunControl()
+    {
+        controls.Instance.Run.performed += ctx => run = true;
+        controls.Instance.Run.canceled += ctx => run = false;
     }
 
     private void InventoryControl()
@@ -105,6 +113,11 @@ public class InputManager : MonoBehaviour
     public float GetVertical()
     {
         return movement.y;
+    }
+
+    public bool GetRun()
+    {
+        return run;
     }
 
     public bool GetSecondUp()

@@ -9,6 +9,7 @@ public class DungeonManager : MonoBehaviour
     [Header("Dungeon Manager")]
     [SerializeField]
     private int maxRoutes = 20;
+    private bool foundExit = false;
     private const float PI = 3.1415926535f;
     [SerializeField]
     private NavMeshSurface2d navMeshSurface2d = null;
@@ -86,7 +87,7 @@ public class DungeonManager : MonoBehaviour
                 centerOfFirstRoom = new Vector2Int(xOffset, yOffset);
 
             if (groundMap.GetTile(new Vector3Int(xOffset, yOffset, 0)) == null)
-                GenerateRoom(xOffset, yOffset, currentRoomSize);
+                GenerateRoom(xOffset, yOffset, currentRoomSize, GetExit(routeCount));
 
             NewRoute(xOffset, yOffset, amountPossiblesCorridors.Random, direction, routeCount);
 
@@ -95,6 +96,19 @@ public class DungeonManager : MonoBehaviour
 
             routeLength--;
         } while (routeLength > 0);
+    }
+
+    private bool GetExit(int routeCount)
+    {
+        if (!foundExit)
+        {
+            bool lastRoute = routeCount >= maxRoutes;
+            foundExit = lastRoute;
+
+            return foundExit;
+        }
+
+        return false;
     }
 
     private void SetPlayerPosition()
@@ -186,7 +200,7 @@ public class DungeonManager : MonoBehaviour
     }
 
     #region Generate Rooms
-    private void GenerateRoom(int x, int y, int radius)
+    private void GenerateRoom(int x, int y, int radius, bool exit = false)
     {
         RoomTag typeOfRoom = RandomRoom();
         switch (typeOfRoom)
@@ -207,7 +221,7 @@ public class DungeonManager : MonoBehaviour
         }
 
         DungeonRoomManager dungeonRoom = Instantiate(roomPrefab, new Vector3(x, y, 0), Quaternion.identity, transform).GetComponent<DungeonRoomManager>();
-        dungeonRoom.Init(radius, typeOfRoom);
+        dungeonRoom.Init(radius, wallMap, pitMap, corridorHeight, exit);
         rooms.Add(dungeonRoom);
     }
 
@@ -245,7 +259,7 @@ public class DungeonManager : MonoBehaviour
 
     private void GenerateCross(int x, int y, int radius)
     {
-        int minSize = radius / 2;
+        int minSize = (int)(radius / 1.5f);
         int maxSize = radius;
 
         for (int tileX = x - minSize / 2; tileX <= x + minSize / 2; tileX++)

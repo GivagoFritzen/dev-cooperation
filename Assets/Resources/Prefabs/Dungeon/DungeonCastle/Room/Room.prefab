@@ -70,10 +70,73 @@ MonoBehaviour:
   - prefab: {fileID: 827233396270528696, guid: ae50bc6f92b045842a30fba17648dfb6, type: 3}
     chanceToDrop: 60
   objectsAsideDoor:
+  - prefab: {fileID: 1946676475685785630, guid: 2436001cc65cde8459cd58ea6400d66d,
+      type: 3}
+    chanceToDrop: 7
+  - prefab: {fileID: 5491607779374327596, guid: 515b9cd096eb1a54e8fd5485d1f56344,
+      type: 3}
+    chanceToDrop: 14
+  - prefab: {fileID: 812994276790200256, guid: ecebe9b72ea312c409a0d5dd1d3fe162, type: 3}
+    chanceToDrop: 21
+  - prefab: {fileID: 4472498117533856173, guid: 38f21c1e350d3b146a02061e8220aa4c,
+      type: 3}
+    chanceToDrop: 28
+  - prefab: {fileID: 5710124948073866833, guid: 80273f62e739f894ab400ba9b000b1a5,
+      type: 3}
+    chanceToDrop: 35
+  - prefab: {fileID: 3604765554438624345, guid: 1ed23e5d88821f44e8447a908c506fc0,
+      type: 3}
+    chanceToDrop: 42
+  - prefab: {fileID: 4406396355309747308, guid: f666f4933744e7447a0d88389adcc20b,
+      type: 3}
+    chanceToDrop: 49
+  - prefab: {fileID: 5670491161075197186, guid: 2b6b6857c62ebfb4d9d734a9636eb518,
+      type: 3}
+    chanceToDrop: 56
+  - prefab: {fileID: 5670491161075197186, guid: 2b6b6857c62ebfb4d9d734a9636eb518,
+      type: 3}
+    chanceToDrop: 100
+  objectsInRoom:
   - prefab: {fileID: 0}
-    chanceToDrop: 0
+    chanceToDrop: 5
+  - prefab: {fileID: 6928446328215393027, guid: ccf207c96569b0748abd1510eff172fd,
+      type: 3}
+    chanceToDrop: 10
+  - prefab: {fileID: 9111315717200720984, guid: fe9498971da774f4ab5aba9d2fcf8c19,
+      type: 3}
+    chanceToDrop: 15
+  - prefab: {fileID: 8465996171728663311, guid: d2c79816b35c82c478f922ababad6c81,
+      type: 3}
+    chanceToDrop: 20
+  - prefab: {fileID: 5345856136405033536, guid: 474f958a9a74cb443b00aa5bfe2f5b16,
+      type: 3}
+    chanceToDrop: 25
+  - prefab: {fileID: 6355970655987146056, guid: d9052a31d36884f49a0fbe9d207be20a,
+      type: 3}
+    chanceToDrop: 30
+  - prefab: {fileID: 2169861699546341920, guid: 92678a538ba893b49bce5e20ece3f87b,
+      type: 3}
+    chanceToDrop: 35
+  - prefab: {fileID: 6824811433384880687, guid: ff2078a383b7801499b29f7b31b843d6,
+      type: 3}
+    chanceToDrop: 40
+  - prefab: {fileID: 5912165990156167130, guid: 5126c370a9dff7b48b6ff192e7e4dc20,
+      type: 3}
+    chanceToDrop: 45
+  - prefab: {fileID: 2821776535628312381, guid: 9592aefe8d017a84f9ca765f21488c70,
+      type: 3}
+    chanceToDrop: 50
+  - prefab: {fileID: 3548668821114552978, guid: d678bf552409457478f8553078793a36,
+      type: 3}
+    chanceToDrop: 55
   - prefab: {fileID: 0}
-    chanceToDrop: 0
-  objectsAsideWall: []
-  objectsInRoom: []
-  enemiesInRoom: []
+    chanceToDrop: 100
+  numberOfEnemies:
+    min: 0
+    max: 5
+  enemiesInRoom:
+  - prefab: {fileID: 5795981531763446284, guid: e1ef1c9bf27bfa94d9b43c424920aa5e,
+      type: 3}
+    chanceToDrop: 10
+  exitPrefab: {fileID: 808419422665589513, guid: 94554507bc18c94489d4990e51caf563,
+    type: 3}

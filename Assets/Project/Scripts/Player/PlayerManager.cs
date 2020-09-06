@@ -2,6 +2,7 @@
 using TMPro;
 using UnityEngine.SceneManagement;
 
+[RequireComponent(typeof(StaminaManager))]
 [RequireComponent(typeof(BoxCollider2D), typeof(Rigidbody2D), typeof(Animator))]
 public class PlayerManager : CreatureManager
 {
@@ -14,6 +15,7 @@ public class PlayerManager : CreatureManager
     public string transitionPoint { private get; set; } = null;
 
     [Header("Components")]
+    private StaminaManager staminaManager = null;
     [SerializeField]
     private Rigidbody2D rb = null;
     [SerializeField]
@@ -61,6 +63,8 @@ public class PlayerManager : CreatureManager
 
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
+        staminaManager = gameObject.GetComponent<StaminaManager>();
+        staminaManager.Init(moveSpeed);
 
         if (gameObject.GetComponent<PlayerAnimator>() == null)
             gameObject.AddComponent<PlayerAnimator>();
@@ -118,7 +122,7 @@ public class PlayerManager : CreatureManager
 
     private void FixedUpdate()
     {
-        rb.MovePosition(rb.position + movement * moveSpeed * Time.fixedDeltaTime);
+        rb.MovePosition(rb.position + movement * staminaManager.GetSpeed() * Time.fixedDeltaTime);
     }
 
     #region Get/Set
