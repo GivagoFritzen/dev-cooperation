@@ -21,8 +21,8 @@ public class MerchantController : MenuController
     {
         if (Instance != null)
             Destroy(gameObject);
-
-        Instance = this;
+        else
+            Instance = this;
     }
 
     private void Start()
@@ -46,7 +46,7 @@ public class MerchantController : MenuController
 
     public void Open(Merchant merchant)
     {
-        if (merchant == null || merchant.listItems == null || merchant.listItems.Length == 0)
+        if (merchant == null || merchant.listItems == null || merchant.listItems.Count == 0)
             return;
 
         isActived = true;
@@ -85,7 +85,7 @@ public class MerchantController : MenuController
     #region List Controller
     private void PopulateStoreList()
     {
-        for (int i = 0; i < merchant.listItems.Length; i++)
+        for (int i = 0; i < merchant.listItems.Count; i++)
         {
             InventorySlot inventorySlot = Instantiate(inventorySlotPrefab, merchantUI.transform).GetComponent<InventorySlot>();
             inventorySlot.AddItem(merchant.listItems[i]);
@@ -105,7 +105,7 @@ public class MerchantController : MenuController
                 if (inventorySlot.item != null)
                     newList.Add(inventorySlot.item);
 
-            merchant.listItems = newList.ToArray();
+            merchant.listItems = newList;
             merchant = null;
         }
     }

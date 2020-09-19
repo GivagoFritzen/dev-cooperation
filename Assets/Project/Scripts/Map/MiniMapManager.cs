@@ -29,8 +29,8 @@ public class MiniMapManager : MonoBehaviour
     {
         if (Instance != null)
             Destroy(gameObject);
-
-        Instance = this;
+        else
+            Instance = this;
     }
 
     public void CheckAndGetCamera(Camera camera = null)
@@ -38,9 +38,8 @@ public class MiniMapManager : MonoBehaviour
         if (camera != null)
         {
             mapCamera = camera;
-            mapCamera.gameObject.SetActive(true);
-
             cameraRepresentation = mapCamera.transform.GetChild(0).gameObject;
+            mapCamera.gameObject.SetActive(false);
         }
         else if (mapCamera == null)
         {

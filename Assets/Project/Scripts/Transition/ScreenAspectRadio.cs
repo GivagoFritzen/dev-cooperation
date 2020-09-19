@@ -16,8 +16,8 @@ public class ScreenAspectRadio : TransitionDefault
     {
         if (Instance != null)
             Destroy(gameObject);
-
-        Instance = this;
+        else
+            Instance = this;
     }
 
     private RectTransform canvas = null;

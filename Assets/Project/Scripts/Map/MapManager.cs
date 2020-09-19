@@ -1,13 +1,10 @@
 ﻿using System.Collections.Generic;
-using System.Threading;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class MapManager : MonoBehaviour
 {
     public static MapManager Instance;
-
-    private CancellationTokenSource cts;
 
     public List<PickupItem> items = new List<PickupItem>();
     public List<Merchant> merchants = new List<Merchant>();
@@ -17,8 +14,8 @@ public class MapManager : MonoBehaviour
     {
         if (Instance != null)
             Destroy(gameObject);
-
-        Instance = this;
+        else
+            Instance = this;
     }
 
     #region Get Map Info
@@ -114,7 +111,9 @@ public class MapManager : MonoBehaviour
                 GameObject itemObject = (GameObject)Resources.Load($"{RouteUtil.GetPrefabsItems()}ItemPrefab", typeof(GameObject));
                 itemObject.transform.position = new Vector3(item.position[0], item.position[1], item.position[2]);
 
+                Debug.Log(item.name);
                 Item newItem = (Item)Resources.Load(RouteUtil.GetPrefabsItems() + StringUtil.RemoveWhitespace(item.name), typeof(Item));
+                Debug.Log(newItem.icon);
                 itemObject.GetComponent<PickupItem>().SetItem(newItem);
                 itemObject.GetComponent<SpriteRenderer>().sprite = newItem.icon;
 

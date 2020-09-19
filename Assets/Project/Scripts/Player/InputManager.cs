@@ -1,7 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.Controls;
-using UnityEngine.InputSystem.LowLevel;
 
 public class InputManager : MonoBehaviour
 {
@@ -36,11 +33,6 @@ public class InputManager : MonoBehaviour
     private void OnEnable()
     {
         controls.Enable();
-    }
-
-    private void OnDisable()
-    {
-        controls.Disable();
     }
 
     private void ConfigurationControls()

@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class SaveManager : MonoBehaviour
 {
@@ -13,13 +14,14 @@ public class SaveManager : MonoBehaviour
     {
         if (Instance != null)
             Destroy(gameObject);
-
-        Instance = this;
+        else
+            Instance = this;
     }
 
     public void SaveGame()
     {
-        SaveSystem.Save();
+        if (!SceneManager.GetActiveScene().name.Contains("Dungeon"))
+            SaveSystem.Save();
     }
 
     public void LoadGame()

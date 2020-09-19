@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class MenuManagerInGame : MenuController
 {
@@ -9,6 +10,7 @@ public class MenuManagerInGame : MenuController
     [SerializeField]
     private GameObject options = null;
     [SerializeField]
+    private GameObject saveButton = null;
     private MenuTag menuTag = MenuTag.Disabled;
 
     private bool pressedButtonMap = false;
@@ -19,8 +21,8 @@ public class MenuManagerInGame : MenuController
     {
         if (Instance != null)
             Destroy(gameObject);
-
-        Instance = this;
+        else
+            Instance = this;
     }
 
     private void Start()
@@ -42,7 +44,7 @@ public class MenuManagerInGame : MenuController
 
     private void ButtonController()
     {
-        pressedButtonMap = InputManager.Instance.GetMap();
+        pressedButtonMap = SceneManager.GetActiveScene().name.Contains("Dungeon") ? false : InputManager.Instance.GetMap();
         pressedButtonMenu = InputManager.Instance.GetMenu();
         pressedButtonInventory = InputManager.Instance.GetInventory();
     }
@@ -123,6 +125,13 @@ public class MenuManagerInGame : MenuController
     public void ExitGame()
     {
         GameManager.Instance.ExitGame();
+    }
+    #endregion
+
+    #region UI
+    public void ShowSaveButton(bool isDungeon)
+    {
+        saveButton.SetActive(!isDungeon);
     }
     #endregion
 }

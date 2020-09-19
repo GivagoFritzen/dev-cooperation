@@ -10,8 +10,8 @@ public class LanguageManager : MonoBehaviour
     {
         if (Instance != null)
             Destroy(gameObject);
-
-        Instance = this;
+        else
+            Instance = this;
     }
 
     public void ChangeLanguage(string newLanguage)

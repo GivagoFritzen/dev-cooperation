@@ -13,7 +13,7 @@ public class MenuManager : MenuController
     [SerializeField]
     private GameObject credits = null;
 
-    private bool canMove = false;
+    public bool canMove { get; set; } = false;
 
     private float creditsDelay = 0;
     [SerializeField]
@@ -27,6 +27,7 @@ public class MenuManager : MenuController
     private void Start()
     {
         Init();
+        canMove = true;
 
         menu.SetActive(true);
         options.SetActive(false);
@@ -35,27 +36,37 @@ public class MenuManager : MenuController
         creditsCoroutine = CreditsController();
     }
 
+    protected override void Init()
+    {
+        base.Init();
+
+        if (ManagersControl.Instance != null)
+            ManagersControl.Instance.Destroy();
+    }
+
     private void Update()
     {
-        if (!canMove)
+        if (canMove)
             SelectControllerVertical();
     }
 
     #region Actions
     public void StartGame(string sceneName)
     {
-        canMove = true;
+        canMove = false;
         InitTransition(sceneName);
     }
 
     public void OpenOptions()
     {
+        canMove = false;
         menu.SetActive(false);
         options.SetActive(true);
     }
 
     public void OpenCredits()
     {
+        canMove = false;
         menu.SetActive(false);
         credits.SetActive(true);
 
@@ -79,7 +90,7 @@ public class MenuManager : MenuController
                 menu.SetActive(true);
                 credits.SetActive(false);
 
-                canMove = false;
+                canMove = true;
             }
 
             yield return null;

@@ -2,6 +2,7 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.Experimental.Rendering.Universal;
+using UnityEngine.SceneManagement;
 
 public class DayNightManager : MonoBehaviour
 {
@@ -9,11 +10,13 @@ public class DayNightManager : MonoBehaviour
 
     [Header("Components")]
     [SerializeField]
-    private TextMeshProUGUI dayNightText = null;
+    private GameObject canvasDay = null;
     [SerializeField]
+    private TextMeshProUGUI dayNightText = null;
     private Light2D globalLight2D = null;
 
     [Header("Light")]
+    private bool disableLight = false;
     [SerializeField]
     private float daySpeed = 1;
     [SerializeField]
@@ -49,15 +52,29 @@ public class DayNightManager : MonoBehaviour
     {
         if (Instance != null)
             Destroy(gameObject);
+        else
+            Instance = this;
+    }
 
-        Instance = this;
+    private void Start()
+    {
+        globalLight2D = FindObjectOfType<Light2D>();
     }
 
     private void Update()
     {
-        TimerController();
-        dayNightText.text = GetText();
-        GlobalLightController();
+        if (!disableLight)
+        {
+            TimerController();
+            dayNightText.text = GetText();
+            GlobalLightController();
+        }
+    }
+
+    public void Config(bool isDungeon)
+    {
+        disableLight = isDungeon;
+        canvasDay.SetActive(!isDungeon);
     }
 
     private void GlobalLightController()
@@ -162,7 +179,9 @@ public class DayNightManager : MonoBehaviour
         {
             hours = 0;
             day += 1;
-            WeatherManager.Instance.SortWeather();
+
+            if (!SceneManager.GetActiveScene().name.Contains("Dungeon"))
+                WeatherManager.Instance.SortWeather();
         }
     }
 

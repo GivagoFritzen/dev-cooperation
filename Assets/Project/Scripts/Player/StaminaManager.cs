@@ -10,6 +10,9 @@ public class StaminaManager : MonoBehaviour
     [SerializeField]
     private float maxStamina = 100;
     [SerializeField]
+    private float minStaminaToRun = 20;
+    private bool recoveredStamina = true;
+    [SerializeField]
     private float stamina = 100;
     [SerializeField]
     private float staminaAddPerSecond = 2;
@@ -40,7 +43,7 @@ public class StaminaManager : MonoBehaviour
     {
         float speed;
 
-        if (stamina > 0 && InputManager.Instance.GetRun())
+        if (stamina > 0 && InputManager.Instance.GetRun() && recoveredStamina)
         {
             ShowBar();
             DecreaseValue();
@@ -82,6 +85,8 @@ public class StaminaManager : MonoBehaviour
         stamina += Time.deltaTime * staminaAddPerSecond;
         if (stamina > maxStamina)
             stamina = maxStamina;
+        if (!recoveredStamina && stamina >= minStaminaToRun)
+            recoveredStamina = true;
 
         staminaSlider.value = stamina;
     }
@@ -89,8 +94,11 @@ public class StaminaManager : MonoBehaviour
     private void DecreaseValue()
     {
         stamina -= Time.deltaTime * staminaReductionPerSecond;
+
         if (stamina < 0)
             stamina = 0;
+        if (stamina == 0)
+            recoveredStamina = false;
 
         staminaSlider.value = stamina;
     }

@@ -27,6 +27,7 @@ public class PlayerManager : CreatureManager
     public InventoryObject inventory = null;
 
     private TextMeshProUGUI lifeText = null;
+    [SerializeField]
     private TextMeshProUGUI moneyText = null;
 
     [Header("References")]
@@ -87,7 +88,8 @@ public class PlayerManager : CreatureManager
         if (scene.name == "Menu")
         {
             SceneManager.sceneLoaded -= OnLevelFinishedLoading;
-            Destroy(gameObject);
+            if (this != null)
+                Destroy(gameObject);
         }
         else
         {
@@ -110,7 +112,7 @@ public class PlayerManager : CreatureManager
         gold = data.gold;
         transform.position = new Vector3(data.position[0], data.position[1], data.position[2]);
 
-        InventoryController.Instance.PopulateInventorySlots();
+        InventoryController.Instance.PopulateSlots();
         inventory.Load(data.inventory);
     }
     #endregion

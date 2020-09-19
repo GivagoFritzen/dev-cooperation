@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.Audio;
 using static TMPro.TMP_Dropdown;
 
-public class OptionsManager : MonoBehaviour
+public class OptionsManager : MenuController
 {
     [Header("Menu")]
     [SerializeField]
@@ -20,6 +20,8 @@ public class OptionsManager : MonoBehaviour
 
     private void Start()
     {
+        Init();
+
         List<OptionData> listOptionData = new List<OptionData>();
         List<string> listLanguageTags = Enum.GetNames(typeof(LanguageTag)).ToList();
 
@@ -39,6 +41,11 @@ public class OptionsManager : MonoBehaviour
         languageDropdown.value = languageDropdown.options.FindIndex(option => option.text == LanguageManager.Instance.currentLanguage.ToString());
     }
 
+    private void Update()
+    {
+        SelectControllerVertical();
+    }
+
     public void SetVolume(float sliderValue)
     {
         mixer.SetFloat("MusicVolume", sliderValue);
@@ -46,6 +53,9 @@ public class OptionsManager : MonoBehaviour
 
     public void Close()
     {
+        if (menu.GetComponentInParent<MenuManager>() != null)
+            menu.GetComponentInParent<MenuManager>().canMove = true;
+
         menu.SetActive(true);
         gameObject.SetActive(false);
     }

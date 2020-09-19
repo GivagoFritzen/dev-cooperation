@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class WeatherManager : MonoBehaviour
 {
@@ -16,9 +17,25 @@ public class WeatherManager : MonoBehaviour
     private void Awake()
     {
         if (Instance != null)
+        {
             Destroy(gameObject);
+        }
+        else
+        {
+            Instance = this;
+            SceneManager.sceneLoaded += OnLevelFinishedLoading;
+        }
+    }
 
-        Instance = this;
+    private void OnLevelFinishedLoading(Scene scene, LoadSceneMode mode)
+    {
+        if (Instance != null)
+            return;
+
+        if (scene.name.Contains("Dungeon"))
+            enabled = false;
+        else
+            enabled = true;
     }
 
     private void Start()

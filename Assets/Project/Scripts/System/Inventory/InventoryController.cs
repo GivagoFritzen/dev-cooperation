@@ -7,9 +7,8 @@ public class InventoryController : MenuController
     public static InventoryController Instance;
 
     [Header("Inventory")]
-    [SerializeField]
-    private GameObject inventoryGameobject = null;
-    private GridLayoutGroup gridLayoutGroup = null;
+    public GameObject inventoryGameobject = null;
+    public GridLayoutGroup gridLayoutGroup { get; set; } = null;
     private RectTransform rectTransform = null;
     [SerializeField]
     private GameObject inventorySlotPrefab = null;
@@ -30,21 +29,37 @@ public class InventoryController : MenuController
     {
         if (Instance != null)
             Destroy(gameObject);
-
-        Instance = this;
+        else
+            Instance = this;
     }
 
     private void Start()
     {
-        gridLayoutGroup = inventoryGameobject.GetComponentInChildren<GridLayoutGroup>();
-
+        GetComponents();
         PopulateInventorySlots();
         ClearEquipmentsSlots();
         Init();
         SetMultiplesMenus();
     }
 
-    public void PopulateInventorySlots()
+    public void GetComponents()
+    {
+        if (inventoryGameobject == null)
+            inventoryGameobject = gameObject.transform.Find("Inventory").gameObject;
+
+        if (gridLayoutGroup == null)
+            gridLayoutGroup = inventoryGameobject.GetComponentInChildren<GridLayoutGroup>();
+    }
+
+    public void PopulateSlots()
+    {
+        if (gridLayoutGroup == null)
+            gridLayoutGroup = inventoryGameobject.GetComponentInChildren<GridLayoutGroup>();
+
+        PopulateInventorySlots();
+    }
+
+    private void PopulateInventorySlots()
     {
         if (rectTransform == null)
         {

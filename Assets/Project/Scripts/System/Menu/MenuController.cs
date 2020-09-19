@@ -13,7 +13,7 @@ public class MenuController : MonoBehaviour, IMenuController
     protected int currentMenuVertical = 1;
     [SerializeField]
     protected int currentMenuHorizontal = 1;
-    public List<Button> menuInGame = null;
+    public List<Selectable> menuInGame = null;
     protected float vertical = 0;
     protected float horizontal = 0;
     protected int column = 1;
@@ -36,7 +36,7 @@ public class MenuController : MonoBehaviour, IMenuController
     protected void SelectControllerVertical()
     {
         if (InputManager.Instance.GetAction())
-            menuInGame[currentMenuVertical - 1].onClick.Invoke();
+            SelectUI(menuInGame[currentMenuVertical - 1]);
         else if (inputController < delay)
             inputController += Time.unscaledDeltaTime;
         else
@@ -55,15 +55,21 @@ public class MenuController : MonoBehaviour, IMenuController
         ResetInputController();
         if (vertical > 0)
         {
-            currentMenuVertical -= 1;
-            if (currentMenuVertical < 1)
-                currentMenuVertical = menuInGame.Count;
+            do
+            {
+                currentMenuVertical -= 1;
+                if (currentMenuVertical < 1)
+                    currentMenuVertical = menuInGame.Count;
+            } while (menuInGame[currentMenuVertical - 1].gameObject.activeSelf == false);
         }
         else if (vertical < 0)
         {
-            currentMenuVertical += 1;
-            if (currentMenuVertical > menuInGame.Count)
-                currentMenuVertical = 1;
+            do
+            {
+                currentMenuVertical += 1;
+                if (currentMenuVertical > menuInGame.Count)
+                    currentMenuVertical = 1;
+            } while (menuInGame[currentMenuVertical - 1].gameObject.activeSelf == false);
         }
 
         menuInGame[currentMenuVertical - 1].GetComponent<IMenuSelectController>().Enable();
@@ -81,7 +87,7 @@ public class MenuController : MonoBehaviour, IMenuController
         if (inputController < delay)
             inputController += Time.unscaledDeltaTime;
         else if (InputManager.Instance.GetAction())
-            menuInGame[(currentMenuHorizontal * currentMenuVertical) - 1].onClick.Invoke();
+            SelectUI(menuInGame[(currentMenuHorizontal * currentMenuVertical) - 1]);
         else
             InputControllerVerticalAndHorizontal();
     }
@@ -231,4 +237,10 @@ public class MenuController : MonoBehaviour, IMenuController
         GridLayoutGroupUtil.GetColumnAndRow(gridLayoutGroup, out column, out row);
     }
     #endregion
+
+    private void SelectUI(Selectable option)
+    {
+        if (option.GetComponent<Button>())
+            option.GetComponent<Button>().onClick.Invoke();
+    }
 }

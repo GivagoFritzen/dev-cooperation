@@ -1,11 +1,17 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 [RequireComponent(typeof(Collider2D))]
 public class Merchant : MonoBehaviour
 {
     [SerializeField]
     private new string name = "";
-    public Item[] listItems = null;
+    public List<Item> listItems = new List<Item>();
+
+    private void Start()
+    {
+        listItems.RemoveAll(item => item == null);
+    }
 
     #region Get
     public string GetName()
@@ -15,9 +21,9 @@ public class Merchant : MonoBehaviour
 
     public ItemData[] GetItemsData()
     {
-        ItemData[] itemsData = new ItemData[listItems.Length];
+        ItemData[] itemsData = new ItemData[listItems.Count];
 
-        for (int index = 0; index < listItems.Length; index++)
+        for (int index = 0; index < listItems.Count; index++)
             if (listItems[index] != null)
                 itemsData[index] = new ItemData(listItems[index], new float[3] { 0, 0, 0 });
 
@@ -33,14 +39,12 @@ public class Merchant : MonoBehaviour
 
     public void SetItemsDataToListItems(ItemData[] newListItems)
     {
-        listItems = new Item[newListItems.Length];
-
         for (int index = 0; index < newListItems.Length; index++)
         {
             if (newListItems[index] != null)
             {
                 Item newItem = (Item)Resources.Load(RouteUtil.GetPrefabsItems() + StringUtil.RemoveWhitespace(newListItems[index].name), typeof(Item)); ;
-                listItems[index] = newItem;
+                listItems.Add(newItem);
             }
         }
     }

@@ -461,6 +461,7 @@ GameObject:
   - component: {fileID: 91344322}
   - component: {fileID: 91344321}
   - component: {fileID: 91344320}
+  - component: {fileID: 91344324}
   m_Layer: 5
   m_Name: Language
   m_TagString: Untagged
@@ -578,6 +579,21 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &91344324
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 91344319}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea6856f1ac5c7b8459981ac44a6bbfaa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  selected: {fileID: 21300000, guid: d6a1673a31851fd4395c287261da36e4, type: 3}
+  disabled: {fileID: 21300000, guid: 2be7b70e984b51444aca9c12ae4723a7, type: 3}
+  selectedTextMargin: {x: 0, y: 25, z: 0, w: 4}
 --- !u!1 &113224220
 GameObject:
   m_ObjectHideFlags: 0
@@ -1133,7 +1149,7 @@ GameObject:
   m_Component:
   - component: {fileID: 379845180}
   m_Layer: 0
-  m_Name: Managers
+  m_Name: Scene-Menu-Manager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2262,6 +2278,7 @@ GameObject:
   m_Component:
   - component: {fileID: 696324272}
   - component: {fileID: 696324273}
+  - component: {fileID: 696324274}
   m_Layer: 5
   m_Name: Slider
   m_TagString: Untagged
@@ -2283,7 +2300,7 @@ RectTransform:
   - {fileID: 974947343}
   - {fileID: 1010842382}
   m_Father: {fileID: 1332309032}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.37, y: 0.46}
   m_AnchorMax: {x: 0.62, y: 0.53}
@@ -2351,6 +2368,22 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &696324274
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 696324271}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 436532a58e761bc4982d87a3e251ef21, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 50
+  handle: {fileID: 1623970194}
+  handleSelected: {fileID: 21300000, guid: 88fb404b623be3e4abf30bdce274d30d, type: 3}
+  handleDeselected: {fileID: 21300000, guid: b87a827590bc06a4e9dfde3a03e84585, type: 3}
 --- !u!1 &729734657
 GameObject:
   m_ObjectHideFlags: 0
@@ -2458,7 +2491,7 @@ RectTransform:
   m_Children:
   - {fileID: 1180780718}
   m_Father: {fileID: 1332309032}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.43, y: 0.198}
   m_AnchorMax: {x: 0.57, y: 0.28}
@@ -3455,8 +3488,8 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 91344323}
-  - {fileID: 775298581}
   - {fileID: 696324272}
+  - {fileID: 775298581}
   m_Father: {fileID: 1574027943}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3477,6 +3510,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5bace88df36dc4a45b2625f5aea7baa8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  delay: 0.15
+  currentMenuVertical: 1
+  currentMenuHorizontal: 1
+  menuInGame:
+  - {fileID: 91344320}
+  - {fileID: 696324273}
+  - {fileID: 775298583}
+  multiplesMenus: []
   menu: {fileID: 1446794980}
   languageDropdown: {fileID: 91344320}
   mixer: {fileID: 24100000, guid: d708089beb456cf448b00b804cc59502, type: 2}
@@ -4266,6 +4307,7 @@ MonoBehaviour:
   currentMenuHorizontal: 1
   menuInGame:
   - {fileID: 537399484}
+  - {fileID: 1552790672}
   - {fileID: 577584502}
   - {fileID: 1465504766}
   - {fileID: 1713873768}
@@ -4450,7 +4492,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 0d137b725b4b8cf4285e48728906e38f, type: 3}
+  m_Sprite: {fileID: 21300000, guid: b87a827590bc06a4e9dfde3a03e84585, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1

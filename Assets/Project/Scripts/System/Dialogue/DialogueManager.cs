@@ -27,8 +27,8 @@ public class DialogueManager : MonoBehaviour
     {
         if (Instance != null)
             Destroy(gameObject);
-
-        Instance = this;
+        else
+            Instance = this;
     }
 
     private void Start()

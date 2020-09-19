@@ -11,7 +11,6 @@ public class DungeonManager : MonoBehaviour
     private int maxRoutes = 20;
     private bool foundExit = false;
     private const float PI = 3.1415926535f;
-    [SerializeField]
     private NavMeshSurface2d navMeshSurface2d = null;
 
     [Header("Room")]
@@ -51,6 +50,8 @@ public class DungeonManager : MonoBehaviour
 
     private void Start()
     {
+        navMeshSurface2d = FindObjectOfType<NavMeshSurface2d>();
+
         NewRoute(0, 0, amountPossiblesCorridors.Random, RandomDirection(), 0);
         FillWalls();
         SetPlayerPosition();
