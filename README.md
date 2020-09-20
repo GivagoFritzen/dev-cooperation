@@ -1,4 +1,5 @@
 # DEV COOPERATION
+*Its a 2D - Top Down - Pixel*
 
 Is a ideia, where you can do and training whatever you want and commit yours things to others people use.
 Has some ideas in the project, with credits and totally free.
