@@ -34,7 +34,7 @@ public class SimpleEnemy : CreatureManager
     private float distanceToAttack = 1;
     private bool canAttack = false;
     [SerializeField]
-    private int damage = 1;
+    protected int damage = 1;
     [SerializeField]
     private float delayToAttack = 1;
     [SerializeField]

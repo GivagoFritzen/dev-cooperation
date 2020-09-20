@@ -6,6 +6,7 @@ public class TransitionTrigger : MonoBehaviour
     private string sceneName = null;
     [SerializeField]
     private GameObject transition = null;
+    public GameObject exit = null;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {

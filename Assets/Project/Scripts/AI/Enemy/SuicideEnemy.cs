@@ -7,8 +7,12 @@ public class SuicideEnemy : SimpleEnemy
     [SerializeField]
     private float explodeTimerDelay = 0;
     private float explodeTimerDelayController = 0;
+
+    [Header("Explosion")]
     [SerializeField]
     private GameObject explodeParticlePrefab = null;
+    [SerializeField]
+    private float distanceExplosion = 1;
 
     [Header("Material Controller")]
     private Material matWhite = null;
@@ -68,7 +72,15 @@ public class SuicideEnemy : SimpleEnemy
             GameObject particles = Instantiate(explodeParticlePrefab);
             particles.transform.position = transform.position;
 
+            if (GetPlayerDistance() < distanceExplosion)
+                PlayerManager.Instance.TakeDamage(damage);
+
             Destroy(gameObject);
         }
+    }
+
+    private float GetPlayerDistance()
+    {
+        return Vector3.Distance(PlayerManager.Instance.transform.position, gameObject.transform.position);
     }
 }

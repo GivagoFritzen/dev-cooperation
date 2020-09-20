@@ -377,6 +377,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce3d070f0dccb5742aedc014f405ef1a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneName: TestScene 1
+  sceneName: TestScene
   transition: {fileID: 3205429762882420626, guid: 468413a421088ee4ab69a772cf2e3908,
     type: 3}

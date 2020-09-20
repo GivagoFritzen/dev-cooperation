@@ -39,7 +39,7 @@ Material:
     m_Floats:
     - Center_X: 0.5
     - Center_Y: 0.5
-    - Radius: 1.0047202
+    - Radius: 1.0015782
     - Smooth: 0.05
     - _EnableExternalAlpha: 0
     m_Colors:

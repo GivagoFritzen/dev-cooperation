@@ -4,10 +4,12 @@ using TMPro;
 
 public class BookManager : MonoBehaviour
 {
+    public static BookManager Instance;
+
     [SerializeField]
     private Image imageAnchor = null;
-    [SerializeField]
-    private TextUI textPerPage = null;
+    private TextUI content = null;
+    private GameObject bookObject = null;
 
     [Header("Sprites")]
     [SerializeField]
@@ -30,10 +32,37 @@ public class BookManager : MonoBehaviour
     protected float inputController = 0;
     protected float horizontal = 0;
 
+    private void Awake()
+    {
+        if (Instance != null)
+            Destroy(gameObject);
+        else
+            Instance = this;
+    }
+
     private void Start()
     {
         currentPage = 0;
         ChangePage();
+
+        bookObject = gameObject.transform.GetChild(0).gameObject;
+        bookObject.SetActive(false);
+    }
+
+    public void Active(TextUI content)
+    {
+        currentPage = 0;
+        ChangePage();
+
+        this.content = content;
+        bookObject.SetActive(true);
+
+        MenuManagerInGame.Instance.CloseAllMenus();
+    }
+
+    public void Close()
+    {
+        bookObject.SetActive(false);
     }
 
     private void OnEnable()
@@ -44,7 +73,8 @@ public class BookManager : MonoBehaviour
 
     private void Update()
     {
-        InputControllerHorizontal();
+        if (bookObject.activeSelf)
+            InputControllerHorizontal();
     }
 
     private void InputControllerHorizontal()
@@ -69,6 +99,7 @@ public class BookManager : MonoBehaviour
         inputController = 0;
     }
 
+    #region Pages
     private void ChangePage()
     {
         if (currentPage == 0)
@@ -81,7 +112,7 @@ public class BookManager : MonoBehaviour
 
     private int GetPagesAmount()
     {
-        return Mathf.CeilToInt((float)textPerPage.GetCurrentTextLanguage().sentences.Length / 2);
+        return Mathf.CeilToInt((float)content.GetCurrentTextLanguage().sentences.Length / 2);
     }
 
     private void WritePage()
@@ -94,21 +125,17 @@ public class BookManager : MonoBehaviour
 
         bool isOdd = false;
         if (currentPage == GetPagesAmount())
-            isOdd = textPerPage.GetCurrentTextLanguage().sentences.Length % 2 != 0;
+            isOdd = content.GetCurrentTextLanguage().sentences.Length % 2 != 0;
 
         if (isOdd)
         {
-            pageLeft.text = textPerPage.GetCurrentTextLanguage().sentences[(currentPage - 1) * 2].ToString();
+            pageLeft.text = content.GetCurrentTextLanguage().sentences[(currentPage - 1) * 2].ToString();
         }
         else
         {
-            pageLeft.text = textPerPage.GetCurrentTextLanguage().sentences[currentPage / 2].ToString();
-            pageRight.text = textPerPage.GetCurrentTextLanguage().sentences[currentPage / 2 + 1].ToString();
+            pageLeft.text = content.GetCurrentTextLanguage().sentences[currentPage / 2].ToString();
+            pageRight.text = content.GetCurrentTextLanguage().sentences[currentPage / 2 + 1].ToString();
         }
     }
-
-    public static bool IsOdd(int value)
-    {
-        return value % 2 != 0;
-    }
+    #endregion
 }

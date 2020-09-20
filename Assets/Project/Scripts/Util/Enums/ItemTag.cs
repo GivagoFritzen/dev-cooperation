@@ -4,5 +4,6 @@
     Sword,
     Armor,
     Shield,
-    Helmet
+    Helmet,
+    Book
 };

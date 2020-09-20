@@ -47,6 +47,9 @@ public class CreditsManager : MonoBehaviour
 
     private void AddArtistsInformation()
     {
+        if (credits.artists == null || credits.artists.Length == 0)
+            return;
+
         text.Append(creditsArtist.GetCurrentText());
         text.AppendLine();
 
@@ -64,6 +67,9 @@ public class CreditsManager : MonoBehaviour
 
     private void AddProgrammersInformation()
     {
+        if (credits.programmers == null || credits.programmers.Length == 0)
+            return;
+
         text.Append(creditsProgrammers.GetCurrentText());
         text.AppendLine();
 
@@ -81,6 +87,9 @@ public class CreditsManager : MonoBehaviour
 
     private void AddAssetsInformation()
     {
+        if (credits.assets == null || credits.assets.Length == 0)
+            return;
+
         text.Append(creditsAssets.GetCurrentText());
         text.AppendLine();
 

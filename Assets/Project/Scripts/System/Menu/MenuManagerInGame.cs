@@ -69,6 +69,11 @@ public class MenuManagerInGame : MenuController
 
     private void MenuController()
     {
+        if (PressedAnyButton())
+        {
+            BookManager.Instance.Close();
+        }
+
         if (MerchantController.Instance.isOpened && PressedAnyButton())
         {
             MerchantController.Instance.Close();
@@ -114,7 +119,7 @@ public class MenuManagerInGame : MenuController
         CloseAllMenus();
     }
 
-    private void CloseAllMenus()
+    public void CloseAllMenus()
     {
         menu.SetActive(false);
         options.SetActive(false);

@@ -535,7 +535,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 421f29070456db243884feeb66172a05, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxRoutes: 1
+  maxRoutes: 7
   roomPrefab: {fileID: 8697245369259855704, guid: f461235ff57faab4ca32ddef36432979,
     type: 3}
   roomSize:

@@ -15,10 +15,6 @@ public class ManagersControl : MonoBehaviour
             SceneManager.sceneLoaded += OnLevelFinishedLoading;
             Instance = this;
         }
-        else
-        {
-            Destroy();
-        }
     }
 
     public void Destroy()

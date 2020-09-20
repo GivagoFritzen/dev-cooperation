@@ -15,7 +15,9 @@ MonoBehaviour:
   texts:
   - language: 0
     sentences:
-    - Teste1
+    - Teste 1
+    - Teste 2
   - language: 1
     sentences:
-    - Hello1
+    - Test 1
+    - Test 2

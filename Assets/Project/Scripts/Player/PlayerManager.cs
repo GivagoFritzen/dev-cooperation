@@ -10,8 +10,7 @@ public class PlayerManager : CreatureManager
 
     [Header("Parameters")]
     private Vector2 movement = Vector2.zero;
-    [SerializeField]
-    public int gold = 0;
+    public int gold { get; set; } = 0;
     public string transitionPoint { private get; set; } = null;
 
     [Header("Components")]
@@ -101,8 +100,15 @@ public class PlayerManager : CreatureManager
 
     private void FindTransitionPoint()
     {
-        if (!string.IsNullOrEmpty(transitionPoint))
-            transform.position = GameObject.Find(transitionPoint).transform.position;
+        if (!string.IsNullOrEmpty(transitionPoint) && !SceneManager.GetActiveScene().name.Contains("Dungeon"))
+        {
+            TransitionTrigger transitionTrigger = GameObject.Find(transitionPoint).GetComponent<TransitionTrigger>();
+
+            if (transitionTrigger.exit != null)
+                transform.position = transitionTrigger.exit.transform.position;
+            else
+                transform.position = transitionTrigger.transform.position;
+        }
 
         transitionPoint = null;
     }
@@ -136,6 +142,12 @@ public class PlayerManager : CreatureManager
         life += restore;
         if (life > maxLife)
             life = maxLife;
+    }
+
+    public void GetCoin(int value)
+    {
+        gold += value;
+        UpdateMoneyUI();
     }
     #endregion
 

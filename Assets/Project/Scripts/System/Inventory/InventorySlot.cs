@@ -87,6 +87,9 @@ public class InventorySlot : MonoBehaviour
 
     private void ReduceAmount()
     {
+        if (item.itemTag == ItemTag.Book)
+            return;
+
         amount -= 1;
         if (amount < 1)
             RemoveItem();
